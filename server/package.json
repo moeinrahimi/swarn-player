@@ -1,0 +1,20 @@
+{
+  "name": "swarn-server",
+  "version": "0.1.0",
+  "description": "your personal music server",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "moein rahimi",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "musicmetadata": "^2.0.5",
+    "nanoid": "^1.0.1",
+    "node-vibrant": "^3.0.0",
+    "redis": "^2.8.0"
+  }
+}

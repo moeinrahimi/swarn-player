@@ -1,0 +1,10 @@
+.showModal { 
+  display:block;
+  opacity: 1;
+  
+}
+
+.showModal .modal-dialog{
+  -webkit-transform: translate(0,0) !important;
+transform: translate(0,0) !important;
+}

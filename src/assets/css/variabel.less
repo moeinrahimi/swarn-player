@@ -1,0 +1,128 @@
+
+.mdi {
+  display: inline-block;
+  font: normal normal normal 24px/1 "Material Design Icons";
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+
+  &:before {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+.elips {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+
+
+.BoxShadowHelper(@level: 1){
+  & when (@level = 1) {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  }
+  & when (@level = 2) {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  }
+  & when (@level = 3) {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  }
+  & when (@level = 4) {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
+  & when (@level = 5) {
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  }
+}
+
+.label{
+
+      font-family: shabnam;
+    color: #000;
+    font-weight: inherit;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 7px;
+}
+.box_clear {
+
+  &:after, &:before {
+    clear: both;
+    display: table;
+    content: '';
+  }
+}
+
+.box-clear {
+
+  &:after, &:before {
+    clear: both;
+    display: table;
+    content: '';
+  }
+}
+
+
+
+/* Mixin */
+.border-radius (@radius: 5px) {
+  border-radius: @radius;
+  -moz-border-radius: @radius;
+  -o-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -webkit-border-radius: @radius;
+}
+
+/* Implementation */
+/* #somediv {
+.border-radius(20px);
+} */
+.border-radius-custom (@topleft: 5px, @topright: 5px, @bottomleft: 5px, @bottomright: 5px) {
+  border-radius: @topleft @topright @bottomright @bottomleft;
+  -moz-border-radius: @topleft @topright @bottomright @bottomleft;
+  -webkit-border-radius: @topleft @topright @bottomright @bottomleft;
+  -o-border-radius: @topleft @topright @bottomright @bottomleft;
+  -ms-border-radius: @topleft @topright @bottomright @bottomleft;
+}
+
+/* Implementation */
+/* #somediv {
+.border-radius-custom(20px, 20px, 0px, 0px);
+} */
+/* Mixin */
+.box-shadow (@x: 0px, @y: 3px, @blur: 5px, @alpha: 0.5) {
+  box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
+}
+
+/* Implementation */
+/* #somediv {
+.box-shadow(5px, 5px, 6px, 0.3);
+} */
+.transition (@prop: all, @time: 1s, @ease: linear) {
+  -webkit-transition: @prop @time @ease;
+  transition: @prop @time @ease;
+}
+
+/* Implementation */
+/* #somediv {
+	 .transition(all, 0.5s, ease-in);
+} */
+
+#somediv:hover {
+  opacity: 0;
+}
+
+.transform (@rotate: 90deg, @scale: 1, @skew: 1deg, @translate: 10px) {
+  -webkit-transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+  transform: rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
+}
+
+
+
+
+
