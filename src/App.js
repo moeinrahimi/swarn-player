@@ -36,6 +36,7 @@ class App extends Component {
   getMusicDirs = async () => {
     try {
       let { data } = await axios(config.baseURL)
+      console.log(data.albums)
       // console.log(JSON.stringify(data.folders) )
       this.setState({
         folders: [...this.state.folders, ...data.folders]

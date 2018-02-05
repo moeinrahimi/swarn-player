@@ -56,13 +56,21 @@ const getConfig = () => {
   let config = fs.readFileSync(configPath,{encoding:'utf8'})
   return config
  }
-var findSongs = async function (baseDir,isDir=false,musics)  {
+ function search(nameKey, myArray){
+  for (var i=0; i < myArray.length; i++) {
+      if (myArray[i].name === nameKey) {
+          return myArray[i];
+      }
+  }
+}
+
+var findSongs = async function (baseDir)  {
   // console.log(baseDir)
   // return
-  
+  let musics =[]
+  let albums =[]
   try{
-    let count = 0 
-    musics =musics || []
+    
     var files = await getDirFiles(baseDir)
     // console.log(files)
     // return
@@ -85,10 +93,9 @@ var findSongs = async function (baseDir,isDir=false,musics)  {
         // }
         console.log(musicPath,'isDir')
           await findSongs(musicPath,true,musics)
-        }else if(count == 0 && baseDir) { 
-          console.log(musicPath,'------')
+        }else{ 
+          // console.log(musicPath,'------')
         let meta = await getMusicMeta(musicPath)
-        count = 1
         if(meta){
         //   meta.music = musicPath
           delete meta.picture
@@ -123,10 +130,24 @@ var findSongs = async function (baseDir,isDir=false,musics)  {
             meta.dir = baseDir
             meta.isDir = true 
             musics.push(meta)
+            
+            // search(meta.album,albums)
+            let searchResult = search(meta.album,albums)
+            if(searchResult === undefined){
+              albums.push({name:meta.album,songs:[meta]})
+              // console.log(albums)
+            }else{
+              //nsole.log(searchResult,'inja')
+              searchResult.songs.push(meta)
+              let index = albums.map(album => album.name.indexOf(meta.album))
+              console.log(meta.album,'poreeeeeeeee')
+            albums[index] = searchResult
+            // console.log(albums.length)
+              
+            }
+            
         }
-        if(isDir){
-          break
-        }
+
 
     }
 }catch(e){
@@ -134,7 +155,7 @@ var findSongs = async function (baseDir,isDir=false,musics)  {
 }
 
   }  
-  return musics
+  return [musics,albums]
 }catch(e){
   console.log(e,'hhhh')
   throw e

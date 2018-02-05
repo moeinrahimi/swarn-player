@@ -11,6 +11,7 @@ export default class Song extends Component {
       e:`rgb(${song.color['LightVibrant'] ? song.color['LightVibrant']._rgb.join(',') : ''})`,
       f:`rgb(${song.color['Muted'] ? song.color['Muted']._rgb.join(',') : ''})`,
     }
+    // console.log(song)
     return (
          <div className="music-box">
                 <div className="music-cover" style={{'backgroundImage':`url("${config.baseURL}${song.artwork}")`}}>
@@ -23,7 +24,7 @@ export default class Song extends Component {
                 <div className="target f" style={{backgroundColor: bg.f}}></div>
                 </div>
             <div className="info-music" style={{'backgroundColor':bg.a}}>
-              <a > {song.dirName}
+              <a > {song.title}
               </a>  
             </div>
               </div>

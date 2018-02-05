@@ -75,7 +75,7 @@ const getSongNames = async(dir) => {
       }
         
 }
-return res.status(200).json({success:true,message_id:0,folders : songs })
+return res.status(200).json({success:true,message_id:0,folders : songs[0],albums:songs[1] })
 }catch(e){
   console.log(e,'getMusics func')
   return res.status(400).json({success:false,message_id:1,message:e })
