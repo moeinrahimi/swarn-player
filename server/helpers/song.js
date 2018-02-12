@@ -4,6 +4,7 @@ const path = require('path')
 const fs =require('fs')
 const Vibrant = require('node-vibrant')
 const nanoid = require('nanoid')
+const {cleanFileName} = require('./file')
 
 const getMusicMeta = (file) => {
   return new Promise((resolve,reject)=>{
@@ -103,6 +104,7 @@ var findSongs = async function (baseDir)  {
           meta.id = nanoid()
           let dirName = path.basename(path.dirname(musicPath))    
           let songName = meta.title || meta.album
+          songName = cleanFileName(songName)
           let artowrkAbsolutePath ='./public/'+songName+'.jpg'
           
           let saveImage 
