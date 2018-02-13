@@ -6,10 +6,20 @@ const fs =require('fs')
 const nanoid = require('nanoid')
 const {  getConfig , getDirFiles , getArtwork , getMusicMeta,findSongs} = require('../helpers/song')
 const SongRouter = require('express').Router()
+const redis = require("redis"),
+client = redis.createClient();
 SongRouter.get('/',getMusics)
 SongRouter.get('/songs/play',streamSong)
 SongRouter.get('/songs/list',getSelectedPathSongs)
-
+function getKey(key){
+  return new Promise((resolve,reject)=>{
+    client.get(key, function(err, reply) {
+      // reply is null when the key is missing
+      if(err)reject(err)
+      resolve(reply)
+  });
+  })
+}
 async function getSelectedPathSongs(req,res){
   let dir = req.query.dir
     try{
@@ -64,12 +74,21 @@ const getSongNames = async(dir) => {
  async function getMusics(req,res){
 
   try{
+    let songs 
   let config = JSON.parse(getConfig())
   let pathCount= config.dirs.length
     for(let i = 0;i<pathCount;i++){
       try{
         let baseDir = config.dirs[i]
-        var songs = await findSongs(baseDir)
+        let isThereSongs = await  getKey(baseDir)
+        console.log(isThereSongs,baseDir)
+        if(isThereSongs){
+          console.log('yeah there is songs')
+          songs = JSON.parse(isThereSongs)
+          continue
+        }
+        songs = await findSongs(baseDir)
+        client.set(baseDir, JSON.stringify(songs));
       }catch(e){
         console.log(e)
       }

@@ -33,9 +33,9 @@ export default class Song extends Component {
   render(){
   return (
     <div id="music-list-container" className="row">
-      {this.props.songs.map((song)=>{ 
+      {this.props.songs.map((song,index)=>{ 
         return (
-          <div  onClick={e=>this.props.getSelectedPathSongs(song)}  key={song.key}  className="col-sm"> 
+          <div  onClick={e=>this.props.playSong(song, index)}  key={song.key}  className="col-sm"> 
             {this._renderView(song)}
           </div>
         )

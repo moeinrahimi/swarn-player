@@ -81,8 +81,9 @@ class App extends Component {
     }
   }
   playSong = (song, index) => {
+
     this.setTitle(song)
-    let songUrl = song.song
+    let songUrl = song.fullPath
     console.log(song)
     songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
     this.setState({
@@ -113,17 +114,10 @@ class App extends Component {
     this.setState({
       backgroundImage: url
     })
-    // document.getElementById("root").style.backgroundImage =  bg.b
-    //document.getElementById("root").style.background = this.bgimg
-    //  document.documentElement.style.setProperty('--one',  `url(${url})`);
-    // document.documentElement.style.setProperty('--bgimg', 'url(heello)');
     document.documentElement.style.setProperty(`--one`, bg.a);
     document.documentElement.style.setProperty(`--two`, bg.b);
     document.documentElement.style.setProperty(`--three`, bg.c);
     document.documentElement.style.setProperty(`--four`, bg.d);
-    // console.log(config.baseURL , song.artwork)
-
-
     try {
       let isFetched = false
       let currentSongs = []
@@ -290,7 +284,7 @@ class App extends Component {
                   <h1> {this.state.songName}  </h1>
                   <ul>
                     {this.renderSongs(this.state.currentSongs)}
-                  </ul>
+                  </ul> 
                 </div>
               </div>
               <div className="col-lg-8 col-md-12">
@@ -298,7 +292,7 @@ class App extends Component {
 
                   <Song
                     songs={this.state.folders}
-                    getSelectedPathSongs={this.getSelectedPathSongs}
+                    playSong={this.playSong}
                   />
                   : ''}
               </div>

@@ -100,18 +100,18 @@ var findSongs = async function (baseDir)  {
         if(meta){
         //   meta.music = musicPath
           delete meta.picture
-          
+          meta.fullPath = musicPath
           meta.id = nanoid()
           let dirName = path.basename(path.dirname(musicPath))    
           let songName = meta.title || meta.album
-          songName = cleanFileName(songName)
-          let artowrkAbsolutePath ='./public/'+songName+'.jpg'
+          csongName = cleanFileName(songName)
+          let artowrkAbsolutePath ='./public/'+csongName+'.jpg'
           
           let saveImage 
           let hasArtwork = fs.existsSync(artowrkAbsolutePath)
           
           if(hasArtwork){
-            meta.artwork = songName+'.jpg'
+            meta.artwork = csongName+'.jpg'
           }else {
             let artwork = await getArtwork(songName)
             if(artwork){
@@ -132,7 +132,6 @@ var findSongs = async function (baseDir)  {
             meta.dir = baseDir
             meta.isDir = true 
             musics.push(meta)
-            
             // search(meta.album,albums)
             let searchResult = search(meta.album,albums)
             if(searchResult === undefined){
