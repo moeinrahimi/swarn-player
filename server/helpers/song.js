@@ -68,8 +68,7 @@ const getConfig = () => {
 var findSongs = async function (baseDir)  {
   // console.log(baseDir)
   // return
-  let musics =[]
-  let albums =[]
+   musics =  []
   try{
     
     var files = await getDirFiles(baseDir)
@@ -93,7 +92,7 @@ var findSongs = async function (baseDir)  {
         //     }   
         // }
         console.log(musicPath,'isDir')
-          await findSongs(musicPath,true,musics)
+          await findSongs(musicPath,musics)
         }else{ 
           // console.log(musicPath,'------')
         let meta = await getMusicMeta(musicPath)
@@ -123,8 +122,6 @@ var findSongs = async function (baseDir)  {
 
             }
           }
-            
-          
         let color = await  Vibrant.from(artowrkAbsolutePath).getPalette()
             meta.color = color       
             meta.dirName = dirName
@@ -132,31 +129,18 @@ var findSongs = async function (baseDir)  {
             meta.dir = baseDir
             meta.isDir = true 
             musics.push(meta)
-            // search(meta.album,albums)
-            let searchResult = search(meta.album,albums)
-            if(searchResult === undefined){
-              albums.push({name:meta.album,songs:[meta]})
-              // console.log(albums)
-            }else{
-              //nsole.log(searchResult,'inja')
-              searchResult.songs.push(meta)
-              let index = albums.map(album => album.name.indexOf(meta.album))
-              console.log(meta.album,'poreeeeeeeee')
-            albums[index] = searchResult
-            // console.log(albums.length)
-              
-            }
+        
             
         }
 
 
     }
 }catch(e){
-    console.log(e,'injaaaaaaa')  
+    console.log(e,'cc')  
 }
 
   }  
-  return [musics,albums]
+  return musics
 }catch(e){
   console.log(e,'hhhh')
   throw e

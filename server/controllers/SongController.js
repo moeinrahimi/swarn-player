@@ -74,27 +74,27 @@ const getSongNames = async(dir) => {
  async function getMusics(req,res){
 
   try{
-    let songs 
-  let config = JSON.parse(getConfig())
-  let pathCount= config.dirs.length
+    let allSongs = []
+    let config = JSON.parse(getConfig())
+    let pathCount= config.dirs.length
     for(let i = 0;i<pathCount;i++){
       try{
         let baseDir = config.dirs[i]
         let isThereSongs = await  getKey(baseDir)
-        console.log(isThereSongs,baseDir)
         if(isThereSongs){
-          console.log('yeah there is songs')
-          songs = JSON.parse(isThereSongs)
+          let songs = JSON.parse(isThereSongs)
+          allSongs.push(...songs)
           continue
         }
-        songs = await findSongs(baseDir)
+        let songs = await findSongs(baseDir)
+        allSongs.push(...songs)
         client.set(baseDir, JSON.stringify(songs));
       }catch(e){
         console.log(e)
       }
         
 }
-return res.status(200).json({success:true,message_id:0,folders : songs[0],albums:songs[1] })
+return res.status(200).json({success:true,message_id:0,folders : allSongs  })
 }catch(e){
   console.log(e,'getMusics func')
   return res.status(400).json({success:false,message_id:1,message:e })

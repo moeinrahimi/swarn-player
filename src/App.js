@@ -180,16 +180,16 @@ class App extends Component {
 
   NextSong = () => {
 
-    let { folderSongs, songIndex } = this.state
-    const songsLength = folderSongs[0].songs.length
+    let { folders, songIndex } = this.state
+    const songsLength = folders.length
     songIndex += 1
     if (songIndex >= songsLength) {
       songIndex = 0
     }
 
-    let song = folderSongs[0].songs[songIndex]
+    let song = folders[songIndex]
     // console.log(song,'aaaa')
-    let songPath = song.song
+    let songPath = song.fullPath
     let songURL = `${config.baseURL}songs/play?path=${encodeURIComponent(songPath)}`
     this.setTitle(song)
     // console.log(song)
@@ -201,14 +201,14 @@ class App extends Component {
   }
 
   PreviousSong = () => {
-    let { folderSongs, songIndex } = this.state
-    const songsLength = folderSongs[0].songs.length
+    let { folders, songIndex } = this.state
+    const songsLength = folders.length
     songIndex -= 1
     if (songIndex == -1) {
       songIndex = 0
     }
-    let song = folderSongs[0].songs[songIndex]
-    let songPath = song.song
+    let song = folders[songIndex]
+    let songPath = song.fullPath
     let songURL = `${config.baseURL}songs/play?path=${encodeURIComponent(songPath)}`
     this.setTitle(song)
     this.setState({
@@ -272,6 +272,7 @@ class App extends Component {
           </button>
           <div>
             <Sound
+            volume={0}
               url={this.state.songURL}
               playStatus={this.state.playingStatus}
               onLoading={this.handleSongLoading}
