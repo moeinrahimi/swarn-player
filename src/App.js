@@ -8,6 +8,7 @@ import PlayList from './components/PlayList/index';
 import Settings from './components/Settings';
 import config from './constants/config'
 import BackgroundImage from './components/BackgroundImage'
+import { colorizeBG } from './helpers';
 
 class App extends Component {
   constructor(props) {
@@ -81,7 +82,7 @@ class App extends Component {
     }
   }
   playSong = (song, index) => {
-
+    colorizeBG(song)
     this.setTitle(song)
     let songUrl = song.fullPath
     console.log(song)
@@ -100,24 +101,13 @@ class App extends Component {
     this.setState({ isOpen: true })
     let dir = song.dir
     let songName = song.album
-    let bg = {
-      a: `rgba(${song.color['Vibrant'] ? song.color['Vibrant']._rgb.join(',') + ',0.9' : '255,255,255'})`,
-      b: `rgba(${song.color['DarkMuted'] ? song.color['DarkMuted']._rgb.join(',') + ',0.9' : '255,255,255'})`,
-      c: `rgba(${song.color['DarkVibrant'] ? song.color['DarkVibrant']._rgb.join(',') + ',0.7' : '255,255,255'})`,
-      d: `rgba(${song.color['LightMuted'] ? song.color['LightMuted']._rgb.join(',') + ',0.7' : '255,255,255'})`,
-      e: `rgba(${song.color['LightVibrant'] ? song.color['LightVibrant']._rgb.join(',') + ',0.7' : '255,255,255'})`,
-      f: `rgba(${song.color['Muted'] ? song.color['Muted']._rgb.join(',') + ',0.7' : '255,255,255'})`,
-    }
-
+    colorizeBG(song)
     let url = config.baseURL + song.artwork
     console.log(config.baseURL + song.artwork, 'adsasdsad')
     this.setState({
       backgroundImage: url
     })
-    document.documentElement.style.setProperty(`--one`, bg.a);
-    document.documentElement.style.setProperty(`--two`, bg.b);
-    document.documentElement.style.setProperty(`--three`, bg.c);
-    document.documentElement.style.setProperty(`--four`, bg.d);
+
     try {
       let isFetched = false
       let currentSongs = []
@@ -197,6 +187,7 @@ class App extends Component {
       songIndex: songIndex,
       songURL: songURL,
       songId: song.id,
+      song : song
     })
   }
 
@@ -257,7 +248,7 @@ class App extends Component {
 
         <ToastContainer />
         <header className="App-header">
-          <h1 className="App-title">React Music Player</h1>
+          <h1 className="App-title">Swarn Music Player</h1>
         </header>
         <div className="add-song" onClick={this.settingsModal}>
           <span className="mdi mdi-plus"></span>
