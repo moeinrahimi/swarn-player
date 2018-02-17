@@ -5,14 +5,14 @@ const fs =require('fs')
 const Vibrant = require('node-vibrant')
 const nanoid = require('nanoid')
 const {cleanFileName} = require('./file')
-
+const db =require('../models')
 const getMusicMeta = (file) => {
   return new Promise((resolve,reject)=>{
     let stream = fs.createReadStream(file)
     metaData(stream,(err,meta)=>{
       if(err) {
         // console.log(file,'get music data err')
-        reject('err')
+        reject('could not find metadata header')
       }
       stream.close();
       resolve(meta)
@@ -65,15 +65,10 @@ const getConfig = () => {
   }
 }
 
-var findSongs = async function (baseDir)  {
-  // console.log(baseDir)
-  // return
-   musics =  []
+var findSongs = async function (baseDir,musics)  {
+   musics = musics ||  []
   try{
-    
     var files = await getDirFiles(baseDir)
-    // console.log(files)
-    // return
     for(let i =0;i<files.length;i++){
       try {
         let file = files[i]
@@ -82,16 +77,7 @@ var findSongs = async function (baseDir)  {
         // continue
         let stat = fs.lstatSync(musicPath)    
         if(stat.isDirectory()){
-          // check if there is a dir inside dir
-          // let dirFiles = await getDirFiles(musicPath)
-        //   for(let i =0;i<dirFiles.length;i++){
-        //     let dirFile = dirFiles[i]
-        //     console.log(dirFile)
-        //     if(fs.lstatSync(musicPath+'/'+dirFile).isDirectory() ){
-        //       await findSongs(musicPath+'/'+dirFile,false,musics)
-        //     }   
-        // }
-        console.log(musicPath,'isDir')
+          console.log(musicPath,'isDir')
           await findSongs(musicPath,musics)
         }else{ 
           // console.log(musicPath,'------')
@@ -104,33 +90,68 @@ var findSongs = async function (baseDir)  {
           let dirName = path.basename(path.dirname(musicPath))    
           let songName = meta.title || meta.album
           csongName = cleanFileName(songName)
-          let artowrkAbsolutePath ='./public/'+csongName+'.jpg'
           
-          let saveImage 
-          let hasArtwork = fs.existsSync(artowrkAbsolutePath)
           
-          if(hasArtwork){
-            meta.artwork = csongName+'.jpg'
-          }else {
-            let artwork = await getArtwork(songName)
-            if(artwork){
-              saveImage =  await saveArtwork(artwork,artowrkAbsolutePath)
-            }else{
-              console.log('nadarad')
-              meta.artwork = 'default.jpg'
-               artowrkAbsolutePath ='./public/default.jpg'
-
-            }
-          }
-        let color = await  Vibrant.from(artowrkAbsolutePath).getPalette()
+            let saveImage 
+            
+            meta.artwork = 'default.jpg'
+            let color = await  Vibrant.from('./public/default.jpg').getPalette()
             meta.color = color       
             meta.dirName = dirName
             meta.baseDir = baseDir
             meta.dir = baseDir
             meta.isDir = true 
             musics.push(meta)
-        
+           let savedSong =  await db.Song.findOrCreate({
+              where : {
+                path : musicPath
+              },
+              defaults : {
+                name :meta.title,
+                album :meta.album,
+                // artwork :meta.name,
+                path:musicPath,
+                // fileName :meta.name,
+                genre :meta.genre.toString(),
+                artist :meta.artist.toString(),
+                year :meta.year,
+                // color :meta.name,
+                dirName :meta.dirName,
+                baseDir :baseDir,
+              }
+            })
+            let image =  csongName+'.jpg'
+            let artowrkAbsolutePath ='./public/'+image 
             
+            let hasArtwork = fs.existsSync(artowrkAbsolutePath)
+          
+          if(hasArtwork){
+            meta.artwork = image 
+            db.Song.update({
+              artwork : image 
+            },{
+              where : {
+                id : savedSong[0].id 
+              }
+            })
+          }else {
+             getArtwork(songName).then(artwrok=>{
+            // console.log(artwork,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
+              if(artwork){
+                 saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
+                  // console.log(saveImage,'-----------')
+                  db.Song.update({
+                    artwork : image 
+                  },{
+                    where : {
+                      id : savedSong[0].id 
+                    }
+                  })
+                 })
+              }
+             })
+           
+          }
         }
 
 

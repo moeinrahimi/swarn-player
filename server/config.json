@@ -1,1 +1,10 @@
-{"dirs":["C:\\Users\\Rasta\\Documents\\MusicFakor\\bookmusic"]}
+{
+  "dirs":["I:\\Music\\stranger things\\011"],
+  "DBUser": "root",
+  "DBPass": "",
+  "DBName": "airline",
+  "port": 8787,
+  "logging": "console.log"
+  
+
+}
