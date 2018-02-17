@@ -32,11 +32,9 @@
 .progress-music {
   background-color: #404040;
   border-radius: 2px;
-  display: -ms-flexbox;
-  display: flex;
+  display: block;
   height: 4px;
   position: relative;
-  width: 50%;
   margin: 7px auto;
 }
 .progress{
@@ -70,8 +68,28 @@
   .progress-music{
   text-align: center;
     color: white;
-}
 
+}
+.wrapper-progress{
+ width: 60%;
+ margin: 0 auto; 
+ position: relative;
+}
+  .total,
+.elapsed{
+  position: absolute;
+  top:-10px;
+color:#fff;
+
+font-size: 16px;
+}
+    .elapsed{
+      right: -45px;
+    }
+    .total{
+      left: -45px;
+
+    }
 
 .progress-music progress[value] {
   /* Reset the default appearance */
