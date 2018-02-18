@@ -80,15 +80,15 @@ const getSongNames = async(dir) => {
     for(let i = 0;i<pathCount;i++){
       try{
         let baseDir = config.dirs[i]
-        // let isThereSongs = await  getKey(baseDir)
-        // if(isThereSongs){
-        //   let songs = JSON.parse(isThereSongs)
-        //   allSongs.push(...songs)
-        //   continue
-        // }
+        let isThereSongs = await  getKey(baseDir)
+        if(isThereSongs){
+          let songs = JSON.parse(isThereSongs)
+          allSongs.push(...songs)
+          continue
+        }
         let songs = await findSongs(baseDir)
         allSongs.push(...songs)
-        // client.set(baseDir, JSON.stringify(songs));
+        client.set(baseDir, JSON.stringify(allSongs));
       }catch(e){
         console.log(e)
       }

@@ -92,72 +92,56 @@ var findSongs = async function (baseDir,musics)  {
           csongName = cleanFileName(songName)
           
           
-            let saveImage 
-            
-            meta.artwork = 'default.jpg'
-            let color = await  Vibrant.from('./public/default.jpg').getPalette()
+            let image =  csongName+'.jpg'
+            let artowrkAbsolutePath ='./public/'+image 
+            let hasArtwork = fs.existsSync(artowrkAbsolutePath)
+            meta.artwork = hasArtwork ? image : 'default.jpg' 
+            let color = await  Vibrant.from(hasArtwork ? artowrkAbsolutePath : './public/default.jpg' ).getPalette()
             meta.color = color       
             meta.dirName = dirName
             meta.baseDir = baseDir
             meta.dir = baseDir
-            meta.isDir = true 
             musics.push(meta)
-           let savedSong =  await db.Song.findOrCreate({
-              where : {
-                path : musicPath
-              },
-              defaults : {
-                name :meta.title,
-                album :meta.album,
-                // artwork :meta.name,
-                path:musicPath,
-                // fileName :meta.name,
-                genre :meta.genre.toString(),
-                artist :meta.artist.toString(),
-                year :meta.year,
-                // color :meta.name,
-                dirName :meta.dirName,
-                baseDir :baseDir,
-              }
-            })
-            let image =  csongName+'.jpg'
-            let artowrkAbsolutePath ='./public/'+image 
-            
-            let hasArtwork = fs.existsSync(artowrkAbsolutePath)
-          
-          if(hasArtwork){
-            meta.artwork = image 
-            db.Song.update({
-              artwork : image 
-            },{
-              where : {
-                id : savedSong[0].id 
-              }
-            })
-          }else {
-             getArtwork(songName).then(artwrok=>{
-            // console.log(artwork,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
-              if(artwork){
-                 saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
-                  // console.log(saveImage,'-----------')
-                  db.Song.update({
-                    artwork : image 
-                  },{
-                    where : {
-                      id : savedSong[0].id 
-                    }
-                  })
+            saveSong(meta,baseDir)
+            .then(savedSong=>{
+              if(hasArtwork){
+                db.Song.update({
+                  artwork : image 
+                },{
+                  where : {
+                    id : savedSong[0].id 
+                  }
+                })
+              }else {
+                 getArtwork(songName).then(artwork=>{
+                // console.log(artwork,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
+                  if(artwork){
+                     saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
+                      // console.log(saveImage,'-----------')
+                      db.Song.update({
+                        artwork : image 
+                      },{
+                        where : {
+                          id : savedSong[0].id 
+                        }
+                      })
+                     })
+                  }
+                 }).catch(e=>{
+                   console.log(e,'got error getArtwork')
                  })
+               
               }
-             })
+            })
            
-          }
+           
+         
         }
 
 
     }
 }catch(e){
-    console.log(e,'cc')  
+    console.log(e,'find songs function')  
 }
 
   }  
@@ -183,6 +167,27 @@ var findSongs = async function (baseDir,musics)  {
    }
   
   // console.log(artworkBuffer)
+ }
+
+ const saveSong = (meta,baseDir) =>{
+  return db.Song.findOrCreate({
+    where : {
+      path : meta.fullPath
+    },
+    defaults : {
+      name :meta.title,
+      album :meta.album,
+      // artwork :meta.name,
+      // fileName :meta.name,
+      genre :meta.genre.toString(),
+      artist :meta.artist.toString(),
+      year :meta.year,
+      // color :meta.name,
+      dirName :meta.dirName,
+      baseDir :baseDir,
+    }
+  })
+
  }
 
  module.exports = {
