@@ -48,20 +48,19 @@
 	// padding:50px 150px ; 
 }
 :root {
-  --one: #d326bc;
-  --two:  #b9315d;
-  --three:  #b96331;
-  --four:  #31b948;
+	--one: #d326bc;
+	--two:  #b9315d;
+	--three:  #b96331;
+	--four:  #31b948;
   // --bgimg: url('http://localhost:8181/16.12.jpg');
 }
 
 #root{
-	// background: linear-gradient(-45deg, var(--one), var(--two), var(--three), var(--four));
-	// background-size: 400% 400%;
-	// -webkit-animation: Gradient 25s ease infinite;
-	// -moz-animation: Gradient 25s ease infinite;
-	// animation: Gradient 25s ease infinite;
-
+	background: linear-gradient(-45deg, var(--one), var(--two), var(--three), var(--four));
+	background-size: 400% 400%;
+	-webkit-animation: Gradient 25s ease infinite;
+	-moz-animation: Gradient 25s ease infinite;
+	animation: Gradient 25s ease infinite;
 	background-size:cover;
 	background-attachment: fixed;
 	background-position: center center;
@@ -70,22 +69,20 @@
 		content: '';
 		position: absolute;
 		display: block;
-		  /* All the background image supports */
-  background-image: -webkit-linear-gradient(bottom left, rgba(43, 40, 50, 0.8) 0%, rgba(83, 86, 99, 0.8) 45%, rgba(69, 77, 91, 0.6) 60%);
-  background-image: -moz-linear-gradient(bottom left, rgba(43, 40, 50, 0.8) 0%, rgba(83, 86, 99, 0.8) 45%, rgba(69, 77, 91, 0.6) 60%);
-  background-image: -o-linear-gradient(bottom left, rgba(43, 40, 50, 0.8) 0%, rgba(83, 86, 99, 0.8) 45%, rgba(69, 77, 91, 0.6) 60%);
-  background-image: linear-gradient(to top right, rgba(43, 40, 50, 0.8) 0%, rgba(83, 86, 99, 0.8) 45%, rgba(69, 77, 91, 0.6) 60%);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-filter: blur(50px);
-  -o-filter: blur(50px);
-  filter: blur(50px);
-  // filter: progid: DXImageTransform.Microsoft.Blur(PixelRadius='70');
-  top: -70px;
-  right: -70px;
-  left: -70px;
-  padding: 70px;
+		background-image: -webkit-linear-gradient(bottom left, rgba(43, 40, 50, 0.8) 0%, rgba(83, 86, 99, 0.8) 45%, rgba(69, 77, 91, 0.6) 60%);
+		background-image: -moz-linear-gradient(bottom left, rgba(43, 40, 50, 0.8) 0%, rgba(83, 86, 99, 0.8) 45%, rgba(69, 77, 91, 0.6) 60%);
+		background-image: -o-linear-gradient(bottom left, rgba(43, 40, 50, 0.8) 0%, rgba(83, 86, 99, 0.8) 45%, rgba(69, 77, 91, 0.6) 60%);
+		background-image: linear-gradient(to top right, rgba(43, 40, 50, 0.8) 0%, rgba(83, 86, 99, 0.8) 45%, rgba(69, 77, 91, 0.6) 60%);
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		-webkit-filter: blur(50px);
+		-o-filter: blur(50px);
+		filter: blur(50px);
+		top: -70px;
+		right: -70px;
+		left: -70px;
+		padding: 70px;
 	}
 }
 
@@ -110,14 +107,14 @@
 	0 20px 20px rgba(0,0,0,.15);
 }
 .modal-vue-wrapper.modal-fade{
-  opacity: 0.1;
-  visibility: hidden;
+	opacity: 0.1;
+	visibility: hidden;
 }
 .modal-vue-wrapper.modal-scale{
-	 -webkit-transform: scale(-1,1);
-    -ms-transform: scale(-1, 1);
-    -o-transform: scale(-1, 1);
-    transform: scale(-1, 1);
+	-webkit-transform: scale(-1,1);
+	-ms-transform: scale(-1, 1);
+	-o-transform: scale(-1, 1);
+	transform: scale(-1, 1);
 }
 .modal-vue-wrapper{
 	position: fixed;
@@ -128,12 +125,12 @@
 	font-size: 14px;
 	-webkit-font-smoothing: antialiased;
 	z-index: 9999999999;
-    -webkit-transform: translate3D(0,0,0);
-    -ms-transform: translate3D(0,0,0);
-    -o-transform: translate3D(0,0,0);
-    transform: translate3D(0,0,0);
-  
-    transition:all 0.2s cubic-bezier(0.52, 0.02, 0.19, 1.02);
+	-webkit-transform: translate3D(0,0,0);
+	-ms-transform: translate3D(0,0,0);
+	-o-transform: translate3D(0,0,0);
+	transform: translate3D(0,0,0);
+	
+	transition:all 0.2s cubic-bezier(0.52, 0.02, 0.19, 1.02);
 	.modal-vue-overlay{
 		position: fixed;
 		top: 0;
@@ -177,32 +174,32 @@
 		max-height: 100vh;
 		overflow-y: auto;
 		border-radius: 2px;
-    	top: 50%;
-	    left: 0;
-	    right: 0;
-	    margin:0 auto;
+		top: 50%;
+		left: 0;
+		right: 0;
+		margin:0 auto;
 		
 		opacity: 0;
 		transition-property: transform, opacity, width ;
 		transition-duration:0.3s;
-		 /* // 0.3s;  */
+		/* // 0.3s;  */
 		transition-delay: 0.05s;
 		transition-timing-function: cubic-bezier(0.52, 0.02, 0.19, 1.02);
-			&::-webkit-scrollbar-track
-				{
-					-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-					background-color: #F5F5F5;
-				}
-				&::-webkit-scrollbar
-				{
-					width: 6px;
-					height: 5px;
-					background-color: #F5F5F5;
-				}
-				&::-webkit-scrollbar-thumb
-				{
-					background-color: #41b9d2;
-				} 
+		&::-webkit-scrollbar-track
+		{
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+			background-color: #F5F5F5;
+		}
+		&::-webkit-scrollbar
+		{
+			width: 6px;
+			height: 5px;
+			background-color: #F5F5F5;
+		}
+		&::-webkit-scrollbar-thumb
+		{
+			background-color: #41b9d2;
+		} 
 
 		.modal-vue-actions{
 			position: absolute;
@@ -236,7 +233,7 @@
 				padding-top: 35px;
 				padding-bottom: 10px;
 				flex-grow: 1;
-	
+				
 
 			}
 		}
@@ -249,11 +246,11 @@
 }
 .modal-vue-wrapper-show,.modal-vue-wrapper-show.modal-fade ,.modal-vue-wrapper-show.modal-scale{
 	visibility: visible;
-    opacity: 1;
+	opacity: 1;
 	background: rgba(255, 255, 255, 0.9);
 	-webkit-transform: translate3D(0,0,0);
-    -ms-transform: translate3D(0,0,0);
-    -o-transform: translate3D(0,0,0);
-    transform: translate3D(0,0,0);
+	-ms-transform: translate3D(0,0,0);
+	-o-transform: translate3D(0,0,0);
+	transform: translate3D(0,0,0);
 
 }

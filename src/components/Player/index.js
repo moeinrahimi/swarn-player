@@ -9,12 +9,12 @@ export default class Player extends Component {
     return (
       <div id="player"> 
       
-        <button title="shuffle all" className="mdi mdi-shuffle-variant"></button>
+        <button title="shuffle all" className="flaticon-arrows-2"></button>
 
-        <button  title="prev" onClick={this.props.PreviousSong} className="mdi mdi-skip-previous-circle-outline"></button>
-        <button title="play" onClick={this.props.TogglePlay} className={'mdi ' + (isPlaying == 1 ? 'mdi-pause-circle-outline' : ' mdi-play-circle-outline')}></button>
-        <button title="next"  onClick={this.props.NextSong} className="mdi mdi-skip-next-circle-outline"></button>
-        <button title="repeat"  className="mdi mdi-repeat"></button>
+        <button  title="prev" onClick={this.props.PreviousSong} className="flaticon-arrows"></button>
+        <button title="play" onClick={this.props.TogglePlay} className={(isPlaying == 1 ? 'flaticon-pause-button' : ' flaticon-play-button')}></button>
+        <button title="next"  onClick={this.props.NextSong} className="flaticon-arrows-1"></button>
+        <button title="repeat"  className="flaticon-update-arrow"></button>
         <div>
 
         <div className="wrapper-progress">
