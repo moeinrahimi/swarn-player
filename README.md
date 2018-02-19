@@ -1,25 +1,45 @@
-# swarn-player
+# swan-player
 
-swarn-player is a music player web application, it aims to be simple yet powerfull
+swan-player is a music player web application, it aims to be simple yet powerful
 
 # getting started
-run below commands in your terminal
+make sure you have a working installation of  redis and mysql . 
 ``` bash
-git clone https://github.com/moeinrahimi/swarn-player.git
-cd swarn-player && npm install && cd server && npm install && npm run dev && cd .. && npm run dev
-
-
+git clone https://github.com/moeinrahimi/swan-player.git
+cd swan-player
+npm install
+cd server
+npm install
+cd ..
+npm start
+cd server 
+npm start
 ```
 
 # Features
 - supporting multiple directories
+- fast on startup (thanks to redis)
 - see todo for incoming features
 
+
+# Technologies Used 
+- react with create react app 
+- redis 
+- mysql
+- nodejs express
+
 # TODO List
-- [*] use redis to store songs 
+- [ ] shuffle funcitonality
+- [ ] volume controller  
+- [ ] repeat funcitonality
+- [ ] search in songs 
+- [ ] recently played songs 
+- [ ] make playlist
 - [ ] clean code to make it more readable
 - [ ]  use node-ffmetadata to create metadata for songs that doesnt have any meta
-- [ ] fix issue where getting songs on multiple config directories only gets first directory
+- [x] use redis to store songs 
+- [x] use mysql for persistent storage
+- [x] fix issue where getting songs on multiple config directories only gets first directory
 
  
 
