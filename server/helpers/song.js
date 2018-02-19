@@ -5,14 +5,14 @@ const fs =require('fs')
 const Vibrant = require('node-vibrant')
 const nanoid = require('nanoid')
 const {cleanFileName} = require('./file')
-
+const db =require('../models')
 const getMusicMeta = (file) => {
   return new Promise((resolve,reject)=>{
     let stream = fs.createReadStream(file)
     metaData(stream,(err,meta)=>{
       if(err) {
         // console.log(file,'get music data err')
-        reject('err')
+        reject('could not find metadata header')
       }
       stream.close();
       resolve(meta)
@@ -52,28 +52,11 @@ const getDirFiles = (dir) =>{
   })
   
 }
-const getConfig = () => {
-  let configPath = path.resolve(__dirname,'../config.json')
-  let config = fs.readFileSync(configPath,{encoding:'utf8'})
-  return config
- }
- function search(nameKey, myArray){
-  for (var i=0; i < myArray.length; i++) {
-      if (myArray[i].name === nameKey) {
-          return myArray[i];
-      }
-  }
-}
 
-var findSongs = async function (baseDir)  {
-  // console.log(baseDir)
-  // return
-   musics =  []
+var findSongs = async function (baseDir,musics)  {
+   musics = musics ||  []
   try{
-    
     var files = await getDirFiles(baseDir)
-    // console.log(files)
-    // return
     for(let i =0;i<files.length;i++){
       try {
         let file = files[i]
@@ -82,16 +65,7 @@ var findSongs = async function (baseDir)  {
         // continue
         let stat = fs.lstatSync(musicPath)    
         if(stat.isDirectory()){
-          // check if there is a dir inside dir
-          // let dirFiles = await getDirFiles(musicPath)
-        //   for(let i =0;i<dirFiles.length;i++){
-        //     let dirFile = dirFiles[i]
-        //     console.log(dirFile)
-        //     if(fs.lstatSync(musicPath+'/'+dirFile).isDirectory() ){
-        //       await findSongs(musicPath+'/'+dirFile,false,musics)
-        //     }   
-        // }
-        console.log(musicPath,'isDir')
+          console.log(musicPath,'isDir')
           await findSongs(musicPath,musics)
         }else{ 
           // console.log(musicPath,'------')
@@ -104,39 +78,58 @@ var findSongs = async function (baseDir)  {
           let dirName = path.basename(path.dirname(musicPath))    
           let songName = meta.title || meta.album
           csongName = cleanFileName(songName)
-          let artowrkAbsolutePath ='./public/'+csongName+'.jpg'
           
-          let saveImage 
-          let hasArtwork = fs.existsSync(artowrkAbsolutePath)
           
-          if(hasArtwork){
-            meta.artwork = csongName+'.jpg'
-          }else {
-            let artwork = await getArtwork(songName)
-            if(artwork){
-              saveImage =  await saveArtwork(artwork,artowrkAbsolutePath)
-            }else{
-              console.log('nadarad')
-              meta.artwork = 'default.jpg'
-               artowrkAbsolutePath ='./public/default.jpg'
-
-            }
-          }
-        let color = await  Vibrant.from(artowrkAbsolutePath).getPalette()
+            let image =  csongName+'.jpg'
+            let artowrkAbsolutePath ='./public/'+image 
+            let hasArtwork = fs.existsSync(artowrkAbsolutePath)
+            meta.artwork = hasArtwork ? image : 'default.jpg' 
+            let color = await  Vibrant.from(hasArtwork ? artowrkAbsolutePath : './public/default.jpg' ).getPalette()
             meta.color = color       
             meta.dirName = dirName
             meta.baseDir = baseDir
             meta.dir = baseDir
-            meta.isDir = true 
             musics.push(meta)
-        
-            
+            saveSong(meta,baseDir)
+            .then(savedSong=>{
+              if(hasArtwork){
+                db.Song.update({
+                  artwork : image 
+                },{
+                  where : {
+                    id : savedSong[0].id 
+                  }
+                })
+              }else {
+                 getArtwork(songName).then(artwork=>{
+                // console.log(artwork,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
+                  if(artwork){
+                     saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
+                      // console.log(saveImage,'-----------')
+                      db.Song.update({
+                        artwork : image 
+                      },{
+                        where : {
+                          id : savedSong[0].id 
+                        }
+                      })
+                     })
+                  }
+                 }).catch(e=>{
+                   console.log(e,'got error getArtwork')
+                 })
+               
+              }
+            })
+           
+           
+         
         }
 
 
     }
 }catch(e){
-    console.log(e,'cc')  
+    console.log(e,'find songs function')  
 }
 
   }  
@@ -164,6 +157,27 @@ var findSongs = async function (baseDir)  {
   // console.log(artworkBuffer)
  }
 
+ const saveSong = (meta,baseDir) =>{
+  return db.Song.findOrCreate({
+    where : {
+      path : meta.fullPath
+    },
+    defaults : {
+      name :meta.title,
+      album :meta.album,
+      // artwork :meta.name,
+      // fileName :meta.name,
+      genre :meta.genre.toString(),
+      artist :meta.artist.toString(),
+      year :meta.year,
+      // color :meta.name,
+      dirName :meta.dirName,
+      baseDir :baseDir,
+    }
+  })
+
+ }
+
  module.exports = {
-   getConfig , getDirFiles , getArtwork , getMusicMeta , findSongs
+   getDirFiles , getArtwork , getMusicMeta , findSongs
  }

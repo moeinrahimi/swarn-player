@@ -1,13 +1,11 @@
-
-const metaData = require('musicmetadata');
-const axios = require('axios')
 const path = require('path')
 const fs =require('fs')
 const nanoid = require('nanoid')
-const {  getConfig , getDirFiles , getArtwork , getMusicMeta,findSongs} = require('../helpers/song')
+const {  getDirFiles , getArtwork , getMusicMeta,findSongs} = require('../helpers/song')
 const SongRouter = require('express').Router()
 const redis = require("redis"),
 client = redis.createClient();
+const db = require('../models')
 SongRouter.get('/',getMusics)
 SongRouter.get('/songs/play',streamSong)
 SongRouter.get('/songs/list',getSelectedPathSongs)
@@ -75,11 +73,11 @@ const getSongNames = async(dir) => {
 
   try{
     let allSongs = []
-    let config = JSON.parse(getConfig())
-    let pathCount= config.dirs.length
+    let directories = await db.Directory.all()
+    let pathCount= directories.length
     for(let i = 0;i<pathCount;i++){
       try{
-        let baseDir = config.dirs[i]
+        let baseDir = directories[i].path
         let isThereSongs = await  getKey(baseDir)
         if(isThereSongs){
           let songs = JSON.parse(isThereSongs)
@@ -88,7 +86,7 @@ const getSongNames = async(dir) => {
         }
         let songs = await findSongs(baseDir)
         allSongs.push(...songs)
-        client.set(baseDir, JSON.stringify(songs));
+        client.set(baseDir, JSON.stringify(allSongs));
       }catch(e){
         console.log(e)
       }

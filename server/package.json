@@ -13,8 +13,11 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "musicmetadata": "^2.0.5",
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.2",
     "nanoid": "^1.0.1",
     "node-vibrant": "^3.0.0",
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "sequelize": "^4.33.4"
   }
 }

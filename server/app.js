@@ -3,6 +3,14 @@ const express = require('express')
 const app = express()
 const {SongRouter,SettingsRouter} = require('./controllers')
 const bodyParser = require('body-parser')
+var db = require('./models')
+
+db.sequelize.sync(
+  // {force: true}
+).catch(err=>{
+  console.log(`Sequelize issue:\nerr name :${err.name}\nerr message :  ${err.message}`)
+});
+
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
