@@ -52,18 +52,6 @@ const getDirFiles = (dir) =>{
   })
   
 }
-const getConfig = () => {
-  let configPath = path.resolve(__dirname,'../config.json')
-  let config = fs.readFileSync(configPath,{encoding:'utf8'})
-  return config
- }
- function search(nameKey, myArray){
-  for (var i=0; i < myArray.length; i++) {
-      if (myArray[i].name === nameKey) {
-          return myArray[i];
-      }
-  }
-}
 
 var findSongs = async function (baseDir,musics)  {
    musics = musics ||  []
@@ -191,5 +179,5 @@ var findSongs = async function (baseDir,musics)  {
  }
 
  module.exports = {
-   getConfig , getDirFiles , getArtwork , getMusicMeta , findSongs
+   getDirFiles , getArtwork , getMusicMeta , findSongs
  }

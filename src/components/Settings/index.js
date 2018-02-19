@@ -25,7 +25,7 @@ class Settings extends Component{
 
       if(data.success == true){ 
       this.setState({
-        settings:[...this.state.settings,this.state.newDir],
+        settings:[...this.state.settings,data.newDir],
       });
       this.props.getMusicDirs()
     }
@@ -55,7 +55,7 @@ _renderDirectories = ()=>{
     this.state.settings.map((setting,index)=>{
       return (
         <div>
-        <p key={index}>{setting}
+        <p key={index}>{setting.path}
          <i className='mdi mdi-minus-circle' onClick={()=>this._removeDir(setting,index)}></i>
         </p>
         
@@ -69,9 +69,8 @@ _removeDir =  async (dir) =>{
   console.log(dir)
   try{
   let {data} = await axios({
-    url :  config.baseURL + 'settings',
+    url :  config.baseURL + `settings/${dir.id}`,
     method : 'delete',
-    data : {dir : dir }
   })
   console.log(data)
   if(data.success == true){
