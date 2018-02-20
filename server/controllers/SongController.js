@@ -68,6 +68,13 @@ const getSongNames = async(dir) => {
   }
   return songsPath
 }
+function compare(a,b) {
+  if (a.album < b.album)
+    return -1;
+  if (a.album > b.album)
+    return 1;
+  return 0;
+}
 
  async function getMusics(req,res){
 
@@ -86,6 +93,8 @@ const getSongNames = async(dir) => {
         }
         let songs = await findSongs(baseDir)
         allSongs.push(...songs)
+
+        allSongs.sort(compare);
         client.set(baseDir, JSON.stringify(allSongs));
       }catch(e){
         console.log(e)

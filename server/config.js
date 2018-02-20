@@ -1,7 +1,7 @@
 module.exports = {
   "DBUser": "root",
   "DBPass": "",
-  "DBName": "swarn",
+  "DBName": "swan",
   "port": 8787,
   "logging": console.log
 }
