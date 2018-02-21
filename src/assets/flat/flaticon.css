@@ -1,6 +1,6 @@
 	/*
   	Flaticon icon font: Flaticon
-  	Creation date: 19/02/2018 13:50
+  	Creation date: 21/02/2018 06:36
   	*/
 
 @font-face {
@@ -24,16 +24,15 @@
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
   font-family: Flaticon;
-        /* font-size: 20px; */
-font-style: normal;
-/* margin-left: 20px; */
+  font-style: normal;
 }
 
-.flaticon-update-arrow:before { content: "\f100"; }
-.flaticon-arrows-3:before { content: "\f101"; }
-.flaticon-arrows-2:before { content: "\f102"; }
-.flaticon-arrows-4:before { content: "\f103"; }
-.flaticon-arrows-1:before { content: "\f104"; }
-.flaticon-arrows:before { content: "\f105"; }
-.flaticon-pause-button:before { content: "\f106"; }
-.flaticon-play-button:before { content: "\f107"; }
+.flaticon-add-button:before { content: "\f100"; }
+.flaticon-update-arrow:before { content: "\f101"; }
+.flaticon-arrows-3:before { content: "\f102"; }
+.flaticon-arrows-2:before { content: "\f103"; }
+.flaticon-arrows-4:before { content: "\f104"; }
+.flaticon-arrows-1:before { content: "\f105"; }
+.flaticon-arrows:before { content: "\f106"; }
+.flaticon-pause-button:before { content: "\f107"; }
+.flaticon-play-button:before { content: "\f108"; }

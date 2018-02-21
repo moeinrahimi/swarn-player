@@ -248,10 +248,10 @@ class App extends Component {
 
         <ToastContainer />
         <header className="App-header">
-          <h1 className="App-title">Swarn Music Player</h1>
+          <h1 className="App-title">Swan Music Player</h1>
         </header>
         <div className="add-song" onClick={this.settingsModal}>
-          <span className="mdi mdi-plus"></span>
+          <span className="flaticon-add-button"></span>
         </div>
         <Settings show={this.state.showModal} onClick={this.settingsModal} getMusicDirs={this.getMusicDirs} />
 
@@ -279,7 +279,7 @@ class App extends Component {
                   </ul> 
                 </div>
               </div>
-              <div className="col-lg-8 col-md-12">
+              <div className="col-lg-8 col-md-1">
                 {this.state.folders ?
 
                   <Song
