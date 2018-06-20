@@ -1,9 +1,28 @@
 import React, { Component } from 'react';
 import './style.css'
 export default class Player extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
 
+    
+    elapsed: '00:00',
+    total: '00:00',
+    position: 0,
+  }
+  }
+  
+  setEplapsed = (elapsed,total,position)=>{
+    console.log(elapsed,total,position)
+        this.setState({
+      elapsed: elapsed,
+      total: total,
+      position: position
+    })
+  }
   render(){
-     const {audio,position,total,elapsed,isPlaying,song}=this.props
+     const {audio,isPlaying,song}=this.props
+     const {position,total,elapsed} = this.state
      let progressBar = (audio.position/audio.duration) * 100 
 
     return (

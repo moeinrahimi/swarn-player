@@ -8,7 +8,7 @@ class Settings extends Component{
     super(props)
     this.state = {
       newDir : '',
-      settings : []
+      settings : [],
     }
   }
   _dir = (e)=>{

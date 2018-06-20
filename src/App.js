@@ -23,15 +23,14 @@ class App extends Component {
       songName: '',
       songIndex: '',
       songId: '',
-      elapsed: '00:00',
-      total: '00:00',
-      position: 0,
+
       audio: {},
       showModal: false,
       song: '',
       winHeight: '',
       isOpen: false,
-      backgroundImage: ''
+      backgroundImage: '',
+      player : ''
     }
   }
   getMusicDirs = async () => {
@@ -55,6 +54,7 @@ class App extends Component {
   }
   componentDidMount = () => {
     this.getMusicDirs()
+    
     document.addEventListener('keydown', this._keyBoardListener, false)
     var winHeight;
     var editHight = 200
@@ -154,11 +154,12 @@ class App extends Component {
     let elapsed = this.formatMilliseconds(audio.position)
     let total = this.formatMilliseconds(audio.duration)
     let position = audio.position / audio.duration
-    this.setState({
-      elapsed: elapsed,
-      total: total,
-      position: position
-    })
+    this.player.setEplapsed(elapsed,total,position)
+    // this.setState({
+    //   // elapsed: elapsed,
+    //   total: total,
+    //   position: position
+    // })
   }
 
   handleSongLoading = (audio) => {
@@ -291,12 +292,10 @@ class App extends Component {
 
             </div>
             <Player
+            ref={instance =>{this.player = instance}}
               TogglePlay={this.TogglePlay}
               NextSong={this.NextSong}
               PreviousSong={this.PreviousSong}
-              elapsed={this.state.elapsed}
-              total={this.state.total}
-              position={this.state.position}
               audio={this.state.audio}
               isPlaying={this.state.isPlaying}
               song={this.state.song}
