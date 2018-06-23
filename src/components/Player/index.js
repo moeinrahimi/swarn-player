@@ -28,12 +28,12 @@ export default class Player extends Component {
     return (
       <div id="player"> 
       
-        <button title="shuffle all" className="flaticon-arrows-2"></button>
+        <button title="shuffle all" onClick={this.props.shuffle} className="flaticon-arrows-2"></button>
 
         <button  title="prev" onClick={this.props.PreviousSong} className="flaticon-arrows"></button>
         <button title="play" onClick={this.props.TogglePlay} className={(isPlaying == 1 ? 'flaticon-pause-button' : ' flaticon-play-button')}></button>
         <button title="next"  onClick={this.props.NextSong} className="flaticon-arrows-1"></button>
-        <button title="repeat"  className="flaticon-update-arrow"></button>
+        {/* <button title="repeat"  className="flaticon-update-arrow"></button> */}
         <div>
 
         <div className="wrapper-progress">

@@ -5,7 +5,7 @@ swan-player is a music player web application, it aims to be simple yet powerful
 
 # Screenshot
 -------------
-![swan-player home page](https://imgsafe.org/image/dfe976de0b)
+![swan-player home page](https://i.imgsafe.org/df/dfe976de0b.png)
 
 
 

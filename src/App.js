@@ -23,14 +23,14 @@ class App extends Component {
       songName: '',
       songIndex: '',
       songId: '',
-
       audio: {},
       showModal: false,
       song: '',
       winHeight: '',
       isOpen: false,
       backgroundImage: '',
-      player : ''
+      player : '',
+      shuffle : false 
     }
   }
   getMusicDirs = async () => {
@@ -171,12 +171,18 @@ class App extends Component {
 
   NextSong = () => {
 
-    let { folders, songIndex } = this.state
+    let { folders, songIndex , shuffle} = this.state
     const songsLength = folders.length
     songIndex += 1
     if (songIndex >= songsLength) {
-      songIndex = 0
+      if(shuffle){
+        songIndex = 0
+        // return true 
+      }
+      
     }
+
+    if(songIndex >= songsLength) return 
 
     let song = folders[songIndex]
     // console.log(song,'aaaa')
@@ -218,6 +224,13 @@ class App extends Component {
     }
     console.log(song)
     document.title = `${song.title || 'Unknown'} - ${artist || 'Unknown'}`
+  }
+
+  shuffle = () => {
+    console.log('shuffle func ')
+    this.setState({
+      shuffle : !this.state.shuffle 
+    })
   }
   renderSongs = (data) => {
     // console.log(data)
@@ -305,6 +318,7 @@ class App extends Component {
               audio={this.state.audio}
               isPlaying={this.state.isPlaying}
               song={this.state.song}
+              shuffle={this.shuffle}
             />
           </div>
         </div>
