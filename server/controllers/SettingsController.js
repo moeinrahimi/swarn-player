@@ -3,7 +3,7 @@ const fs =require('fs')
 const {    getDirFiles , getArtwork , getMusicMeta,findSongs} = require('../helpers/song')
 const SettingsRouter = require('express').Router()
 const db = require('../models')
-
+const redis = require('../helpers/redis')
 // let configPath = path.resolve(__dirname,'../config.json')
 SettingsRouter.post('/',saveDir)
 SettingsRouter.get('/',getDirs)
@@ -16,6 +16,7 @@ async function saveDir(req,res,next){
           path : dir 
         }
       })
+
       if(newDir[1] == false){
         return res.status(400).json({success:false,message_id:3,message:'directory already exists' })
       }
@@ -40,11 +41,20 @@ async function getDirs(req,res){
 async function deleteDir(req,res,next){
   let id = req.params.id 
     try{
-      await db.Directory.destroy({
-        where : {
-          id : id 
-        }
-      })
+      let directory = await db.Directory.findById(id)
+      console.log(directory.path,'------')
+
+      
+      // await redis.remove(directory.path)
+      await db.Song.destroy({where:{
+        directoryId : directory.id 
+      }
+    })
+    await db.Directory.destroy({
+      where : {
+        id : id 
+      }
+    })
     return res.status(200).json({success: true,message_id: 0,message: 'directory deleted successfully'})
     }catch(error){
       console.log(error)

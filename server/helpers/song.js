@@ -53,8 +53,10 @@ const getDirFiles = (dir) =>{
   
 }
 
-var findSongs = async function (baseDir,musics)  {
+var findSongs = async function (directory,musics)  {
    musics = musics ||  []
+   let baseDir = directory.path
+   console.log(baseDir,'aaaaaaaaaaaaaaaaaa')
   try{
     var files = await getDirFiles(baseDir)
     for(let i =0;i<files.length;i++){
@@ -66,7 +68,7 @@ var findSongs = async function (baseDir,musics)  {
         let stat = fs.lstatSync(musicPath)    
         if(stat.isDirectory()){
           console.log(musicPath,'isDir')
-          await findSongs(musicPath,musics)
+          await findSongs({id:directory.id , path:musicPath},musics)
         }else{ 
           // console.log(musicPath,'------')
         let meta = await getMusicMeta(musicPath)
@@ -87,6 +89,8 @@ var findSongs = async function (baseDir,musics)  {
             let color = await  Vibrant.from(hasArtwork ? artowrkAbsolutePath : './public/default.jpg' ).getPalette()
             meta.color = color       
             meta.dirName = dirName
+            meta.title = meta.title || meta.artist.join(',')
+            meta.directoryId = directory.id
             meta.baseDir = baseDir
             meta.dir = baseDir
             musics.push(meta)
@@ -102,7 +106,7 @@ var findSongs = async function (baseDir,musics)  {
                 })
               }else {
                  getArtwork(songName).then(artwork=>{
-                // console.log(artwork,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
+                // console.log(artwork`,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
                   if(artwork){
                      saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
                       // console.log(saveImage,'-----------')
@@ -158,13 +162,15 @@ var findSongs = async function (baseDir,musics)  {
  }
 
  const saveSong = (meta,baseDir) =>{
+   console.log(meta.directoryId,'dir id ')
   return db.Song.findOrCreate({
     where : {
       path : meta.fullPath
     },
     defaults : {
-      name :meta.title,
+      title : meta.title,
       album :meta.album,
+      directoryId : meta.directoryId,
       // artwork :meta.name,
       // fileName :meta.name,
       genre :meta.genre.toString(),
@@ -172,7 +178,7 @@ var findSongs = async function (baseDir,musics)  {
       year :meta.year,
       // color :meta.name,
       dirName :meta.dirName,
-      baseDir :baseDir,
+      fullPath :meta.fullPath,
     }
   })
 

@@ -210,8 +210,14 @@ class App extends Component {
   }
 
   setTitle = (song) => {
+    let artist 
+    if(Array.isArray(song.artist)){
+      artist = song.artist[0]
+    }else{
+      artist = song.artist
+    }
     console.log(song)
-    document.title = `${song.title || 'Unknown'} - ${song.artist[0] || 'Unknown'}`
+    document.title = `${song.title || 'Unknown'} - ${artist || 'Unknown'}`
   }
   renderSongs = (data) => {
     // console.log(data)

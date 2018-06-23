@@ -56,7 +56,7 @@ _renderDirectories = ()=>{
       return (
         <div>
         <p key={index}>{setting.path}
-         <i className='mdi mdi-minus-circle' onClick={()=>this._removeDir(setting,index)}></i>
+         <i className='mdi mdi-minus-circle' onClick={()=>this._removeDir(setting,index)}>a</i>
         </p>
         
         </div>
