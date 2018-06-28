@@ -10,6 +10,10 @@ import config from './constants/config'
 import BackgroundImage from './components/BackgroundImage'
 import { colorizeBG } from './helpers';
 
+// new design 
+import SideBar from './components/SideBar'
+import NavBar from './components/NavBar'
+import SpecialSongs from './components/SpecialSongs'
 class App extends Component {
   constructor(props) {
     super(props)
@@ -262,55 +266,35 @@ class App extends Component {
 
     console.log(this.state.backgroundImage, 'dasdadsasd')
     return (
+      <div>
+      <div>
+<div className="columns is-gapless">
 
-      <div className="col">
-        <BackgroundImage url={this.state.backgroundImage} />
-
-        <ToastContainer />
-        <header className="App-header">
-          <h1 className="App-title">Swan Music Player</h1>
-        </header>
-        <div className="add-song" onClick={this.settingsModal}>
-          <span className="flaticon-add-button"></span>
+  <SideBar/>
+  <div className="column">
+    <div className="main">
+      <NavBar/>
+      <div className="column">
+       <SpecialSongs 
+       songs={this.state.folders}
+       playSong={this.playSong}
+       />
         </div>
-        <Settings show={this.state.showModal} onClick={this.settingsModal} getMusicDirs={this.getMusicDirs} />
+      <div className="column">
+        <SpecialSongs
+        songs={this.state.folders}
+       playSong={this.playSong}
+        />
+        </div>
+    </div>
+    
+    </div>
 
-        <div className="bg-section">
-          <button type="button" className={'tcon tcon-menu--xcross' + (this.state.isOpen ? ' tcon-transform' : '')} aria-label="toggle menu" onClick={this.toggleCollaps}>
-            <span className="tcon-menu__lines" aria-hidden="true"></span>
-            <span className="tcon-visuallyhidden">toggle menu</span>
-
-          </button>
-          <div>
-            <Sound
-            volume={0}
-              url={this.state.songURL}
-              playStatus={this.state.playingStatus}
-              onLoading={this.handleSongLoading}
-              onPlaying={(audio) => this.handleSongPlaying(audio)}
-              onFinishedPlaying={this.NextSong}
-            />
-            <div className="row">
-              <div className="col-lg-3 col-lg-offset-1 col-sm-12">
-                <div className={'list-song   col-md-3 col-sm-6 col-xs-12' + (this.state.isOpen ? ' open' : '')} style={{ height: + this.state.winHeight + 'px' }}>
-                  <h1> {this.state.songName}  </h1>
-                  <ul>
-                    {this.renderSongs(this.state.currentSongs)}
-                  </ul> 
-                </div>
-              </div>
-              <div className="col-lg-8 col-md-1">
-                {this.state.folders ?
-
-                  <Song
-                    songs={this.state.folders}
-                    playSong={this.playSong}
-                  />
-                  : ''}
-              </div>
-
-            </div>
-            <Player
+    
+</div>
+<div className="columns">
+  <div className="column">
+  <Player
             ref={instance =>{this.player = instance}}
               TogglePlay={this.TogglePlay}
               NextSong={this.NextSong}
@@ -319,9 +303,11 @@ class App extends Component {
               isPlaying={this.state.isPlaying}
               song={this.state.song}
               shuffle={this.shuffle}
-            />
-          </div>
-        </div>
+/>
+    </div>
+    </div>
+    </div>
+    
       </div>
     );
   }

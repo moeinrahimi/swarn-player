@@ -26,33 +26,55 @@ export default class Player extends Component {
      let progressBar = (audio.position/audio.duration) * 100 
 
     return (
-      <div id="player"> 
-      
-        <button title="shuffle all" onClick={this.props.shuffle} className="flaticon-arrows-2"></button>
+    <div id="player">
+      <div className="columns">
+        <div className="column is-2">
+          <div id="currently-playing">
+            <div id="currently-cover">
+            <img src="https://i.scdn.co/image/687f24c44322827d1a255645e366c83f90cfbd0f" alt="" />
+            </div>
+            <div id="currently-text">
+              <span><a href="" className="link">The One That Got Away</a></span>
+              <h1>Francios Mulder</h1>
+            </div>
+            <div id="add-to-favaorite">
+              <i className="fa fa-plus"></i>
+            </div>
+            
+          </div>
+        </div>
+        <div className="column is-8">
+          <div id="player-controller">
+            <div id="player-controls">
+                <i className="link fa fa-random"></i>
+                  <i className="link fa fa-step-backward"></i>
+                    <i className="link fa fa-play"></i>
+                      <i className="link fa fa-step-forward"></i>
+                        <i className="link fa fa-redo-alt"></i>
+            </div>
+            <div id="progress-bar-container">
+              <span className="link">00:42</span>
+              <div id="progress-bar">
+                <div id="middle-bar">
 
-        <button  title="prev" onClick={this.props.PreviousSong} className="flaticon-arrows"></button>
-        <button title="play" onClick={this.props.TogglePlay} className={(isPlaying == 1 ? 'flaticon-pause-button' : ' flaticon-play-button')}></button>
-        <button title="next"  onClick={this.props.NextSong} className="flaticon-arrows-1"></button>
-        {/* <button title="repeat"  className="flaticon-update-arrow"></button> */}
-        <div>
-
-        <div className="wrapper-progress">
-
-            <span className="total">{total}</span>
-          <span className="elapsed">{elapsed}</span>
-        <div className="progress-music">
-              <div className="progress" style={{width:progressBar + '%'}}></div>
+                </div>
+              </div>
+              <span className="link">00:42</span>
+            </div>
+          </div>
         </div>
+        <div className="column is-2">
+          <div id="sound">
+             <i className="link fa fa-volume-up"></i>
+             <i className="link fa fa-volume-down"></i>
+                    <i className="link fa fa-volume-off"></i>
+                    <i className="link fa fa-volume-down"></i> 
+                    <input type="range" min="1" max="100" value="50" className="volume-slider" />
+          </div>
         </div>
-        </div>
-        <div className="info-active-music">
-          <span className="title">{song.title ? song.title : song.name}</span>
-          <span className="album"> {song.artist ? song.artist : 'Unknown Artist'}</span>
-          {/* <span className="genre">{song.genre ? `[ ${song.genre[0]} ]` : ''}</span> */}
-        </div>
-          
-        
       </div>
+      
+    </div>
     )
   }
 }
