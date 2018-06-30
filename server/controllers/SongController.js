@@ -8,20 +8,12 @@ client = redis.createClient();
 const db = require('../models')
 SongRouter.get('/',getMusics)
 SongRouter.get('/songs/play',streamSong)
-SongRouter.get('/songs/list',getSelectedPathSongs)
-function getKey(key){
-  return new Promise((resolve,reject)=>{
-    client.get(key, function(err, reply) {
-      // reply is null when the key is missing
-      if(err)reject(err)
-      resolve(reply)
-  });
-  })
-}
-async function getSelectedPathSongs(req,res){
-  let dir = req.query.dir
+SongRouter.get('/album/songs',getAlbumSongs)
+
+async function getAlbumSongs(req,res){
+  let albumId = req.query.albumId
     try{
-      let songs =  await getSongNames(dir)
+    let songs =  await db.Song.findAll({where : {albummId:albumId}})
     return res.status(200).json({success: true,message_id: 0,songs:songs})
     }catch(error){
       console.log(error)
@@ -88,8 +80,9 @@ function compare(a,b) {
         // let isThereSongs = await  getKey(directory.path)
         // if(isThereSongs){
           // let songs = JSON.parse(isThereSongs)
-          let dbSongs = await db.Song.findAll({where:{directoryId:directory.id}})
-          console.log(dbSongs,'songs')
+          let dbSongs = await db.Album.all()
+          // let dbSongs = await db.Song.findAll({where:{directoryId:directory.id}})
+          // console.log(dbSongs,'songs')
           if(dbSongs.length > 0){
             console.log('there are songs')
             allSongs.push(...dbSongs)
@@ -98,7 +91,8 @@ function compare(a,b) {
           }
           console.log(' get new songs')
           let songs = await findSongs(directory)
-          allSongs.push(...songs)
+          // let dbSongs = await db.Album.all()
+          allSongs.push(...dbSongs)
           
         // }
         

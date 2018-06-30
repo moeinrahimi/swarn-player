@@ -19,6 +19,7 @@ class App extends Component {
     super(props)
     this.state = {
       folders: [],
+      albums: [],
       songURL: '',
       playingStatus: Sound.status.STOPPED,
       isPlaying: 0,
@@ -40,10 +41,8 @@ class App extends Component {
   getMusicDirs = async () => {
     try {
       let { data } = await axios(config.baseURL)
-      console.log(data.albums)
-      // console.log(JSON.stringify(data.folders) )
       this.setState({
-        folders: [...this.state.folders, ...data.folders]
+        albums: [...this.state.albums, ...data.folders]
       })
     } catch (e) {
       console.log(e)
@@ -85,16 +84,23 @@ class App extends Component {
       this.setState({ playingStatus: Sound.status.PLAYING, isPlaying: 1 })
     }
   }
-  playSong = (song, index) => {
-    colorizeBG(song)
+  playSong = async (song, index) => {
+    let { data } = await axios(config.baseURL+`album/songs?albumId=${song.id}`)
+    this.setState({
+      folders: data.songs
+    })
+
+    song = this.state.folders[0]
+    console.log(song)
+    // colorizeBG(song)
     this.setTitle(song)
     let songUrl = song.fullPath
-    console.log(song)
+    // console.log(song)
     songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
     this.setState({
       songURL: songUrl,
       playingStatus: Sound.status.PLAYING,
-      songIndex: index,
+      songIndex: 0,
       isPlaying: 1,
       songId: song.id,
       song: song
@@ -220,6 +226,7 @@ class App extends Component {
   }
 
   setTitle = (song) => {
+    console.log(song,'aaaaaaaaa')
     let artist 
     if(Array.isArray(song.artist)){
       artist = song.artist[0]
@@ -240,6 +247,7 @@ class App extends Component {
     // console.log(data)
     return (
       <div>
+
         {data.map((song, index) => (
           <PlayList
             songId={song.id}
@@ -267,6 +275,14 @@ class App extends Component {
     console.log(this.state.backgroundImage, 'dasdadsasd')
     return (
       <div>
+      <Sound
+              url={this.state.songURL}
+              playStatus={this.state.playingStatus}
+              onLoading={this.handleSongLoading}
+              volume="0"
+              onPlaying={(audio) => this.handleSongPlaying(audio)}
+              onFinishedPlaying={this.NextSong}
+/>
       <div>
 <div className="columns is-gapless">
 
@@ -276,15 +292,16 @@ class App extends Component {
       <NavBar/>
       <div className="column">
        <SpecialSongs 
-       songs={this.state.folders}
+       songs={this.state.albums}
        playSong={this.playSong}
+       title={'Albums'}
        />
         </div>
       <div className="column">
-        <SpecialSongs
+        {/* <SpecialSongs
         songs={this.state.folders}
        playSong={this.playSong}
-        />
+        /> */}
         </div>
     </div>
     
@@ -295,7 +312,7 @@ class App extends Component {
 <div className="columns">
   <div className="column">
   <Player
-            ref={instance =>{this.player = instance}}
+             ref={instance =>{this.player = instance}}
               TogglePlay={this.TogglePlay}
               NextSong={this.NextSong}
               PreviousSong={this.PreviousSong}

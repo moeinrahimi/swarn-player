@@ -16,6 +16,9 @@ var db = {};
 
 db.Song = sequelize.import(__dirname + "/Song")
 db.Directory = sequelize.import(__dirname + "/Directory")
+db.Album = sequelize.import(__dirname + "/Album")
+db.Album.hasMany(db.Song)
+db.Song.belongsTo(db.Album,{as:'albumm'})
 db.Directory.hasMany(db.Song)
 db.Song.belongsTo(db.Directory)
 db.sequelize = sequelize;

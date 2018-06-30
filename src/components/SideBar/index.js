@@ -29,7 +29,7 @@ export default class SideBar extends Component {
         <i className="fa fa-home"><a className="link" href="">Home</a></i>
         </div>
         <div className="sidebar-menu-data">
-        <i className="fa fa-book-open"><a className="link" href="">Your Library</a></i>
+        <i className="fa fa-book-plus"><a className="link" href="">Add Folder</a></i>
         </div>
       </div>
       <div id="recently-played">
