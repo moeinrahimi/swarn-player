@@ -166,6 +166,21 @@ justify-content: center;
   width:200px;
   height:200px;
 }
+.music-thumb-active{
+  opacity: 0.3;
+  position: relative;
+  width:200px;
+  height:200px;
+}
+.thumb-overlay-active {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  opacity: 1;
+  text-align: center;
+}
 .thumb-overlay {
   position: absolute;
   top: 50%;
@@ -181,10 +196,11 @@ justify-content: center;
 .music-thumb:hover .thumb-overlay {
   opacity: 1;
 }
-.thumb-overlay i {
+.thumb-overlay i,.thumb-overlay-active i {
   font-size: 80px;
   color: #fff;
 }
+
 .music-container{
   display: flex;
   flex-wrap: wrap;

@@ -5,15 +5,17 @@ import Song from './components/Song/index';
 import { ToastContainer, toast } from 'react-toastify';
 import Player from './components/Player/index';
 import PlayList from './components/PlayList/index';
-import Settings from './components/Settings';
 import config from './constants/config'
 import BackgroundImage from './components/BackgroundImage'
 import { colorizeBG } from './helpers';
-
+import Settings from './components/Settings';
+  
+  
 // new design 
 import SideBar from './components/SideBar'
 import NavBar from './components/NavBar'
-import SpecialSongs from './components/SpecialSongs'
+import Albums from './components/Albums'
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -25,13 +27,13 @@ class App extends Component {
       isPlaying: 0,
       folderSongs: [],
       currentSongs: [],
+      latestSongs :[],
       songName: '',
+      settings : '',
       songIndex: '',
       songId: '',
       audio: {},
-      showModal: false,
       song: '',
-      winHeight: '',
       isOpen: false,
       backgroundImage: '',
       player : '',
@@ -49,6 +51,17 @@ class App extends Component {
       toast.error('error while trying to get music directories')
     }
   }
+  getRecentlySongs = async () => {
+    try {
+      let { data } = await axios(config.baseURL+'songs/recently')
+      this.setState({
+        latestSongs: [...this.state.latestSongs, ...data.albums]
+      })
+    } catch (e) {
+      console.log(e)
+      toast.error('error while trying to get music directories')
+    }
+  }
   _keyBoardListener = (e) => {
     if (e.keyCode == 112) {
       this.TogglePlay()
@@ -56,25 +69,10 @@ class App extends Component {
 
   }
   componentDidMount = () => {
+    // this.props.history.push('')
     this.getMusicDirs()
-    
+    this.getRecentlySongs()
     document.addEventListener('keydown', this._keyBoardListener, false)
-    var winHeight;
-    var editHight = 200
-    var body = document.querySelector('body')
-    if (window.innerWidth >= 992) {
-      editHight = -200
-    }
-    winHeight = window.innerHeight + editHight
-    this.setState({ winHeight: winHeight })
-    window.addEventListener("resize", (e) => {
-      winHeight = window.innerHeight + editHight
-      if (window.innerWidth >= 992) {
-        editHight = -200
-      }
-      this.setState({ winHeight: winHeight })
-    });
-
   }
 
   TogglePlay = () => {
@@ -263,45 +261,56 @@ class App extends Component {
       </div>
     )
   }
-  settingsModal = () => {
-    this.setState({ showModal: !this.state.showModal })
-  }
-  toggleCollaps = () => {
-    this.setState({ isOpen: !this.state.isOpen })
-  }
+
+toggleCollaps = () => {
+  this.setState({ isOpen: !this.state.isOpen })
+}
+settingsModal = (a)=>{
+  console.log(a)
+  this.settings.toggleModal()
+}
+
   render() {
     // .tcon-transform
 
     console.log(this.state.backgroundImage, 'dasdadsasd')
     return (
       <div>
+     
       <Sound
-              url={this.state.songURL}
-              playStatus={this.state.playingStatus}
-              onLoading={this.handleSongLoading}
-              volume="0"
-              onPlaying={(audio) => this.handleSongPlaying(audio)}
-              onFinishedPlaying={this.NextSong}
-/>
+        url={this.state.songURL}
+        playStatus={this.state.playingStatus}
+        onLoading={this.handleSongLoading}
+        volume="0"
+        onPlaying={(audio) => this.handleSongPlaying(audio)}
+        onFinishedPlaying={this.NextSong}/>
       <div>
-<div className="columns is-gapless">
 
-  <SideBar/>
+<div className="columns is-gapless">
+      
+  <SideBar settingsModal={this.settingsModal}/>
   <div className="column">
     <div className="main">
       <NavBar/>
+      x<Settings  getMusicDirs={this.getMusicDirs} ref={instance =>{this.settings = instance}} />
       <div className="column">
-       <SpecialSongs 
-       songs={this.state.albums}
+       <Albums 
+       albums={this.state.albums}
+       currentSong={this.state.song}
        playSong={this.playSong}
+       isPlaying={this.state.isPlaying}
        title={'Albums'}
        />
+      
         </div>
       <div className="column">
-        {/* <SpecialSongs
-        songs={this.state.folders}
+      <Albums 
+       albums={this.state.latestSongs}
+       currentSong={this.state.song}
        playSong={this.playSong}
-        /> */}
+       isPlaying={this.state.isPlaying}
+       title={'Recently Added Albums'}
+       />
         </div>
     </div>
     
@@ -311,6 +320,7 @@ class App extends Component {
 </div>
 <div className="columns">
   <div className="column">
+    
   <Player
              ref={instance =>{this.player = instance}}
               TogglePlay={this.TogglePlay}
@@ -334,4 +344,3 @@ export default App;
 // TODO: add redis to store musics data
 // TODO: Player show elapsed time and current time of song 
 // TODO: shuffle and loop btn 
-

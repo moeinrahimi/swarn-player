@@ -6,8 +6,10 @@ const SongRouter = require('express').Router()
 const redis = require("redis"),
 client = redis.createClient();
 const db = require('../models')
-SongRouter.get('/',getMusics)
+SongRouter.get('/',getAlbums)
+SongRouter.post('/songs/index',indexSongs)
 SongRouter.get('/songs/play',streamSong)
+SongRouter.get('/songs/recently',recentlyAddedAlbums)
 SongRouter.get('/album/songs',getAlbumSongs)
 
 async function getAlbumSongs(req,res){
@@ -21,6 +23,7 @@ async function getAlbumSongs(req,res){
     }
   
 }
+
 function streamSong(req,res){
   let song = req.query.path  
   try{
@@ -28,6 +31,21 @@ function streamSong(req,res){
     console.log(stream,song)
     stream.pipe(res)
   // return res.status(200).json({success: true,message_id: 0,message: ''})
+  }catch(error){
+    console.log(error)
+    return res.status(504).json({success: false,message_id: 1,message: 'something bad happened'})
+  }
+  
+}
+
+async function recentlyAddedAlbums(req,res){
+  let oneDayBefore = new Date()
+  oneDayBefore.setDate(oneDayBefore.getDate()-2);
+  try{
+    let albums = await db.Album.all({where : {
+      createdAt : {$gte:oneDayBefore}
+    }}) 
+    return res.status(200).json({success: true,message_id: 0,albums})
   }catch(error){
     console.log(error)
     return res.status(504).json({success: false,message_id: 1,message: 'something bad happened'})
@@ -67,46 +85,29 @@ function compare(a,b) {
     return 1;
   return 0;
 }
-
- async function getMusics(req,res){
-
+async function indexSongs(req,res){
+  let directoryId = req.body.directoryId
+    try{
+      let directory = await db.Directory.findById(directoryId)
+      let songs = await findSongs(directory)  
+      return res.status(200).json({success: true,message_id: 0,message:'songs indexed'})
+    }catch(error){
+      console.log(error)
+      return res.status(504).json({success: false,message_id: 1,message: 'something bad happened'})
+    }
+  
+}
+async function getAlbums(req,res){
   try{
     let allSongs = []
-    let directories = await db.Directory.all()
-    let pathCount= directories.length
-    for(let i = 0;i<pathCount;i++){
       try{
-        let directory = directories[i]
-        // let isThereSongs = await  getKey(directory.path)
-        // if(isThereSongs){
-          // let songs = JSON.parse(isThereSongs)
-          let dbSongs = await db.Album.all()
-          // let dbSongs = await db.Song.findAll({where:{directoryId:directory.id}})
-          // console.log(dbSongs,'songs')
-          if(dbSongs.length > 0){
-            console.log('there are songs')
-            allSongs.push(...dbSongs)
-            continue
-            
-          }
-          console.log(' get new songs')
-          let songs = await findSongs(directory)
-          // let dbSongs = await db.Album.all()
-          allSongs.push(...dbSongs)
-          
-        // }
-        
-
-        allSongs.sort(compare);
-        // client.set(directory.path, JSON.stringify(allSongs));
+          let albums = await db.Album.all()
+          return res.status(200).json({success:true,message_id:0,folders : albums  })   
       }catch(e){
         console.log(e)
       }
-        
-        }
-  return res.status(200).json({success:true,message_id:0,folders : allSongs  })
   }catch(e){
-    console.log(e,'getMusics func')
+    console.log(e,'getAlbums func')
     return res.status(400).json({success:false,message_id:1,message:e })
 }
     

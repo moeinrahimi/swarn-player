@@ -1,22 +1,17 @@
 import React, { Component } from 'react';
+
 export default class SideBar extends Component {
   constructor(props){
     super(props)
-    this.state = {}
+    this.state = {
+      
+    }
 
-  }
-  
-  setEplapsed = (elapsed,total,position)=>{
-    console.log(elapsed,total,position)
-        this.setState({
-      elapsed: elapsed,
-      total: total,
-      position: position
-    })
   }
   render(){
     return (
          <div id="sidebar-container">
+               
     <div className="sidebar">
       <div id="sidebar-logo">
         <img src="./assets/spotify-logo.png" alt="" />
@@ -28,8 +23,8 @@ export default class SideBar extends Component {
         <div className="sidebar-menu-data">
         <i className="fa fa-home"><a className="link" href="">Home</a></i>
         </div>
-        <div className="sidebar-menu-data">
-        <i className="fa fa-book-plus"><a className="link" href="">Add Folder</a></i>
+        <div className="sidebar-menu-data" onClick={this.props.settingsModal}>
+        <i className="fa fa-plus"><a className="link" href="#">Add Folder</a></i>
         </div>
       </div>
       <div id="recently-played">
@@ -41,6 +36,7 @@ export default class SideBar extends Component {
         <a className="link" href="#">Ellie Goulding</a>
         <span className="type">Artist</span>
       </div>
+      
       <div id="sidebar-profile">
         <div className="install">
         <i className="fa fa-arrow-alt-circle-down"><a className="link mrl-10" href="">Install App</a></i>
