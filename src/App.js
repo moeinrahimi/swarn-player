@@ -15,7 +15,8 @@ import Settings from './components/Settings';
 import SideBar from './components/SideBar'
 import NavBar from './components/NavBar'
 import Albums from './components/Albums'
-
+import AlbumPage from './pages/AlbumPage'
+import { Route, Link } from 'react-router-dom';
 class App extends Component {
   constructor(props) {
     super(props)
@@ -276,7 +277,7 @@ settingsModal = (a)=>{
     console.log(this.state.backgroundImage, 'dasdadsasd')
     return (
       <div>
-     
+       
       <Sound
         url={this.state.songURL}
         playStatus={this.state.playingStatus}
@@ -293,7 +294,7 @@ settingsModal = (a)=>{
     <div className="main">
       <NavBar/>
       x<Settings  getMusicDirs={this.getMusicDirs} ref={instance =>{this.settings = instance}} />
-      <div className="column">
+      {/* <div className="column">
        <Albums 
        albums={this.state.albums}
        currentSong={this.state.song}
@@ -302,8 +303,8 @@ settingsModal = (a)=>{
        title={'Albums'}
        />
       
-        </div>
-      <div className="column">
+        </div> */}
+      {/* <div className="column">
       <Albums 
        albums={this.state.latestSongs}
        currentSong={this.state.song}
@@ -311,7 +312,7 @@ settingsModal = (a)=>{
        isPlaying={this.state.isPlaying}
        title={'Recently Added Albums'}
        />
-        </div>
+        </div> */}
     </div>
     
     </div>
