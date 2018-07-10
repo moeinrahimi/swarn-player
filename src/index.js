@@ -16,7 +16,7 @@ import ReactDOM from 'react-dom';
 import Routes from './Routes';
 import AlbumPage from './components/Albums';
 import registerServiceWorker from './registerServiceWorker';
-import { BrowserRouter as Router, Route, Link,IndexRoute } from "react-router-dom";
+import { BrowserRouter, Route,Switch, Link,IndexRoute } from "react-router-dom";
 import bulma from './assets/css/bulma.css'
 import styleAll from './assets/css/style.css';
 import store from "./redux/store";
@@ -24,11 +24,10 @@ import { addArticle } from "./redux/albums/actions";
 import { Provider } from "react-redux";
 ReactDOM.render(
     <Provider store={store}>
-  <Router>
-<Route path='/'>
-  <Routes/>
-</Route>
-</Router>
+  <BrowserRouter>
+  
+  <Route path='/'   component={Routes}/>
+</BrowserRouter>
 </Provider>
 , document.getElementById('root'));
 registerServiceWorker();

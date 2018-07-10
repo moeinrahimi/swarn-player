@@ -3,11 +3,17 @@ import NavBar from '../NavBar'
 import Albums from '../Albums'
 import { connect } from "react-redux";
 const mapStateToProps = state => {
-  return { song: state.song };
+  return { song: state.song,  folders:state.folders,
+    songURL:state.songURL,
+    playingStatus:state.playingStatus,
+    songIndex:state.songIndex,
+    isPlaying:state.isPlaying,
+    songId:state.songId 
+  };
 };
 class Home extends Component {
   componentDidMount(){
-    console.log(this.props.song,'curr')
+    console.log(this.props.isPlaying,'curr')
   }
   render(){
     return (

@@ -1,0 +1,83 @@
+#album-container{
+  display: flex;
+  /* justify-content: center */
+}
+#album-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 40px 0 ;
+  
+}
+#album-info img{
+  width: 320px;
+  height: 320px;
+}
+#album-title h2{
+  font-size: 28px;
+line-height: 36px;
+letter-spacing: -.005em;
+font-weight: 600;
+color: #fff;
+text-transform: none;
+}
+#album-description {
+  width:300px;
+  text-align: center;
+  color: hsla(0,0%,100%,.6);
+  margin-top: 10px;
+}
+#album-songs-count {
+  color: hsla(0,0%,100%,.6);
+  margin-top: 15px;
+}
+#album-play-btn{
+  margin-top: 20px;
+  
+}
+#album-play-btn a{
+  padding: 25px;
+}
+#songs{
+  padding: 40px 0 ;
+  display: flex;
+  flex-direction: column;
+}
+.song{
+  display: flex;
+  flex:1;
+  transition-property: background-color;
+  transition-duration: .2s;
+  transition-timing-function: linear;
+  margin-top:20px;
+}
+.song:hover{
+  background: red;
+}
+.song-icon{
+  display: flex ;
+  align-items: center;
+  color : #fff;
+  margin-left : 5px;
+}
+.song-info{
+  display: flex ;
+  flex-direction: column;
+  margin-left : 20px;
+}
+.song-info :first-child{
+  color :#fff
+
+}
+.song-info :last-child{
+  color: hsla(0,0%,100%,.6);
+}
+.song-time{
+  color: hsla(0,0%,100%,.6);
+  display: flex;
+  flex:1;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right : 10px;
+}

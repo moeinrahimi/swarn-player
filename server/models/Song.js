@@ -9,6 +9,7 @@ module.exports = function (sequelize,DataTypes){
     genre : {type:DataTypes.STRING},
     artist : {type:DataTypes.STRING},
     year : {type:DataTypes.STRING},
+    duration : {type:DataTypes.STRING},
     color : {type:DataTypes.STRING,defaultValue:0},
     dirName : {type:DataTypes.STRING,defaultValue:0},
     fullPath : {type:DataTypes.STRING,defaultValue:0},

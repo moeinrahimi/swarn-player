@@ -201,7 +201,7 @@ async function createAlbum(song){
  }
 
  const saveSong =  async (meta,baseDir) =>{
-   console.log(meta.directoryId,'dir id ')
+   console.log(meta.duration,'durationnnnnnnnnnnnnnnnnn')
    let album = await createAlbum(meta)
   return db.Song.findOrCreate({
     where : {
@@ -220,6 +220,7 @@ async function createAlbum(song){
       // color :meta.name,
       dirName :meta.dirName,
       fullPath :meta.fullPath,
+      duration : meta.duration
     }
   })
 

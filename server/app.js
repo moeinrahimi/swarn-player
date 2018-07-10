@@ -1,7 +1,7 @@
 
 const express = require('express')
 const app = express()
-const {SongRouter,SettingsRouter} = require('./controllers')
+const {SongRouter,SettingsRouter,AlbumRouter} = require('./controllers')
 const bodyParser = require('body-parser')
 var db = require('./models')
 
@@ -20,6 +20,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");  next();
 });
 app.use('/',SongRouter)
+app.use('/albums',AlbumRouter)
 app.use('/settings',SettingsRouter)
 app.use(express.static('public'))
 

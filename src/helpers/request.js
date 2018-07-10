@@ -11,7 +11,15 @@ const albumSongs = async(id)=>{
     console.log(e,'albumSongs func')
   }
 }
+const getAlbum = async(id)=>{
+  try{
+    let { data } = await axios(config.baseURL+`albums/${id}`)
+    return data 
+  }catch(e){
+    console.log(e,'getAlbum func')
+  }
+}
 
 export {
-  albumSongs
+  albumSongs,getAlbum
 }
