@@ -11,6 +11,13 @@ import { connect } from "react-redux";
        class Albums extends Component {
          componentDidMount(){
          }
+         play(album,i,isPlaying){
+           console.log(this.props)
+           if(isPlaying)
+           return this.props.TogglePlay()
+           
+          this.props.playAlbum(album, i)
+         }
           _renderView = (album,index)=>{
             let isPlaying = this.props.isPlaying
             let currentSong = this.props.currentSong
@@ -18,8 +25,8 @@ import { connect } from "react-redux";
            return (
               <div className="column is-2">
             
-            
-            <div className={ condition ? ' music-thumb-active'  : 'music-thumb'} onClick={e=>this.props.playSong(album, index)}>            
+              
+            <div className={ condition ? ' music-thumb-active'  : 'music-thumb'} onClick={e=> this.play(album,index,condition)}>            
               <img src={album.artwork ? config.baseURL + album.artwork : noArtworkImage} alt="" />
             <div className={condition ? "thumb-overlay-active" : "thumb-overlay"}>
               <i className={condition ? " fa fa-pause-circle":"fa fa-play-circle"}></i>

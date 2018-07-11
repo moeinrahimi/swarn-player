@@ -1,7 +1,7 @@
 
 const express = require('express')
 const app = express()
-const {SongRouter,SettingsRouter,AlbumRouter} = require('./controllers')
+const {SongRouter,SettingsRouter,AlbumRouter,RecentlyPlayedRouter} = require('./controllers')
 const bodyParser = require('body-parser')
 var db = require('./models')
 
@@ -22,6 +22,7 @@ app.use(function(req, res, next) {
 app.use('/',SongRouter)
 app.use('/albums',AlbumRouter)
 app.use('/settings',SettingsRouter)
+app.use('/histories',RecentlyPlayedRouter)
 app.use(express.static('public'))
 
 app.listen(8181)

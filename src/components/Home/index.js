@@ -24,16 +24,18 @@ class Home extends Component {
        <Albums 
         albums={this.props.albums}
         currentSong={this.props.song}
-        playSong={this.props.playSong}
+        playAlbum={this.props.playAlbum}
         isPlaying={this.props.isPlaying}
+        TogglePlay={this.props.TogglePlay}
         title={'Albums'}
         />
       <div className="column">
       <Albums                    
        albums={this.props.latestSongs}
        currentSong={this.props.song}
-       playSong={this.playSong}
+       playAlbum={this.playAlbum}
        isPlaying={this.props.isPlaying}
+       TogglePlay={this.props.TogglePlay}
        title={'Recently Added Albums'}
        />
        </div>

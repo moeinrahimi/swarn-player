@@ -19,7 +19,21 @@ const getAlbum = async(id)=>{
     console.log(e,'getAlbum func')
   }
 }
-
-export {
-  albumSongs,getAlbum
+const createHistory = async(songId,albumId)=>{
+  try{
+    let { data } = await axios.post(config.baseURL+`histories`,{songId, albumId})
+    return data 
+  }catch(e){
+    console.log(e,'createHistory func')
+  }
 }
+const getHistory = async()=>{
+  try{
+    let { data } = await axios(config.baseURL+`histories`)
+    return data 
+  }catch(e){
+    console.log(e,'createHistory func')
+  }
+}
+  let request = {albumSongs,getAlbum,createHistory,getHistory}
+  export default  request

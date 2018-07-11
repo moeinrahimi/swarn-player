@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import Image from '../../components/Image';
-
+import Sound from 'react-sound'
 import axios from 'axios'
-import {albumSongs,getAlbum} from '../../helpers/request'
+import config from '../../constants/config'
+import request from '../../helpers/request'
 import '../../assets/css/albumPage.css'
-import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum} from "../../redux/albums/actions/index";
+import {play,setTitle} from '../../helpers/player';
+import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum,setCurrentAlbum} from "../../redux/albums/actions/index";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => {
@@ -20,6 +22,8 @@ const mapStateToProps = state => {
   audio:state.audio,
   shuffle:state.shuffle,
   songs:state.songs,
+  currentSongs : state.currentSongs,
+  currentAlbum : state.currentAlbum,
 };
 };
 const mapDispatchToProps = dispatch => {
@@ -29,7 +33,9 @@ return {
   setCurrentSong: song => dispatch(setCurrentSong(song)),
   setIsPlaying: song => dispatch(setIsPlaying(song)),
   setSongs: songs => dispatch(setSongs(songs)),
-  setAlbum: album => dispatch(setAlbum(album))
+  setAlbum: album => dispatch(setAlbum(album)),
+  setCurrentAlbum: album => dispatch(setCurrentAlbum(album)),
+
 };
 };
 class AlbumPage extends Component{
@@ -41,19 +47,36 @@ class AlbumPage extends Component{
     }
   }
   async componentDidMount(){
-    console.log(this.props,albumSongs)
     let albumId = this.props.match.params.id
-    let songs = this.props.songs
-    let song = this.props.song
-    if(!songs || !this.props.album || song.albummId != albumId){
-     let  songs = await albumSongs(albumId)
-      let album = await getAlbum(albumId)
+    let currentAlbum = this.props.currentAlbum
+    if(!currentAlbum || currentAlbum.id != albumId){
+      let  songs = await request.albumSongs(albumId)
+      let album = await request.getAlbum(albumId)
       this.props.setSongs(songs.songs)
       this.props.setAlbum(album.album)
       
     }
     
   } 
+  playAlbum = async (album) => {
+    return play(album,this.props)
+  }
+  playSong = async (song,i) => {
+    this.props.setCurrentSong(song)    
+    setTitle(song)
+    let songUrl = song.fullPath
+    songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
+    this.props.setSongDetails({
+        songURL: songUrl,
+        playingStatus: Sound.status.PLAYING,
+        songIndex: i,
+        songId: song.id,
+      
+    })
+    this.props.setIsPlaying(1)
+  
+  
+  }
   _renderView(song){
     return (
          
@@ -93,9 +116,8 @@ class AlbumPage extends Component{
                 <p>{this.props.songs.length} SONGS</p>
                 </div>
                 <div id="album-play-btn">
-                <a href="#" className="button is-success">{album.id == this.props.song.albummId && this.props.isPlaying ? 'PAUSE' :'PLAY'}</a>
+                <a href="#" onClick={()=>this.playAlbum(album)} className="button is-success">{album.id == this.props.song.albummId && this.props.isPlaying ? 'PAUSE' :'PLAY'}</a>
                 </div>
-                
               </div>
               
             </div>
@@ -105,7 +127,7 @@ class AlbumPage extends Component{
             <div id="songs" >
               {this.props.songs.map((song,index)=>{
                 return (
-                  <div  key={song.id}  > 
+                  <div  key={song.id}  onClick={()=>this.playSong(song,index)} > 
             {this._renderView(song,index)}
           </div>
              

@@ -15,8 +15,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import Player from './components/Player/index';
 import PlayList from './components/PlayList/index';
 import Home from './components/Home';
+import {play} from './helpers/player';
+import request from './helpers/request'
 import config from './constants/config'
-import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum} from "./redux/albums/actions/index";
+import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum,setCurrentAlbum} from "./redux/albums/actions/index";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => {
@@ -29,6 +31,7 @@ const mapStateToProps = state => {
   songId:state.songId,
   audio:state.audio,
   shuffle:state.shuffle,
+  currentAlbum : state.currentAlbum,
 };
 };
 const mapDispatchToProps = dispatch => {
@@ -39,6 +42,7 @@ return {
   setIsPlaying: song => dispatch(setIsPlaying(song)),
   setSongs: songs => dispatch(setSongs(songs)),
   setAlbum: album => dispatch(setAlbum(album)),
+  setCurrentAlbum: album => dispatch(setCurrentAlbum(album)),
 };
 };
 class Routes extends Component {
@@ -96,34 +100,9 @@ class Routes extends Component {
       this.props.setIsPlaying(1)
     }
   }
-  playSong = async (album, index) => {
-    let { data } = await axios(config.baseURL+`album/songs?albumId=${album.id}`)
-
-    this.props.setAlbum(album)
-    this.props.setSongs(data.songs)
-
-    let song = this.props.songs[0]
-    this.props.setCurrentSong(song)
-    
-    // console.log(song)
-    // colorizeBG(song)
-    this.setTitle(song)
-    let songUrl = song.fullPath
-    // console.log(song)
-    songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
-    this.props.setSongDetails({
-
-        songURL: songUrl,
-        playingStatus: Sound.status.PLAYING,
-        songIndex: 0,
-        songId: song.id,
-      
-    })
-    this.props.setIsPlaying(1)
-
-    
-
-    console.log(this.props,'------------------')
+  playAlbum = async (album) => {
+    request.createHistory(this.props.songId,album.id)
+    return play(album,this.props)
   }
 
 
@@ -155,7 +134,7 @@ class Routes extends Component {
 
   NextSong = () => {
 
-    let { songs, songIndex , shuffle} = this.props
+    let { songs, songIndex , shuffle,album} = this.props
     console.log(songIndex,'indexxxxxxxxxxxxxxxxxxx')
     const songsLength = songs.length
     // songIndex = parseInt(songIndex)
@@ -254,7 +233,8 @@ settingsModal = (a)=>{
       <Route path='/' exact component={()=> <Home
         albums={this.state.albums}
         latestSongs={this.state.latestSongs}
-        playSong={this.playSong}
+        playAlbum={this.playAlbum}
+        TogglePlay={this.TogglePlay}
         title={'Recently Added Albums'}
       />
         } >
