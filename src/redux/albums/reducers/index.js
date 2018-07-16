@@ -12,7 +12,9 @@ const initialState = {
   shuffle : 0,
   audio : {},
   currentAlbum : {},
-  currentSongs : []
+  currentSongs : [],
+  currentPlaylist : [],
+  playlist : {},
   
 };
 const rootReducer = (state = initialState, action) => {
@@ -28,10 +30,14 @@ const rootReducer = (state = initialState, action) => {
     return { ...state, songs: action.payload };
     case 'SET_ALBUM':
     return { ...state, album: action.payload };
-    case 'SET_CURRENT_SONGS':
-    return { ...state, songs: action.payload };
+    // case 'SET_CURRENT_SONGS':
+    // return { ...state, songs: action.payload };
     case 'SET_CURRENT_ALBUM':
     return { ...state, currentAlbum: action.payload };
+    case 'SET_CURRENT_PLAYLIST':
+    return { ...state, currentPlaylist: action.payload };
+    case 'SET_PLAYLIST':
+    return { ...state, playlist: action.payload };
     case 'SET_SONGDETAILS':
     // console.log(action.payload.isPlaying ? action.payload.isPlaying :  state.isPlaying,' ply bede ------')
     return { ...state,

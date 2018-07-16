@@ -1,7 +1,6 @@
 module.exports = function (sequelize,DataTypes){
-  return sequelize.define('recentylyPlay',{
+  return sequelize.define('playListSong',{
     id: { primaryKey: true, type: DataTypes.INTEGER, autoIncrement: true},
-    playCount: { type: DataTypes.INTEGER},
 
   })
 }

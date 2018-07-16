@@ -5718,6 +5718,10 @@ reactotron-core-client@^1.13.0:
     ramda "^0.24.1"
     ramdasauce "^2.0.0"
 
+reactotron-core-client@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/reactotron-core-client/-/reactotron-core-client-2.0.0.tgz#0229e7938ed17104b846c50295ae8cb40557e83c"
+
 reactotron-react-js@^1.13.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/reactotron-react-js/-/reactotron-react-js-1.13.0.tgz#29f4ad5caa35597e7c353b7918b21d46f2e0b32d"
@@ -5729,13 +5733,13 @@ reactotron-react-js@^1.13.0:
     socket.io-client "~1.7.3"
     stacktrace-js "^1.3.1"
 
-reactotron-redux@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/reactotron-redux/-/reactotron-redux-1.13.0.tgz#20f8ce98cbb5e310e041dc85fc4dc4f904aa5dcc"
+reactotron-redux@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/reactotron-redux/-/reactotron-redux-2.0.0.tgz#79ae2c2e55bf11621a5c1c7d102f4e1a63bc074b"
   dependencies:
     ramda "^0.24.1"
     ramdasauce "^2.0.0"
-    reactotron-core-client "^1.13.0"
+    reactotron-core-client "^2.0.0"
     redux "^3.7.1"
 
 read-all-stream@^3.0.0:

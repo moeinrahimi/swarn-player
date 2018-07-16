@@ -18,6 +18,8 @@ db.Song = sequelize.import(__dirname + "/Song")
 db.Directory = sequelize.import(__dirname + "/Directory")
 db.Album = sequelize.import(__dirname + "/Album")
 db.RecentlyPlay = sequelize.import(__dirname + "/RecentlyPlay")
+db.PlayList = sequelize.import(__dirname + "/PlayList")
+db.PlayListSong = sequelize.import(__dirname + "/PlayListSong")
 db.Album.hasMany(db.Song)
 db.Song.belongsTo(db.Album,{as:'albumm'})
 db.Directory.hasMany(db.Song)
@@ -25,7 +27,8 @@ db.Song.belongsTo(db.Directory)
 db.RecentlyPlay.belongsTo(db.Song)
 db.RecentlyPlay.belongsTo(db.Album)
 
-
+db.Song.belongsToMany(db.PlayList,{through:db.PlayListSong})
+db.PlayList.belongsToMany(db.Song,{through:db.PlayListSong})
 
 
 db.sequelize = sequelize;

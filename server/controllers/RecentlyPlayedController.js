@@ -11,11 +11,13 @@ async function getAlbum(req,res){
       order : [
         ['id','DESC']
       ],
+      group  :'playCount',
+      
       include : [
         {model :db.Album}
       ]
     })
-    console.log(histories,'aaaaaaaaaaa')
+    // console.log(histories,'aaaaaaaaaaa')
     return res.status(200).json({success: true,message_id: 0,histories:histories})
     }catch(error){
       console.log(error,'histories recently controller')
@@ -27,10 +29,23 @@ async function postHistory(req,res){
   let songId = req.body.songId || null
   let albumId = req.body.albumId || null
     try{
-    let recentlyPlayed =  await db.RecentlyPlay.create({
-      songId : songId , 
-      albumId : albumId
+    let recentlyPlayed =  await db.RecentlyPlay.findOrCreate({
+      where : {
+        // songId : songId , 
+        albumId : albumId
+      }
+      
     })
+    if(recentlyPlayed[1] == false){
+      let playCount = recentlyPlayed[0].playCount += recentlyPlayed[0].playCount
+        await db.RecentlyPlay.update({playCount:playCount},{
+        where : {
+          // songId : songId , 
+          id : recentlyPlayed[0].id
+        }
+        
+      })
+    }
     return res.status(200).json({success: true,message_id: 0,recentlyPlayed:recentlyPlayed})
     }catch(error){
       console.log(error,'recentlyPlayed controller')

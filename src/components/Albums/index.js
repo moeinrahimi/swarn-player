@@ -15,7 +15,6 @@ import { connect } from "react-redux";
            console.log(this.props)
            if(isPlaying)
            return this.props.TogglePlay()
-           
           this.props.playAlbum(album, i)
          }
           _renderView = (album,index)=>{

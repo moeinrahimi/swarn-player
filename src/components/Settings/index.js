@@ -69,8 +69,8 @@ _renderDirectories = ()=>{
   return (
     this.state.settings.map((setting,index)=>{
       return (
-        <div>
-        <p key={index}>{setting.path}
+        <div key={setting.id}>
+        <p >{setting.path}
          <i className='fa fa-minus-round' onClick={()=>this._removeDir(setting,index)}></i>
         </p>
         

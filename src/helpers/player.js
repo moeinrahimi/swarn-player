@@ -11,6 +11,7 @@ const play = async (album, reduxProps) => {
   // reduxProps.setCurrentSongs(data.songs)
   let song = data.songs[0]
   reduxProps.setCurrentSong(song)    
+  reduxProps.setSongs(data.songs)    
   setTitle(song)
   let songUrl = song.fullPath
   songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
@@ -39,6 +40,27 @@ const setTitle = (song) => {
   // console.log(song)
   document.title = `${song.title || 'Unknown'} - ${artist || 'Unknown'}`
 }
+
+const  playPlaylist = async(playlist,reduxProps)=>{
+  let { data } = await axios(config.baseURL+`playlists/${playlist.id}/songs`)
+  console.log(data.songs)
+reduxProps.setSongs(data.songs)
+let song = data.songs[0]
+reduxProps.setCurrentSong(song)    
+reduxProps.setCurrentPlaylist(playlist)    
+setTitle(song)
+let songUrl = song.fullPath
+songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
+reduxProps.setSongDetails({
+
+    songURL: songUrl,
+    playingStatus: Sound.status.PLAYING,
+    songIndex: 0,
+    songId: song.id,
+  
+})
+reduxProps.setIsPlaying(1)
+}
 export {
-  play,setTitle
+  play,setTitle,playPlaylist
 }

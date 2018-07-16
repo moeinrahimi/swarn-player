@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import request from '../../helpers/request'
 import { connect } from "react-redux";
-
+import {  Link } from "react-router-dom";
 const mapStateToProps = state => {
   return { song: state.song,
   playingStatus:state.playingStatus,
@@ -24,13 +24,12 @@ const mapStateToProps = state => {
   }
   renderHistory(history,i){
     let icon
-    console.log(this.props.currentAlbum , this.props.songs ,1111111111111 )
     if(this.props.currentAlbum.id == history.albumId){
-      icon = 'hi'
+      icon = <i className=" fa fa-volume-up"/>
     }
     return (
-      <div>
-      <a className="link" href="#">{history.album.title} {icon}</a>
+      <div key={history.id}>
+      <a className="link" href={`/${history.album.id}`}>{history.album.title} {icon}</a>
         <span className="type">Album</span>
         </div>
     )
@@ -48,10 +47,15 @@ const mapStateToProps = state => {
         <i className="fa fa-search"><a className="link" href="">Search</a></i>
         </div>
         <div className="sidebar-menu-data">
-        <i className="fa fa-home"><a className="link" href="">Home</a></i>
+        <i className="fa fa-home"><a className="link" href="/">Home</a></i>
         </div>
         <div className="sidebar-menu-data" onClick={this.props.settingsModal}>
         <i className="fa fa-plus"><a className="link" href="#">Add Folder</a></i>
+        </div>
+        <div className="sidebar-menu-data" >
+        <i className="fa fa-plus">
+          <Link className="link" to={{ pathname: `/collection`}}>Your Library</Link>
+          </i>
         </div>
       </div>
       <div id="recently-played">

@@ -22,11 +22,14 @@ import styleAll from './assets/css/style.css';
 import store from "./redux/store";
 import { addArticle } from "./redux/albums/actions";
 import { Provider } from "react-redux";
+import Collection from './pages/Collection'
+
 ReactDOM.render(
     <Provider store={store}>
   <BrowserRouter>
   
-  <Route path='/'   component={Routes}/>
+  <Route path='/'  component={Routes}>
+  </Route>
 </BrowserRouter>
 </Provider>
 , document.getElementById('root'));

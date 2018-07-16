@@ -23,17 +23,17 @@ export default class Player extends Component {
     })
   }
   render(){
-     const {audio,isPlaying,song}=this.props
+     const {audio,isPlaying,song,album}=this.props
      const {position,total,elapsed} = this.state
-     let progressBar = (audio.position/audio.duration) * 100 
-
+     let progressBar = (audio.position / audio.duration) * 100 
+      
     return (
     <div id="player">
       <div className="columns">
         <div className="column is-2">
           <div id="currently-playing">
             <div id="currently-cover">
-            <img src={song.artwork ? config.baseURL + song.artwork : noArtworkImage} alt="" />
+            <img src={album.artwork ? config.baseURL + album.artwork : noArtworkImage} alt="" />
             </div>
             <div id="currently-text">
               <span><a href="" className="link">{song.title}</a></span>

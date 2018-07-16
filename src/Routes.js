@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link,IndexRoute } from "react-router-dom";
+import { Switch,BrowserRouter as Router, Route, Link,IndexRoute } from "react-router-dom";
 import App from './App'
 import AlbumPage from './pages/AlbumPage'
+import Collection from './pages/Collection'
+import PlaylistPage from './pages/PlaylistPage'
 import Settings from './components/Settings';
   
   
@@ -32,6 +34,7 @@ const mapStateToProps = state => {
   audio:state.audio,
   shuffle:state.shuffle,
   currentAlbum : state.currentAlbum,
+  albums : state.albums,
 };
 };
 const mapDispatchToProps = dispatch => {
@@ -49,7 +52,6 @@ class Routes extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      albums: [],      
       latestSongs :[],
       settings : '',
       player : '',
@@ -59,9 +61,7 @@ class Routes extends Component {
     try {
       let { data } = await axios(config.baseURL)
       this.props.setAlbums(data.folders);
-      this.setState({
-        albums: [...this.state.albums, ...data.folders]
-      })
+      
     } catch (e) {
       console.log(e)
       toast.error('error while trying to get music directories')
@@ -134,7 +134,7 @@ class Routes extends Component {
 
   NextSong = () => {
 
-    let { songs, songIndex , shuffle,album} = this.props
+    let { songs, songIndex , shuffle} = this.props
     console.log(songIndex,'indexxxxxxxxxxxxxxxxxxx')
     const songsLength = songs.length
     // songIndex = parseInt(songIndex)
@@ -208,7 +208,7 @@ settingsModal = (a)=>{
   this.settings.toggleModal()
 }
   render() {
-    const {songURL,playingStatus,audio,isPlaying,song} = this.props
+    const {songURL,playingStatus,audio,isPlaying,song,currentAlbum} = this.props
     return (
     
        
@@ -228,18 +228,25 @@ settingsModal = (a)=>{
    <SideBar settingsModal={this.settingsModal}/>
    <div className="column">
      <div className="main">
-      <Settings  getMusicDirs={this.getMusicDirs} ref={instance =>{this.settings = instance}} />
-      <Route path="/:id" component={AlbumPage}/> 
-      <Route path='/' exact component={()=> <Home
-        albums={this.state.albums}
+      <Settings  getMusicDirs={this.getMusicDirs} ref={instance =>{this.settings = instance}} /> 
+       
+      <Switch> 
+      <Route path="/collection/:id"  component={(props)=><PlaylistPage {...props} TogglePlay={this.TogglePlay}/>}/>
+      <Route path="/collection"  excact component={Collection}/>
+      
+      
+      
+      <Route path="/:id" component={AlbumPage}/>
+      <Route path='/'  component={()=> <Home
+        albums={this.props.albums}
         latestSongs={this.state.latestSongs}
         playAlbum={this.playAlbum}
         TogglePlay={this.TogglePlay}
         title={'Recently Added Albums'}
       />
         } >
-
       </Route>
+      </Switch> 
      </div>
      
      </div>
@@ -257,6 +264,7 @@ settingsModal = (a)=>{
                audio={audio}
                isPlaying={isPlaying}
                song={song}
+               album={currentAlbum}
                shuffle={this.shuffle}
  />
      </div>

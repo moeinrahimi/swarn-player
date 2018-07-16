@@ -7,3 +7,5 @@ export const setIsPlaying = isPlaying => ({ type: "SET_ISPLAYING", payload: isPl
 export const setSongs = isPlaying => ({ type: "SET_SONGS", payload: isPlaying });
 // export const setCurrentSongs = isPlaying => ({ type: "SET_CURRENT_SONGS", payload: isPlaying });no usage right now
 export const setCurrentAlbum = isPlaying => ({ type: "SET_CURRENT_ALBUM", payload: isPlaying }); 
+export const setCurrentPlaylist = playlist => ({ type: "SET_CURRENT_PLAYLIST", payload: playlist }); 
+export const setPlaylist = playlist => ({ type: "SET_PLAYLIST", payload: playlist }); 
