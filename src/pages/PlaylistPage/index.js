@@ -5,7 +5,7 @@ import Sound from 'react-sound';
 import axios from 'axios'
 import config from '../../constants/config'
 import request from '../../helpers/request'
-import {playPlaylist,setTitle} from '../../helpers/player';
+import {playPlaylist,setTitle,togglePlay} from '../../helpers/player';
 import { setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setCurrentPlaylist,setPlaylist} from "../../redux/albums/actions/index";
 import { connect } from "react-redux";
 
@@ -46,29 +46,32 @@ class Collection extends Component{
       playlist : {}
     }
   }
-   componentDidMount(){
+   async componentDidMount(){
     // console.log(this.props,'play')
     const {currentPlaylist} = this.props
     let playlistId = this.props.match.params.id
-   axios(`${config.baseURL}playlists/${playlistId}`)
-   .then(data=>{
+   let {data} = await axios(`${config.baseURL}playlists/${playlistId}`)
     console.log(data,'0aaa')
     // this.props.setSongs(data.data.songs)
-     this.setState({songs : data.data.songs,playlist : data.data.playlist })
+     this.setState({
+       songs : data.songs,
+       playlist : data.playlist
+       })
+       // TODO: setState give err here 
     // this.props.setPlaylist(data.data.playlist)
-   })
     
     
   } 
   async playPlaylist(songs,index){
+    let {playlist} = this.state
     let isPlaying = this.props.isPlaying && this.state.playlist.id == this.props.match.params.id
     if(isPlaying)
-    return this.props.TogglePlay()
+    return togglePlay(this.props)
     
   let song = songs[0]
   this.props.setCurrentSong(song)        
   this.props.setSongs(songs)        
-  this.props.setCurrentPlaylist(this.state.playlist)
+  this.props.setCurrentPlaylist(playlist)
   setTitle(song)
   let songUrl = song.fullPath
   songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
@@ -98,13 +101,6 @@ class Collection extends Component{
     this.props.setIsPlaying(1)
     this.props.setCurrentPlaylist(this.state.playlist)
   
-  }
-  _renderView(){
-    return (
-      <div>
-
-      </div>
-    )
   }
 
 
@@ -147,7 +143,7 @@ class Collection extends Component{
                 <p>We made you a personalized playlist with songs to take you back in time.</p>
                 </div>
                 <div id="album-songs-count">
-                <p>{this.props.songs.length} SONGS</p>
+                <p>{songs.length} SONGS</p>
                 </div>
                 <div id="album-play-btn">
 

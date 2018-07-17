@@ -231,7 +231,7 @@ settingsModal = (a)=>{
       <Settings  getMusicDirs={this.getMusicDirs} ref={instance =>{this.settings = instance}} /> 
        
       <Switch> 
-      <Route path="/collection/:id"  component={(props)=><PlaylistPage {...props} TogglePlay={this.TogglePlay}/>}/>
+      <Route path="/collection/:id"  component={PlaylistPage}/>
       <Route path="/collection"  excact component={Collection}/>
       
       

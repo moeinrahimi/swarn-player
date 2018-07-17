@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './style.css'
 import config from '../../constants/config'
+
 let noArtworkImage = config.baseURL + 'default.jpg'
+
 export default class Player extends Component {
   constructor(props){
     super(props)

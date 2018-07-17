@@ -16,6 +16,7 @@ class Home extends Component {
     console.log(this.props.isPlaying,'curr')
   }
   render(){
+    let {latestSongs} = this.props
     return (
       <div>
       <NavBar/>
@@ -30,14 +31,16 @@ class Home extends Component {
         title={'Albums'}
         />
       <div className="column">
+        {latestSongs &
       <Albums                    
-       albums={this.props.latestSongs}
+       albums={latestSongs}
        currentSong={this.props.song}
        playAlbum={this.playAlbum}
        isPlaying={this.props.isPlaying}
        TogglePlay={this.props.TogglePlay}
        title={'Recently Added Albums'}
        />
+      }
        </div>
       </div>
       </div>

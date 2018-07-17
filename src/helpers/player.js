@@ -1,6 +1,5 @@
 import axios from 'axios'
 import Sound from 'react-sound'
-
 import config from '../constants/config'
 const play = async (album, reduxProps) => {
   console.log(reduxProps,'as')
@@ -41,7 +40,9 @@ const setTitle = (song) => {
   document.title = `${song.title || 'Unknown'} - ${artist || 'Unknown'}`
 }
 
-const  playPlaylist = async(playlist,reduxProps)=>{
+const  playPlaylist = async(playlist,reduxProps,isPlaying)=>{
+  if(isPlaying) 
+    return togglePlay(reduxProps)
   let { data } = await axios(config.baseURL+`playlists/${playlist.id}/songs`)
   console.log(data.songs)
 reduxProps.setSongs(data.songs)
@@ -61,6 +62,16 @@ reduxProps.setSongDetails({
 })
 reduxProps.setIsPlaying(1)
 }
+const togglePlay = (props) => {
+  console.log(props,'tog')
+  if (props.playingStatus === Sound.status.PLAYING) {
+    props.setSongDetails({ playingStatus: Sound.status.PAUSED })
+    props.setIsPlaying(0)
+  } else {
+    props.setSongDetails({ playingStatus: Sound.status.PLAYING})
+    props.setIsPlaying(1)
+  }
+}
 export {
-  play,setTitle,playPlaylist
+  play,setTitle,playPlaylist,togglePlay
 }

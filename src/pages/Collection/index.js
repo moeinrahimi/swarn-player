@@ -8,7 +8,7 @@ import config from '../../constants/config'
 import request from '../../helpers/request'
 import './style.css'
 import {playPlaylist,setTitle} from '../../helpers/player';
-import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum,setCurrentAlbum,setCurrentPlaylist} from "../../redux/albums/actions/index";
+import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setCurrentPlaylist} from "../../redux/albums/actions/index";
 import { connect } from "react-redux";
 
 
@@ -25,7 +25,7 @@ const mapStateToProps = state => {
   shuffle:state.shuffle,
   songs:state.songs,
   currentSongs : state.currentSongs,
-  currentAlbum : state.currentAlbum,
+  currentPlaylist : state.currentPlaylist,
 };
 };
 const mapDispatchToProps = dispatch => {
@@ -35,8 +35,6 @@ return {
   setCurrentSong: song => dispatch(setCurrentSong(song)),
   setIsPlaying: song => dispatch(setIsPlaying(song)),
   setSongs: songs => dispatch(setSongs(songs)),
-  setAlbum: album => dispatch(setAlbum(album)),
-  setCurrentAlbum: album => dispatch(setCurrentAlbum(album)),
   setCurrentPlaylist: playlist => dispatch(setCurrentPlaylist(playlist)),
 
 };
@@ -53,23 +51,17 @@ class Collection extends Component{
     this.setState({playlists : data.playlists})
     
   } 
-  
-  _renderView(){
+
+
+  _renderPlaylists(playlist,index){
+    let {isPlaying,currentPlaylist} = this.props
+    let condition = isPlaying && currentPlaylist.id == playlist.id
     return (
-      <div>
-
-      </div>
-    )
-  }
-
-
-  _renderView(playlist,index){
-    return (
- <div className="column is-2">
-            <div className={'music-thumb'} onClick={e=> playPlaylist(playlist,this.props)}>            
+      <div className="column is-2">
+            <div className={condition ? ' music-thumb-active'  : 'music-thumb'} onClick={e=> playPlaylist(playlist,this.props,condition)}>            
               <Image image={playlist.songs[0].albumm.artwork}  />
-            <div className={ "thumb-overlay"}>
-              <i className={"fa fa-play-circle"}></i>
+            <div className={ condition ? "thumb-overlay-active" : "thumb-overlay"}>
+              <i className={condition ? " fa fa-pause-circle":"fa fa-play-circle"}></i>
             </div>
         </div>
         <div className="music-caption">
@@ -98,7 +90,7 @@ class Collection extends Component{
             {playlists.map((playlist,index)=>{ 
         return (
           <div  key={playlist.id}  > 
-            {this._renderView(playlist,index)}
+            {this._renderPlaylists(playlist,index)}
           </div>
         )
           })}              

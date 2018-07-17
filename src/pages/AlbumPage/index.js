@@ -6,7 +6,7 @@ import axios from 'axios'
 import config from '../../constants/config'
 import request from '../../helpers/request'
 import '../../assets/css/albumPage.css'
-import {play,setTitle} from '../../helpers/player';
+import {play,setTitle,togglePlay} from '../../helpers/player';
 import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum,setCurrentAlbum} from "../../redux/albums/actions/index";
 import { connect } from "react-redux";
 
@@ -47,6 +47,7 @@ class AlbumPage extends Component{
     }
   }
   async componentDidMount(){
+    console.log('mounted')
     let albumId = this.props.match.params.id
     let currentAlbum = this.props.currentAlbum
     // if(currentAlbum.id != albumId){
@@ -62,6 +63,10 @@ class AlbumPage extends Component{
     
   } 
   playAlbum = async (album) => {
+    
+    let isPlaying = this.props.isPlaying && this.state.album.id == this.props.song.albummId
+    if(isPlaying)
+      return togglePlay(this.props)
     return play(album,this.props)
   }
   playSong = async (song,i) => {
@@ -127,7 +132,7 @@ class AlbumPage extends Component{
             
           </div>
           <div className="column">
-            <div id="songs" >
+            <div id="songs">
               {songs.map((song,index)=>{
                 return (
                   <div  key={song.id}  onClick={()=>this.playSong(song,index)} > 

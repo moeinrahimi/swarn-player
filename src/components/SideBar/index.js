@@ -24,7 +24,7 @@ const mapStateToProps = state => {
   }
   renderHistory(history,i){
     let icon
-    if(this.props.currentAlbum.id == history.albumId){
+    if(this.props.isPlaying && this.props.currentAlbum.id == history.albumId){
       icon = <i className=" fa fa-volume-up"/>
     }
     return (
