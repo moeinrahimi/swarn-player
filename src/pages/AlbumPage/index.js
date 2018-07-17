@@ -85,6 +85,7 @@ class AlbumPage extends Component{
   
   
   }
+
   _renderView(song){
     return (
          
@@ -98,6 +99,7 @@ class AlbumPage extends Component{
                 </div>
 
                 <div className="song-time">
+                <i className="fa fa-ellipsis-h" ></i>
                 <span>{song.duration * 60}</span>
                 </div>
 

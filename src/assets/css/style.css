@@ -10,6 +10,7 @@
 body {
   background-image: linear-gradient(rgb(143, 50, 10), rgb(14, 5, 1) 85%);
   font-family: "spotify-circular";
+  height : 100vh;
 }
 #sidebar-container {
  width: 220px;
@@ -119,7 +120,6 @@ a:hover {
 /* // main here */
 .main {
   /* background: red; */
-  height: 100vh;
 }
 nav {
   display: flex;

@@ -40,7 +40,7 @@ text-transform: none;
   padding: 25px;
 }
 #songs{
-  padding: 40px 0 ;
+  padding: 40px 0 0 0 ;
   display: flex;
   flex-direction: column;
 }
@@ -50,11 +50,16 @@ text-transform: none;
   transition-property: background-color;
   transition-duration: .2s;
   transition-timing-function: linear;
-  margin-top:20px;
+  padding: 10px;
 }
 .song:hover{
-  background: red;
+  background: #2e2e34;
 }
+.song:hover .song-time i{
+  
+  opacity: 1;
+}
+
 .song-icon{
   display: flex ;
   align-items: center;
@@ -80,4 +85,8 @@ text-transform: none;
   align-items: center;
   justify-content: flex-end;
   margin-right : 10px;
+}
+.song-time i{
+  opacity: 0;
+  margin-right:10px;
 }
