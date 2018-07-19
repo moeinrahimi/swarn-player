@@ -4,7 +4,6 @@ PlaylistRouter.get('/',getPlaylists)
 PlaylistRouter.post('/',postPlaylist)
 PlaylistRouter.get('/:id',getPlaylist)
 PlaylistRouter.post('/:id',addSongToPlaylist)
-PlaylistRouter.post('/:id',addSongToPlaylist)
 PlaylistRouter.get('/:id/songs',getPlaylistSongs)
 
 async function getPlaylists(req,res){
@@ -63,12 +62,19 @@ async function getPlaylistSongs(req,res){
   
 }
 async function postPlaylist(req,res){
-  let songId = req.body.name 
+  let name = req.body.name 
     try{
-    let playlist =  await db.RecentlyPlay.create({
+    let playlist =  await db.PlayList.create({
       name : name 
     })
-    return res.status(200).json({success: true,message_id: 0,playlist:playlist})
+    let playlistSongs =  await db.PlayList.findById(playlist.id,{
+      include : [
+        {model :db.Song,through:{model:db.PlayListSong,attributes:[]},include:[
+          {model :db.Album,as:'albumm'}
+        ]}
+      ]
+    })
+    return res.status(200).json({success: true,message_id: 0,playlist:playlistSongs})
     }catch(error){
       console.log(error)
       return res.status(504).json({success: false,message_id: 1,message: 'something bad happened'})

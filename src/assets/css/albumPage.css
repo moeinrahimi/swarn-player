@@ -57,7 +57,7 @@ text-transform: none;
 }
 .song:hover .song-time i{
   
-  opacity: 1;
+  visibility: visible;
 }
 
 .song-icon{
@@ -87,6 +87,30 @@ text-transform: none;
   margin-right : 10px;
 }
 .song-time i{
-  opacity: 0;
+  visibility: hidden;
   margin-right:10px;
+}
+.dropdown-menu { 
+  right : 20px !important;
+}
+.playlist-container{
+  display: flex;
+  flex-direction: row; 
+}
+.playlist{
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+}
+.playlist span {
+  color : #fff;
+}
+.playlist img {
+  width :250px;
+  height : 250px;
+}
+.modal-content{
+  width : 100vh !important;
+  height : 100vh !important;
+  margin-top: 70px;
 }

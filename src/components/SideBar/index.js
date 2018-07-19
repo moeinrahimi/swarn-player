@@ -53,7 +53,7 @@ const mapStateToProps = state => {
         <i className="fa fa-plus"><a className="link" href="#">Add Folder</a></i>
         </div>
         <div className="sidebar-menu-data" >
-        <i className="fa fa-plus">
+        <i className="fa fa-book">
           <Link className="link" to={{ pathname: `/collection`}}>Your Library</Link>
           </i>
         </div>

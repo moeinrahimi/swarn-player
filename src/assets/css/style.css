@@ -58,7 +58,7 @@ cursor: default;
   color: #fff;
 }
 a:hover {
-  color: #fff !important;
+  color: #fff ;
 }
 .active-link {
   color: #fff !important;

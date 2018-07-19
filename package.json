@@ -12,7 +12,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.0.17",
     "react-sound": "^0.4.0",
-    "react-toastify": "^3.3.0",
+    "react-toastify": "^4.1.0",
     "reactotron-react-js": "^1.13.0",
     "reactotron-redux": "^2.0.0",
     "redux": "^4.0.0",

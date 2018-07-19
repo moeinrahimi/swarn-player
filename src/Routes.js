@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch,BrowserRouter as Router, Route, Link,IndexRoute } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
 import App from './App'
 import AlbumPage from './pages/AlbumPage'
 import Collection from './pages/Collection'
@@ -85,7 +86,6 @@ class Routes extends Component {
 
   }
   componentDidMount = () => {
-    // this.props.history.push('')
     this.getMusicDirs()
     this.getRecentlySongs()
     document.addEventListener('keydown', this._keyBoardListener, false)
@@ -213,7 +213,7 @@ settingsModal = (a)=>{
     
        
       <div>
-               
+      <ToastContainer autoClose={3000} />      
       <Sound
         url={songURL}
         playStatus={playingStatus}

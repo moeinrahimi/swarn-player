@@ -1,0 +1,12 @@
+#new-playlist-btn{
+   display : flex ;
+   align-items:  center;
+   padding : 20px 0 ;
+   
+} 
+#new-playlist-btn a{
+  margin: 0.8em;
+   
+} 
+
+
