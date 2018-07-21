@@ -31,7 +31,7 @@ class Home extends Component {
         title={'Albums'}
         />
       <div className="column">
-        {latestSongs &
+        {latestSongs &&
       <Albums                    
        albums={latestSongs}
        currentSong={this.props.song}

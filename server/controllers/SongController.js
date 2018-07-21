@@ -44,7 +44,11 @@ async function recentlyAddedAlbums(req,res){
   try{
     let albums = await db.Album.all({where : {
       createdAt : {$gte:oneDayBefore}
-    }}) 
+
+    },
+    limit : 6,
+    order: [['id','DESC']]
+  }) 
     return res.status(200).json({success: true,message_id: 0,albums})
   }catch(error){
     console.log(error)
@@ -101,7 +105,9 @@ async function getAlbums(req,res){
   try{
     let allSongs = []
       try{
-          let albums = await db.Album.all()
+          let albums = await db.Album.findAll({
+            limit:12
+          })
           return res.status(200).json({success:true,message_id:0,folders : albums  })   
       }catch(e){
         console.log(e)

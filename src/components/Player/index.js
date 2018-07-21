@@ -26,7 +26,7 @@ export default class Player extends Component {
   }
   render(){
      const {audio,isPlaying,song,album}=this.props
-     const {position,total,elapsed} = this.state
+     const {total,elapsed} = this.state
      let progressBar = (audio.position / audio.duration) * 100 
       
     return (
