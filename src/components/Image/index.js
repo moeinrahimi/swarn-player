@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import config from '../../constants/config'
 const noImage = config.baseURL + 'default.jpg'
 export default (props =>{
