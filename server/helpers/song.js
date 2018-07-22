@@ -27,7 +27,7 @@ const getArtwork = (name) => {
     // console.log(url)
     axios.get(url)
     .then(res=>{
-      console.log(res.data , 'itunesssss')
+      // console.log(res.data , 'itunesssss')
       let artwork 
       if( res.data.results[0] ){
         artwork = res.data.results[0].artworkUrl100.replace('100x100','600x300')
@@ -56,7 +56,7 @@ const getDirFiles = (dir) =>{
 var findSongs = async function (directory,musics)  {
    musics = musics ||  []
    let baseDir = directory.path
-   console.log(baseDir,'aaaaaaaaaaaaaaaaaa')
+  //  console.log(baseDir,'aaaaaaaaaaaaaaaaaa')
   try{
     var files = await getDirFiles(baseDir)
     for(let i =0;i<files.length;i++){
@@ -67,7 +67,7 @@ var findSongs = async function (directory,musics)  {
         // continue
         let stat = fs.lstatSync(musicPath)    
         if(stat.isDirectory()){
-          console.log(musicPath,'isDir')
+          // console.log(musicPath,'isDir')
           await findSongs({id:directory.id , path:musicPath},musics)
         }else{ 
           // console.log(musicPath,'------')
@@ -157,7 +157,8 @@ async function createAlbum(song){
     if(album[1] == true){
       let image =  album[0].title+'.jpg'
       let artowrkAbsolutePath ='./public/'+image 
-      getArtwork(album[0].title).then(artwork=>{
+      let artist = song.artist || ''
+      getArtwork(album[0].title + ' ' + artist  ).then(artwork=>{
         // console.log(artwork`,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
           if(artwork){
              saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
@@ -201,7 +202,7 @@ async function createAlbum(song){
  }
 
  const saveSong =  async (meta,baseDir) =>{
-   console.log(meta.duration,'durationnnnnnnnnnnnnnnnnn')
+  //  console.log(meta.duration,'durationnnnnnnnnnnnnnnnnn')
    let album = await createAlbum(meta)
   return db.Song.findOrCreate({
     where : {
