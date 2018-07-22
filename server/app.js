@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 var db = require('./models')
 
 db.sequelize.sync(
-  // {force: true}
+  {force: true}
 ).catch(err=>{
   console.log(`Sequelize issue:\nerr name :${err.name}\nerr message :  ${err.message}`)
 });

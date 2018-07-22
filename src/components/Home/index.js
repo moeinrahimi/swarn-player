@@ -19,8 +19,11 @@ class Home extends Component {
     let {latestSongs} = this.props
     return (
       <div>
+      <div id="search-container">
+           <input type="text" placeholder="Start Typing..."/>
+      </div>
       <NavBar/>
-       
+      
        <div  className="column">
        <Albums 
         albums={this.props.albums}

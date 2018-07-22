@@ -213,6 +213,7 @@ settingsModal = (a)=>{
     
        
       <div>
+   
       <ToastContainer autoClose={3000} />      
       <Sound
         url={songURL}
@@ -224,10 +225,15 @@ settingsModal = (a)=>{
              <div>
  
  <div className="columns is-gapless">
-       
+   <div className="column is-1">
    <SideBar settingsModal={this.settingsModal}/>
+   </div>
    <div className="column">
+     
      <div className="main">
+       
+       
+     
       <Settings  getMusicDirs={this.getMusicDirs} ref={instance =>{this.settings = instance}} /> 
        
       <Switch> 
@@ -237,6 +243,7 @@ settingsModal = (a)=>{
       
       
       <Route path="/:id" component={AlbumPage}/>
+   
       <Route path='/'  component={()=> <Home
         albums={this.props.albums}
         latestSongs={this.state.latestSongs}
