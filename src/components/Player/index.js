@@ -24,6 +24,14 @@ export default class Player extends Component {
       position: position
     })
   }
+  moveSong = (e)=>{
+    let clickedPos = e.clientX
+    var pl = document.querySelector('#middle-bar')
+    let playerPos = pl.getBoundingClientRect()
+    let newPos = (playerPos.right - clickedPos) 
+    newPos = playerPos.x - newPos
+    console.log(newPos,'new')
+  }
   render(){
      const {audio,isPlaying,song,album}=this.props
      const {total,elapsed} = this.state
@@ -59,10 +67,13 @@ export default class Player extends Component {
             <div id="progress-bar-container">
               <span className="link">{elapsed}</span>
               <div id="progress-bar">
-                <div id="middle-bar">
-                  <div id="player-position" style={{width:progressBar + '%'}}>
+                <div id="middle-bar" onClick={e=>this.moveSong(e)}>
+                
 
+                  <div id="player-position" style={{width:progressBar + '%'}}>
+                  
                   </div>
+                  
                 </div>
               </div>
               <span className="link">{total}</span>

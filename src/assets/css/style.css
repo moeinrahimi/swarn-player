@@ -13,19 +13,19 @@ body {
   min-height : 100vh;
 }
 #sidebar-container {
- /* width: 210px; */
+ width: 220px;
 position: fixed;
 top: 0;
 left: 0;
 height: 100vh;
 z-index: 100;
-background-color: rgba(0,0,0,.5);
+background-color: #0c0e10;
 overflow: auto;
 min-height: 0 !important;
 will-change: transform;
 }
 .sidebar {
-  padding: 9px;
+  padding: 25px;
     padding-bottom: 24px;
 padding-bottom: 24px;
 padding-bottom: 95px;
@@ -119,7 +119,7 @@ a:hover {
 
 /* // main here */
 .main {
-  /* padding: 5rem; */
+  padding-left: 61px;
 }
 nav {
   display: flex;
@@ -135,7 +135,7 @@ nav a {
   text-decoration: none;
 }
 #special-music-wrapper {
-  padding-left: 150px;
+  /* padding-left: 150px; */
   margin: 0 auto;
   max-width: 1480px;
 }
@@ -163,14 +163,15 @@ justify-content: center;
 .music-thumb {
   position: relative;
   opacity: 1;
-  width:200px;
-  height:200px;
+  width:224px;
+  height:224px;
 }
 .music-thumb-active{
   opacity: 0.3;
   position: relative;
-  width:200px;
-  height:200px;
+  width:224px;
+  height:224px;
+
 }
 .thumb-overlay-active {
   position: absolute;
@@ -269,7 +270,6 @@ text-align: center;
   width:642px;
   height:12px;
 }
-
 #middle-bar{
   background-color: #404040;
 border-radius: 2px;
@@ -324,7 +324,7 @@ width: 100%;
 
 }
 
-input[type=range]::-moz-range-thumb  {
+/* input[type=range]::-moz-range-thumb  {
      -moz-appearance: none;
     width: 10px;
     height: 10px;
@@ -332,19 +332,4 @@ input[type=range]::-moz-range-thumb  {
     background: #fff;
     cursor: pointer;
     display: none;
-}
-#search-container{
-  background-color: rgba(10, 10, 10, 0.86);
-  height: 50px;
-  width: 100%;
-}
-
-#search-container input{
-  width: 100%;
-  height: inherit;
-  /* max-width: 1480px; */
-}
-
-/* #search-input{
-  width: 220px;
 } */

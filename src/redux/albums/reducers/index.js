@@ -18,7 +18,7 @@ const initialState = {
   
 };
 const rootReducer = (state = initialState, action) => {
-  // console.log(action,'action')
+  console.log(action,'action')
   switch (action.type) {
     case 'SET_ALBUMS':
     return { ...state, albums: action.payload };

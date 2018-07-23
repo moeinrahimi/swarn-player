@@ -10,6 +10,7 @@ const mapStateToProps = state => {
   songs : state.songs,
 };
 }
+
  class SideBar extends Component {
   constructor(props){
     super(props)
@@ -34,6 +35,7 @@ const mapStateToProps = state => {
         </div>
     )
   }
+
   render(){
     return (
          <div id="sidebar-container">
@@ -44,7 +46,9 @@ const mapStateToProps = state => {
       </div>
       <div id="sidebar-menu">
         <div className="sidebar-menu-data">
-        <i className="fa fa-search"><a className="link" href="">Search</a></i>
+        <i className="fa fa-search">
+          <Link className="link" to={{ pathname: `/search`}}>Search</Link>
+          </i>
         </div>
         <div className="sidebar-menu-data">
         <i className="fa fa-home"><a className="link" href="/">Home</a></i>

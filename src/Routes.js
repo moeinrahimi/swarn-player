@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import App from './App'
 import AlbumPage from './pages/AlbumPage'
 import Collection from './pages/Collection'
+import Search from './pages/Search'
 import PlaylistPage from './pages/PlaylistPage'
 import Settings from './components/Settings';
   
@@ -211,8 +212,9 @@ settingsModal = (a)=>{
     const {songURL,playingStatus,audio,isPlaying,song,currentAlbum} = this.props
     return (
     
-       
-      <div>
+
+             <div>
+        
    
       <ToastContainer autoClose={3000} />      
       <Sound
@@ -222,8 +224,6 @@ settingsModal = (a)=>{
         volume="0"
         onPlaying={(audio) => this.handleSongPlaying(audio)}
         onFinishedPlaying={this.NextSong}/>
-             <div>
- 
  <div className="columns is-gapless">
    <div className="column is-1">
    <SideBar settingsModal={this.settingsModal}/>
@@ -239,6 +239,7 @@ settingsModal = (a)=>{
       <Switch> 
       <Route path="/collection/:id"  component={PlaylistPage}/>
       <Route path="/collection"  excact component={Collection}/>
+      <Route path="/search"  excact component={Search}/>
       
       
       
@@ -278,7 +279,6 @@ settingsModal = (a)=>{
      </div>
      </div>
      
-       </div>
     );
   }
 }

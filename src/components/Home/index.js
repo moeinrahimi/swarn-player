@@ -2,26 +2,25 @@ import React, { Component } from 'react';
 import NavBar from '../NavBar'
 import Albums from '../Albums'
 import { connect } from "react-redux";
+
 const mapStateToProps = state => {
   return { song: state.song,  folders:state.folders,
     songURL:state.songURL,
     playingStatus:state.playingStatus,
     songIndex:state.songIndex,
     isPlaying:state.isPlaying,
-    songId:state.songId 
+    songId:state.songId ,
+
   };
 };
+
+
 class Home extends Component {
-  componentDidMount(){
-    console.log(this.props.isPlaying,'curr')
-  }
   render(){
     let {latestSongs} = this.props
     return (
       <div>
-      <div id="search-container">
-           <input type="text" placeholder="Start Typing..."/>
-      </div>
+  
       <NavBar/>
       
        <div  className="column">

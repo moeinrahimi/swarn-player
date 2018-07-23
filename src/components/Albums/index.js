@@ -1,32 +1,74 @@
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
+import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum,setCurrentAlbum} from "../../redux/albums/actions/index";
+import Sound from 'react-sound'
+import {play} from '../../helpers/player';
+import request from '../../helpers/request'
+
 
         import React, { Component } from 'react';
         import config from '../../constants/config'
         const mapStateToProps = state => {
-          return { articles: state.articles };
+          return { song: state.song,
+          songs:state.songs,
+          songURL:state.songURL,
+          playingStatus:state.playingStatus,
+          songIndex:state.songIndex,
+          isPlaying:state.isPlaying,
+          songId:state.songId,
+          audio:state.audio,
+          shuffle:state.shuffle,
+          currentAlbum : state.currentAlbum,
+          albums : state.albums,
+        };
+        };
+        const mapDispatchToProps = dispatch => {
+        return {
+          setAlbums: albums => dispatch(setAlbums(albums)),
+          setSongDetails: albums => dispatch(setSongDetails(albums)),
+          setCurrentSong: song => dispatch(setCurrentSong(song)),
+          setIsPlaying: song => dispatch(setIsPlaying(song)),
+          setSongs: songs => dispatch(setSongs(songs)),
+          setAlbum: album => dispatch(setAlbum(album)),
+          setCurrentAlbum: album => dispatch(setCurrentAlbum(album)),
+        };
         };
         
         let noArtworkImage = config.baseURL + 'default.jpg'
        class Albums extends Component {
          componentDidMount(){
          }
+         TogglePlay = () => {
+          if (this.props.playingStatus === Sound.status.PLAYING) {
+            this.props.setSongDetails({ playingStatus: Sound.status.PAUSED })
+            this.props.setIsPlaying(0)
+          } else {
+            this.props.setSongDetails({ playingStatus: Sound.status.PLAYING})
+            this.props.setIsPlaying(1)
+          }
+        }
+        playAlbum = async (album) => {
+          request.createHistory(this.props.songId,album.id)
+          return play(album,this.props)
+        }
+      
          play(album,i,isPlaying){
            console.log(this.props)
            if(isPlaying)
-           return this.props.TogglePlay()
-          this.props.playAlbum(album, i)
+           return this.TogglePlay()
+          this.playAlbum(album, i)
          }
           _renderView = (album,index)=>{
             let isPlaying = this.props.isPlaying
-            let currentSong = this.props.currentSong
+            let currentSong = this.props.song
             let condition = isPlaying && currentSong.albummId == album.id
            return (
               <div className="column is-2">
             
               
             <div className={ condition ? ' music-thumb-active'  : 'music-thumb'} onClick={e=> this.play(album,index,condition)}>            
-              <img src={album.artwork ? config.baseURL + album.artwork : noArtworkImage} alt="" />
+              <img src={ noArtworkImage} alt="" />
+              {/* <img src={album.artwork ? config.baseURL + album.artwork : noArtworkImage} alt="" /> */}
             <div className={condition ? "thumb-overlay-active" : "thumb-overlay"}>
               <i className={condition ? " fa fa-pause-circle":"fa fa-play-circle"}></i>
             </div>
@@ -60,4 +102,4 @@ import { connect } from "react-redux";
         )
           }
         }
-export default connect(mapStateToProps) (Albums)
+export default connect(mapStateToProps,mapDispatchToProps) (Albums)
