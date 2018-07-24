@@ -4,30 +4,26 @@ import config from '../constants/config'
 const play = async (album, reduxProps) => {
   console.log(reduxProps,'as')
   let { data } = await axios(config.baseURL+`album/songs?albumId=${album.id}`)
-  // this.props.setAlbum(album)
-  // this.props.setSongs(data.songs)
   reduxProps.setCurrentAlbum(album)
-  // reduxProps.setCurrentSongs(data.songs)
   let song = data.songs[0]
   reduxProps.setCurrentSong(song)    
   reduxProps.setSongs(data.songs)    
   setTitle(song)
   let songUrl = song.fullPath
   songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
+  reduxProps.audio.src=songUrl
+  reduxProps.audio.play()
   reduxProps.setSongDetails({
-
       songURL: songUrl,
       playingStatus: Sound.status.PLAYING,
       songIndex: 0,
       songId: song.id,
-    
   })
   reduxProps.setIsPlaying(1)
-
   
-
-  console.log(this.props,'------------------')
 }
+
+
 const setTitle = (song) => {
   // console.log(song,'aaaaaaaaa')
   let artist 

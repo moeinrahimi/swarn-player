@@ -26,10 +26,43 @@ async function getAlbumSongs(req,res){
 
 function streamSong(req,res){
   let song = req.query.path  
+
   try{
     let stream = fs.createReadStream(song)
     console.log(stream,song)
-    stream.pipe(res)
+    var stat = fs.statSync(song);
+    var total = stat.size;
+    if (req.headers.range) {
+        var range = req.headers.range;
+        var parts = range.replace(/bytes=/, "").split("-");
+        var partialstart = parts[0];
+        var partialend = parts[1];
+
+        var start = parseInt(partialstart, 10);
+        var end = partialend ? parseInt(partialend, 10) : total-1;
+        var chunksize = (end-start)+1;
+        var readStream = fs.createReadStream(song, {start: start, end: end});
+        res.writeHead(206, {
+            'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
+            'Accept-Ranges': 'bytes', 'Content-Length': chunksize,
+            'Content-Type': 'video/mp4'
+        });
+        readStream.pipe(res);
+      }else{
+        stream.on('data',(chunk)=>{
+          res.write(chunk)
+        })
+        
+      stream.on('error', () => {
+        res.sendStatus(404);
+      });
+    
+      stream.on('end', () => {
+        res.end();
+      });
+      }
+  
+    
   // return res.status(200).json({success: true,message_id: 0,message: ''})
   }catch(error){
     console.log(error)

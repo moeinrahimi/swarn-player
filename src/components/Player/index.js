@@ -1,41 +1,161 @@
 import React, { Component } from 'react';
 import './style.css'
 import config from '../../constants/config'
+import helper from './helper'
+import {setSongDetails, setPosition,setCurrentSong,setIsPlaying} from "../../redux/albums/actions/index";
+import { connect } from "react-redux";
 
+const mapStateToProps = state => {
+  return { song: state.song,
+    audio : state.audio,
+    position : state.position,
+    songs:state.songs,
+    shuffle:state.shuffle,
+    songIndex:state.songIndex,
+};
+};
+const mapDispatchToProps = dispatch => {
+return {
+  setSongDetails: albums => dispatch(setSongDetails(albums)),
+  setPosition: album => dispatch(setPosition(album)),
+  setCurrentSong: song => dispatch(setCurrentSong(song)),
+  setIsPlaying: song => dispatch(setIsPlaying(song)),
+
+};
+};
 let noArtworkImage = config.baseURL + 'default.jpg'
 
-export default class Player extends Component {
+class Player extends Component {
   constructor(props){
     super(props)
     this.state = {
-
+      elapsed: '00:00',
+      total: '00:00',
+  }
+  }
+  componentDidMount(){
+    let {audio} = this.props
+    let progress = helper.progressBar()
+    audio.addEventListener('timeupdate',(event)=>{
+      console.log(event)
+      let width = (audio.currentTime / audio.duration) * 100 + '%'
+      progress.style.width = width
+      this.handleSongPlaying(audio)
+    })
+    audio.addEventListener('ended',(event)=>{
+      this.setState({
+        elapsed: '00:00',
+        total: '00:00',
+      })
+      
+      this.NextSong()
     
-    elapsed: '00:00',
-    total: '00:00',
-    position: 0,
+    })
+    document.querySelector('#middle-bar').addEventListener('mousedown',(e)=>{
+      let {audio} = this.props
+    let clickedPos = e.clientX - e.target.offsetLeft
+    let newTime = (clickedPos  / e.target.offsetWidth) * audio.duration
+    console.log(newTime ,'timer')
+    audio.currentTime = newTime
+    })
   }
+  PreviousSong = () => {
+    let { songs, songIndex,audio } = this.props
+    const songsLength = songs.length
+    songIndex -= 1
+    if (songIndex == -1) {
+      songIndex = 0
+    }
+    let song = songs[songIndex]
+    let songPath = song.fullPath
+    let songURL = `${config.baseURL}songs/play?path=${encodeURIComponent(songPath)}`
+    audio.src=songURL
+    audio.play()
+    this.setTitle(song)
+    this.props.setSongDetails({
+      songIndex: songIndex,
+      songURL: songURL
+    })
+    this.props.setCurrentSong(song)
   }
-  
-  setEplapsed = (elapsed,total,position)=>{
-    console.log(elapsed,total,position)
+  setTitle = (song) => {
+    let artist 
+    if(Array.isArray(song.artist)){
+      artist = song.artist[0]
+    }else{
+      artist = song.artist
+    }
+    document.title = `${song.title || 'Unknown'} - ${artist || 'Unknown'}`
+  }
+  NextSong = () => {
+    
+    let {audio ,  songs, songIndex , shuffle} = this.props
+    audio.pause()
+    console.log(songIndex,'indexxxxxxxxxxxxxxxxxxx')
+    const songsLength = songs.length
+    // songIndex = parseInt(songIndex)
+    songIndex += 1
+    if (songIndex >= songsLength) {
+      if(shuffle){
+        songIndex = 0
+      }
+      
+    }
+
+    if(songIndex >= songsLength) {
+      this.props.setIsPlaying(0)
+      helper.resetProgressBar()
+      return 
+    }
+
+    let song = songs[songIndex]
+    // console.log(song,'aaaa')
+    let songPath = song.fullPath
+    let songURL = `${config.baseURL}songs/play?path=${encodeURIComponent(songPath)}`
+    audio.src = songURL
+    this.setTitle(song)
+    this.props.setSongDetails({
+      songIndex: songIndex,
+      songURL: songURL,
+      songId: song.id,
+    })
+    this.props.setCurrentSong(song)
+    audio.play()
+  }
+  setEplapsed = (elapsed,total)=>{
         this.setState({
       elapsed: elapsed,
       total: total,
-      position: position
+      
     })
   }
+  formatTime = (time) =>{
+    return time < 10 ? '0' + time.toString().trim() : time
+  }
+
+  handleSongPlaying = (audio) => {
+    let currentMinutes = this.formatTime(Math.floor(audio.currentTime / 60))
+    let currentSeconds = this.formatTime(Math.floor(audio.currentTime % 60))
+    let totaltMinutes = this.formatTime(Math.floor(audio.duration / 60))
+    let totalSeconds = this.formatTime(Math.floor(audio.duration / 60))
+    let elapsed = currentMinutes + ':' + currentSeconds
+    let total = totaltMinutes + ':' + totalSeconds
+    this.setEplapsed(elapsed,total)
+    
+  }
   moveSong = (e)=>{
-    let clickedPos = e.clientX
-    var pl = document.querySelector('#middle-bar')
-    let playerPos = pl.getBoundingClientRect()
-    let newPos = (playerPos.right - clickedPos) 
-    newPos = playerPos.x - newPos
-    console.log(newPos,'new')
+    let {audio} = this.props
+    let clickedPos = e.clientX - e.target.offsetLeft
+    let newTime = (clickedPos  / e.target.offsetWidth) * audio.duration
+    console.log(newTime ,'timer')
+      audio.currentTime = 1
+    
+   
   }
   render(){
-     const {audio,isPlaying,song,album}=this.props
+     const {audio,isPlaying,song,album,position}=this.props
      const {total,elapsed} = this.state
-     let progressBar = (audio.position / audio.duration) * 100 
+     let progressBar = (position / audio.duration) * 100 
       
     return (
     <div id="player">
@@ -59,15 +179,15 @@ export default class Player extends Component {
           <div id="player-controller">
             <div id="player-controls">
                 <i className="link fa fa-random" onClick={this.props.shuffle}></i>
-                  <i className="link fa fa-step-backward"  onClick={this.props.PreviousSong}></i>
+                  <i className="link fa fa-step-backward"  onClick={this.PreviousSong}></i>
                     <i className={(isPlaying == 1 ? 'link fa fa-pause' : 'link fa fa-play')} onClick={this.props.TogglePlay} ></i>
-                      <i className="link fa fa-step-forward" onClick={this.props.NextSong} ></i>
+                      <i className="link fa fa-step-forward" onClick={this.NextSong} ></i>
                         <i className="link fa fa-redo-alt"></i>
             </div>
             <div id="progress-bar-container">
               <span className="link">{elapsed}</span>
               <div id="progress-bar">
-                <div id="middle-bar" onClick={e=>this.moveSong(e)}>
+                <div id="middle-bar">
                 
 
                   <div id="player-position" style={{width:progressBar + '%'}}>
@@ -95,3 +215,4 @@ export default class Player extends Component {
     )
   }
 }
+export default connect(mapStateToProps, mapDispatchToProps,null,{ withRef: true })(Player);

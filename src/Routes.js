@@ -9,7 +9,6 @@ import PlaylistPage from './pages/PlaylistPage'
 import Settings from './components/Settings';
   
   
-// new design 
 import SideBar from './components/SideBar'
 
 import axios from 'axios'
@@ -22,7 +21,7 @@ import Home from './components/Home';
 import {play} from './helpers/player';
 import request from './helpers/request'
 import config from './constants/config'
-import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum,setCurrentAlbum} from "./redux/albums/actions/index";
+import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum,setCurrentAlbum,setPosition} from "./redux/albums/actions/index";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => {
@@ -48,6 +47,7 @@ return {
   setSongs: songs => dispatch(setSongs(songs)),
   setAlbum: album => dispatch(setAlbum(album)),
   setCurrentAlbum: album => dispatch(setCurrentAlbum(album)),
+  setPosition: album => dispatch(setPosition(album)),
 };
 };
 class Routes extends Component {
@@ -57,6 +57,7 @@ class Routes extends Component {
       latestSongs :[],
       settings : '',
       player : '',
+      audio : ''
     }
   }
   getMusicDirs = async () => {
@@ -87,18 +88,25 @@ class Routes extends Component {
 
   }
   componentDidMount = () => {
+    console.log(this.player)
     this.getMusicDirs()
     this.getRecentlySongs()
     document.addEventListener('keydown', this._keyBoardListener, false)
+
   }
 
   TogglePlay = () => {
-    if (this.props.playingStatus === Sound.status.PLAYING) {
-      this.props.setSongDetails({ playingStatus: Sound.status.PAUSED })
-      this.props.setIsPlaying(0)
-    } else {
+    let {audio} = this.props
+    if (audio.paused) {
+      audio.play()
       this.props.setSongDetails({ playingStatus: Sound.status.PLAYING})
       this.props.setIsPlaying(1)
+      
+    } else {
+      audio.pause()
+      this.props.setSongDetails({ playingStatus: Sound.status.PAUSED })
+      this.props.setIsPlaying(0)
+      
     }
   }
   playAlbum = async (album) => {
@@ -106,81 +114,9 @@ class Routes extends Component {
     return play(album,this.props)
   }
 
-
-  formatMilliseconds = (milliseconds) => {
-    // var hours = Math.floor(milliseconds / 3600000);
-    milliseconds = milliseconds % 3600000;
-    var minutes = Math.floor(milliseconds / 60000);
-    milliseconds = milliseconds % 60000;
-    var seconds = Math.floor(milliseconds / 1000);
-    milliseconds = Math.floor(milliseconds % 1000);
-
-    return (minutes < 10 ? '0' : '') + minutes + ':' +
-      (seconds < 10 ? '0' : '') + seconds;
-  }
-
-  handleSongPlaying = (audio) => {
-    let elapsed = this.formatMilliseconds(audio.position)
-    let total = this.formatMilliseconds(audio.duration)
-    let position = audio.position / audio.duration
-    this.player.setEplapsed(elapsed,total,position)
-
-  }
-
   handleSongLoading = (audio) => {
     this.props.setSongDetails({audio:audio})
  
-  }
-
-
-  NextSong = () => {
-
-    let { songs, songIndex , shuffle} = this.props
-    console.log(songIndex,'indexxxxxxxxxxxxxxxxxxx')
-    const songsLength = songs.length
-    // songIndex = parseInt(songIndex)
-    songIndex += 1
-    if (songIndex >= songsLength) {
-      if(shuffle){
-        songIndex = 0
-        // return true 
-      }
-      
-    }
-
-    if(songIndex >= songsLength) return 
-
-    let song = songs[songIndex]
-    // console.log(song,'aaaa')
-    let songPath = song.fullPath
-    let songURL = `${config.baseURL}songs/play?path=${encodeURIComponent(songPath)}`
-    this.setTitle(song)
-    // console.log(song)
-
-    this.props.setSongDetails({
-      songIndex: songIndex,
-      songURL: songURL,
-      songId: song.id,
-    })
-    this.props.setCurrentSong(song)
-  }
-
-  PreviousSong = () => {
-    let { songs, songIndex } = this.props
-    const songsLength = songs.length
-    songIndex -= 1
-    if (songIndex == -1) {
-      songIndex = 0
-    }
-    let song = songs[songIndex]
-    let songPath = song.fullPath
-    let songURL = `${config.baseURL}songs/play?path=${encodeURIComponent(songPath)}`
-    this.setTitle(song)
-    this.props.setSongDetails({
-      songIndex: songIndex,
-      songURL: songURL
-    })
-    this.props.setCurrentSong(song)
   }
 
   setTitle = (song) => {
@@ -209,7 +145,7 @@ settingsModal = (a)=>{
   this.settings.toggleModal()
 }
   render() {
-    const {songURL,playingStatus,audio,isPlaying,song,currentAlbum} = this.props
+    const {songURL,playingStatus,audio,isPlaying,song,currentAlbum,position} = this.props
     return (
     
 
@@ -217,13 +153,14 @@ settingsModal = (a)=>{
         
    
       <ToastContainer autoClose={3000} />      
-      <Sound
+      {/* <Sound
         url={songURL}
         playStatus={playingStatus}
         onLoading={this.handleSongLoading}
-        volume="0"
+        playFromPosition={76842.72373831776 }
         onPlaying={(audio) => this.handleSongPlaying(audio)}
-        onFinishedPlaying={this.NextSong}/>
+        onFinishedPlaying={this.NextSong}/> */}
+        
  <div className="columns is-gapless">
    <div className="column is-1">
    <SideBar settingsModal={this.settingsModal}/>
@@ -268,7 +205,6 @@ settingsModal = (a)=>{
               ref={instance =>{this.player = instance}}
                TogglePlay={this.TogglePlay}
                NextSong={this.NextSong}
-               PreviousSong={this.PreviousSong}
                audio={audio}
                isPlaying={isPlaying}
                song={song}

@@ -87,6 +87,8 @@ class AlbumPage extends Component{
         songId: song.id,
       
     })
+    this.props.audio.src = songUrl
+    this.props.audio.play()
     this.props.setIsPlaying(1)
   
   
