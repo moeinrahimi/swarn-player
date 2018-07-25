@@ -297,18 +297,23 @@ width: 100%;
 
 
 .volume-slider {
-    -webkit-appearance: none;
-    -moz-appearance: none;
     height: 6px;
+    width: 100px;
     border-radius: 1px;   
     background: #d3d3d3;
-    outline: none;
+    width: 100px;
+
+}
+.volume {
+  width: 100%;
+  background: #1db954;
+  height: inherit;
 }
 
-.volume-slider:hover {
+/* .volume-slider:hover {
     opacity: 1;
     background: #1db954;
-}
+} */
 
 .volume-slider:hover::-webkit-slider-thumb {
     display: block;

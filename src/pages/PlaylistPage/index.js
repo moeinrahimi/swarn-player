@@ -19,12 +19,14 @@ const mapStateToProps = state => {
   songIndex:state.songIndex,
   isPlaying:state.isPlaying,
   songId:state.songId,
+  song:state.song,
   audio:state.audio,
   shuffle:state.shuffle,
   songs:state.songs,
   currentSongs : state.currentSongs,
   currentPlaylist : state.currentPlaylist,
   playlist : state.playlist,
+  audio : state.audio,
 };
 };
 const mapDispatchToProps = dispatch => {
@@ -64,9 +66,12 @@ class Collection extends Component{
   } 
   async playPlaylist(songs,index){
     let {playlist} = this.state
-    let isPlaying = this.props.isPlaying && this.state.playlist.id == this.props.match.params.id
-    if(isPlaying)
-    return togglePlay(this.props)
+    let isPlaying = Object.keys(this.props.song).length > 0 && this.state.playlist.id == this.props.match.params.id
+    if(isPlaying ){
+      console.log('date play mishe')
+      return togglePlay(this.props)
+    }
+    
     
   let song = songs[0]
   this.props.setCurrentSong(song)        
@@ -75,6 +80,8 @@ class Collection extends Component{
   setTitle(song)
   let songUrl = song.fullPath
   songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
+  this.props.audio.src = songUrl
+  this.props.audio.play()
   this.props.setSongDetails({
       songURL: songUrl,
       playingStatus: Sound.status.PLAYING,
@@ -86,11 +93,15 @@ class Collection extends Component{
   
   }
   async playSingleSong(song,i){
-    this.props.setCurrentSong(song)
     this.props.setSongs(this.state.songs)     
+    this.props.setCurrentPlaylist(this.state.playlist)
+    this.props.setCurrentSong(song)
     setTitle(song)
     let songUrl = song.fullPath
     songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
+    this.props.audio.src = songUrl
+    this.props.audio.play()
+
     this.props.setSongDetails({
         songURL: songUrl,
         playingStatus: Sound.status.PLAYING,
@@ -99,7 +110,7 @@ class Collection extends Component{
       
     })
     this.props.setIsPlaying(1)
-    this.props.setCurrentPlaylist(this.state.playlist)
+
   
   }
 
@@ -147,7 +158,7 @@ class Collection extends Component{
                 </div>
                 <div id="album-play-btn">
 
-                <a href="#" onClick={()=>this.playPlaylist(songs)} className="button is-success">{currentPlaylist.id == this.props.match.params.id && this.props.isPlaying ? 'PAUSE' :'PLAY'}</a>
+                <button onClick={()=>this.playPlaylist(songs)} className="button is-success">{currentPlaylist.id == this.props.match.params.id && this.props.isPlaying ? 'PAUSE' :'PLAY'}</button>
                 </div>
               </div>
               

@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import './style.css'
 import config from '../../constants/config'
 import helper from './helper'
-import {setSongDetails, setPosition,setCurrentSong,setIsPlaying} from "../../redux/albums/actions/index";
+import {togglePlay} from '../../helpers/player'
+import {setSongDetails,setCurrentSong,setIsPlaying} from "../../redux/albums/actions/index";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => {
   return { song: state.song,
     audio : state.audio,
-    position : state.position,
     songs:state.songs,
     shuffle:state.shuffle,
     songIndex:state.songIndex,
@@ -17,7 +17,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 return {
   setSongDetails: albums => dispatch(setSongDetails(albums)),
-  setPosition: album => dispatch(setPosition(album)),
   setCurrentSong: song => dispatch(setCurrentSong(song)),
   setIsPlaying: song => dispatch(setIsPlaying(song)),
 
@@ -31,13 +30,14 @@ class Player extends Component {
     this.state = {
       elapsed: '00:00',
       total: '00:00',
+      position : 0 
   }
   }
   componentDidMount(){
     let {audio} = this.props
     let progress = helper.progressBar()
     audio.addEventListener('timeupdate',(event)=>{
-      console.log(event)
+      // console.log(event)
       let width = (audio.currentTime / audio.duration) * 100 + '%'
       progress.style.width = width
       this.handleSongPlaying(audio)
@@ -46,6 +46,7 @@ class Player extends Component {
       this.setState({
         elapsed: '00:00',
         total: '00:00',
+        position : 0 
       })
       
       this.NextSong()
@@ -58,6 +59,19 @@ class Player extends Component {
     console.log(newTime ,'timer')
     audio.currentTime = newTime
     })
+    let volumeDom = document.querySelector('.volume-slider')
+    let volumeChd = document.querySelector('.volume')
+    volumeDom.addEventListener('mousedown',(e)=>{
+      console.log(e)
+      let {audio} = this.props
+    let clickedPos = e.clientX - e.target.offsetLeft
+    volumeChd.style.width = (clickedPos) + '%'
+    let volume = clickedPos  / e.target.offsetWidth
+    
+    audio.volume = clickedPos / 100
+    
+    
+    },false)
   }
   PreviousSong = () => {
     let { songs, songIndex,audio } = this.props
@@ -122,11 +136,11 @@ class Player extends Component {
     this.props.setCurrentSong(song)
     audio.play()
   }
-  setEplapsed = (elapsed,total)=>{
+  setEplapsed = (elapsed,total,position)=>{
         this.setState({
-      elapsed: elapsed,
-      total: total,
-      
+        elapsed: elapsed,
+        total: total,
+        position : position
     })
   }
   formatTime = (time) =>{
@@ -140,7 +154,7 @@ class Player extends Component {
     let totalSeconds = this.formatTime(Math.floor(audio.duration / 60))
     let elapsed = currentMinutes + ':' + currentSeconds
     let total = totaltMinutes + ':' + totalSeconds
-    this.setEplapsed(elapsed,total)
+    this.setEplapsed(elapsed,total,audio.position)
     
   }
   moveSong = (e)=>{
@@ -180,7 +194,7 @@ class Player extends Component {
             <div id="player-controls">
                 <i className="link fa fa-random" onClick={this.props.shuffle}></i>
                   <i className="link fa fa-step-backward"  onClick={this.PreviousSong}></i>
-                    <i className={(isPlaying == 1 ? 'link fa fa-pause' : 'link fa fa-play')} onClick={this.props.TogglePlay} ></i>
+                    <i className={(isPlaying == 1 ? 'link fa fa-pause' : 'link fa fa-play')} onClick={()=>togglePlay(this.props)} ></i>
                       <i className="link fa fa-step-forward" onClick={this.NextSong} ></i>
                         <i className="link fa fa-redo-alt"></i>
             </div>
@@ -206,7 +220,9 @@ class Player extends Component {
              <i className="link fa fa-volume-down"></i>
                     <i className="link fa fa-volume-off"></i>
                     <i className="link fa fa-volume-down"></i> 
-                    <input type="range" min="1" max="100" value="50" className="volume-slider" />
+                    <div  className="volume-slider" >
+                      <div className="volume"></div>
+                    </div>
           </div>
         </div>
       </div>

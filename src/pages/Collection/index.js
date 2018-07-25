@@ -8,7 +8,7 @@ import axios from 'axios'
 import config from '../../constants/config'
 import request from '../../helpers/request'
 import './style.css'
-import {playPlaylist,setTitle} from '../../helpers/player';
+import {playPlaylist,setTitle,togglePlay} from '../../helpers/player';
 import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setCurrentPlaylist} from "../../redux/albums/actions/index";
 import { connect } from "react-redux";
 
@@ -25,6 +25,7 @@ const mapStateToProps = state => {
   audio:state.audio,
   shuffle:state.shuffle,
   songs:state.songs,
+  song:state.song,
   currentSongs : state.currentSongs,
   currentPlaylist : state.currentPlaylist,
 };
@@ -83,11 +84,13 @@ class Collection extends Component{
   }
 
   _renderPlaylists(playlist,index){
-    let {isPlaying,currentPlaylist} = this.props
+    let {isPlaying,currentPlaylist,song,audio} = this.props
     let condition = isPlaying && currentPlaylist.id == playlist.id
+    let toggleCondition = currentPlaylist.id == playlist.id
+    
     return (
       <div className="column is-2">
-            <div className={condition ? ' music-thumb-active'  : 'music-thumb'} onClick={e=> playPlaylist(playlist,this.props,condition)}>            
+            <div className={condition ? ' music-thumb-active'  : 'music-thumb'} onClick={e=>  playPlaylist(playlist,this.props,toggleCondition)}>            
               <Image image={playlist.songs.length > 0  ? playlist.songs[0].albumm.artwork : null}  />
             <div className={ condition ? "thumb-overlay-active" : "thumb-overlay"}>
               <i className={condition ? " fa fa-pause-circle":"fa fa-play-circle"}></i>

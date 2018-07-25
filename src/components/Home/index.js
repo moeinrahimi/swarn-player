@@ -29,7 +29,6 @@ class Home extends Component {
         currentSong={this.props.song}
         playAlbum={this.props.playAlbum}
         isPlaying={this.props.isPlaying}
-        TogglePlay={this.props.TogglePlay}
         title={'Albums'}
         />
       <div className="column">
@@ -39,7 +38,6 @@ class Home extends Component {
        currentSong={this.props.song}
        playAlbum={this.playAlbum}
        isPlaying={this.props.isPlaying}
-       TogglePlay={this.props.TogglePlay}
        title={'Recently Added Albums'}
        />
       }

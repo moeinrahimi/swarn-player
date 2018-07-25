@@ -11,33 +11,24 @@ const play = async (album, reduxProps) => {
   setTitle(song)
   let songUrl = song.fullPath
   songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
-  reduxProps.audio.src=songUrl
-  reduxProps.audio.play()
-  reduxProps.setSongDetails({
-      songURL: songUrl,
-      playingStatus: Sound.status.PLAYING,
-      songIndex: 0,
-      songId: song.id,
-  })
-  reduxProps.setIsPlaying(1)
-  
+  setSrcAndPlay(reduxProps.audio,songUrl)
+  setSongDetails(reduxProps,songUrl,Sound.status.PLAYING,0,song.id)
+  reduxProps.setIsPlaying(1)  
 }
 
-
 const setTitle = (song) => {
-  // console.log(song,'aaaaaaaaa')
   let artist 
   if(Array.isArray(song.artist)){
     artist = song.artist[0]
   }else{
     artist = song.artist
   }
-  // console.log(song)
   document.title = `${song.title || 'Unknown'} - ${artist || 'Unknown'}`
 }
 
 const  playPlaylist = async(playlist,reduxProps,isPlaying)=>{
-  if(isPlaying) 
+  console.log(reduxProps.song,'playlist')
+  if(isPlaying &&  Object.keys(reduxProps.song).length > 0) 
     return togglePlay(reduxProps)
   let { data } = await axios(config.baseURL+`playlists/${playlist.id}/songs`)
   console.log(data.songs)
@@ -48,25 +39,43 @@ reduxProps.setCurrentPlaylist(playlist)
 setTitle(song)
 let songUrl = song.fullPath
 songUrl = `${config.baseURL}songs/play?path=${encodeURIComponent(songUrl)}`
-reduxProps.setSongDetails({
-
-    songURL: songUrl,
-    playingStatus: Sound.status.PLAYING,
-    songIndex: 0,
-    songId: song.id,
-  
-})
+setSrcAndPlay(reduxProps.audio,songUrl)
+setSongDetails(reduxProps,songUrl,Sound.status.PLAYING,0,song.id)
 reduxProps.setIsPlaying(1)
 }
 const togglePlay = (props) => {
-  console.log(props,'tog')
-  if (props.playingStatus === Sound.status.PLAYING) {
-    props.setSongDetails({ playingStatus: Sound.status.PAUSED })
-    props.setIsPlaying(0)
-  } else {
-    props.setSongDetails({ playingStatus: Sound.status.PLAYING})
-    props.setIsPlaying(1)
-  }
+  
+    let {audio} = props
+      if (audio.paused) {
+        console.log('paused play')
+        audio.play()
+        props.setSongDetails({ playingStatus: Sound.status.PLAYING})
+        props.setIsPlaying(1)
+        
+      } else {
+        audio.pause()
+        console.log(' play paused')
+    
+        props.setSongDetails({ playingStatus: Sound.status.PAUSED })
+        props.setIsPlaying(0)
+      }
+    
+  
+}
+
+
+const setSrcAndPlay  = (audio,src)=>{
+  audio.src = src
+  audio.play()
+}
+const setSongDetails  = (props,songUrl,playingStatus,songIndex,id)=>{
+  props.setSongDetails({
+    songURL: songUrl,
+    playingStatus: playingStatus,
+    songIndex: songIndex,
+    songId: id,
+  
+})
 }
 export {
   play,setTitle,playPlaylist,togglePlay

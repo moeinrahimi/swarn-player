@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
 import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setAlbum,setCurrentAlbum} from "../../redux/albums/actions/index";
-import Sound from 'react-sound'
-import {play} from '../../helpers/player';
+
+import {play,togglePlay} from '../../helpers/player';
 import request from '../../helpers/request'
 
 
@@ -19,7 +19,8 @@ import request from '../../helpers/request'
           audio:state.audio,
           shuffle:state.shuffle,
           currentAlbum : state.currentAlbum,
-          albums : state.albums,
+          song : state.song,
+
         };
         };
         const mapDispatchToProps = dispatch => {
@@ -38,35 +39,27 @@ import request from '../../helpers/request'
        class Albums extends Component {
          componentDidMount(){
          }
-         TogglePlay = () => {
-          if (this.props.playingStatus === Sound.status.PLAYING) {
-            this.props.setSongDetails({ playingStatus: Sound.status.PAUSED })
-            this.props.setIsPlaying(0)
-          } else {
-            this.props.setSongDetails({ playingStatus: Sound.status.PLAYING})
-            this.props.setIsPlaying(1)
-          }
-        }
+
         playAlbum = async (album) => {
           request.createHistory(this.props.songId,album.id)
           return play(album,this.props)
         }
       
          play(album,i,isPlaying){
-           console.log(this.props)
-           if(isPlaying)
-           return this.TogglePlay()
+           console.log(isPlaying , Object.keys(this.props.song).length > 0)
+           if(isPlaying &&  Object.keys(this.props.song).length > 0)
+           return togglePlay(this.props)
           this.playAlbum(album, i)
          }
           _renderView = (album,index)=>{
             let isPlaying = this.props.isPlaying
             let currentSong = this.props.song
             let condition = isPlaying && currentSong.albummId == album.id
-           return (
-              <div className="column is-2">
+            let toggleCondition =  currentSong.albummId == album.id
             
-              
-            <div className={ condition ? ' music-thumb-active'  : 'music-thumb'} onClick={e=> this.play(album,index,condition)}>            
+           return (
+              <div className="column is-2">  
+            <div className={ condition ? ' music-thumb-active'  : 'music-thumb'} onClick={() => this.play(album,index,toggleCondition)}>            
               <img src={ noArtworkImage} alt="" />
               {/* <img src={album.artwork ? config.baseURL + album.artwork : noArtworkImage} alt="" /> */}
             <div className={condition ? "thumb-overlay-active" : "thumb-overlay"}>

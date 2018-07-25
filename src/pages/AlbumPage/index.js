@@ -23,6 +23,7 @@ const mapStateToProps = state => {
   audio:state.audio,
   shuffle:state.shuffle,
   songs:state.songs,
+  song:state.song,
   currentSongs : state.currentSongs,
   currentAlbum : state.currentAlbum,
 };
@@ -70,8 +71,9 @@ class AlbumPage extends Component{
   } 
   playAlbum = async (album) => {
     
-    let isPlaying = this.props.isPlaying && this.state.album.id == this.props.song.albummId
-    if(isPlaying)
+    let isPlaying = Object.keys(this.props.song).length > 0 && this.state.album.id == this.props.song.albummId
+    if(isPlaying)            
+
       return togglePlay(this.props)
     return play(album,this.props)
   }
@@ -152,14 +154,14 @@ class AlbumPage extends Component{
   render(){
     const {album,songs,showPlaylistModal} = this.state
     return (
-      <div id="special-music-wrapper">
+      <div >
       <div className={showPlaylistModal ? 'modal is-active' : 'modal'}>
   <div className="modal-background"></div>
   <div className="modal-content">
     <div className="columns">
     {this.state.playlists.map(playlist=>{
       return (
-        <div className="column is-4">
+        <div className="column is-4" key={playlist.id}>
           <div className="playlist-container">
             <div className="playlist" onClick={(() => this.addSongToPlaylist(playlist))}>
         <Image image={playlist.songs.length > 0  ? playlist.songs[0].albumm.artwork : null}   />
@@ -173,7 +175,10 @@ class AlbumPage extends Component{
     </div>
     </div>
   <button className="modal-close is-large" onClick={this.showPlaylistModal} aria-label="close"></button>
-</div>
+
+      </div>
+      <div id="special-music-wrapper">
+      
         <div className="columns">
           <div className="column is-4">
             <div id="album-container">
@@ -190,7 +195,7 @@ class AlbumPage extends Component{
                 <p>{songs.length} SONGS</p>
                 </div>
                 <div id="album-play-btn">
-                <a href="#" onClick={()=>this.playAlbum(album)} className="button is-success">{album.id == this.props.song.albummId && this.props.isPlaying ? 'PAUSE' :'PLAY'}</a>
+                <button onClick={()=>this.playAlbum(album)} className="button is-success">{album.id == this.props.song.albummId && this.props.isPlaying ? 'PAUSE' :'PLAY'}</button>
                 </div>
               </div>
               
@@ -213,7 +218,7 @@ class AlbumPage extends Component{
 
         </div>
       </div>
-     
+      </div>
     )
   }
   

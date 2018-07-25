@@ -12,15 +12,12 @@ class Search extends Component{
       
     }
   }
-  async componentDidMount(){
-
-    
-  } 
-  async _search(e){
+  _search(e){
     let q = e.target.value
-    let result = await request.searchEverything(q)
-    this.setState({results:result.result})
-    console.log(result)
+     request.searchEverything(q)
+    .then(result=>{
+      this.setState({results:result.result})
+    })
   }
 
   render(){
@@ -35,12 +32,10 @@ class Search extends Component{
       </div>
         </div>
         <div className="column">
-          {results.length > 0 &&
         <Albums 
-        albums={this.state.results}
+        albums={results}
         title={'Results'}
         />
-      }
         </div>
       </div>
      

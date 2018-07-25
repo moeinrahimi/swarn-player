@@ -15,7 +15,6 @@ const initialState = {
   currentSongs : [],
   currentPlaylist : [],
   playlist : {},
-  position : 0,
   
 };
 const rootReducer = (state = initialState, action) => {
@@ -39,8 +38,7 @@ const rootReducer = (state = initialState, action) => {
     return { ...state, currentPlaylist: action.payload };
     case 'SET_PLAYLIST':
     return { ...state, playlist: action.payload };
-    case 'SET_POSITION':
-    return { ...state, position: action.payload };
+
     case 'SET_SONGDETAILS':
     // console.log(action.payload.isPlaying ? action.payload.isPlaying :  state.isPlaying,' ply bede ------')
     return { ...state,
