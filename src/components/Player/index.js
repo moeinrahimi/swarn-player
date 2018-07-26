@@ -52,12 +52,16 @@ class Player extends Component {
       this.NextSong()
     
     })
+    let progressBarWidth = 642
     document.querySelector('#middle-bar').addEventListener('mousedown',(e)=>{
-      let {audio} = this.props
-    let clickedPos = e.clientX - e.target.offsetLeft
-    let newTime = (clickedPos  / e.target.offsetWidth) * audio.duration
-    console.log(newTime ,'timer')
-    audio.currentTime = newTime
+      let {audio,isPlaying} = this.props
+      console.log(progressBarWidth)
+      if(isPlaying){
+        let clickedPos = e.pageX - e.target.offsetLeft
+        let newTime = (clickedPos  * audio.duration) / progressBarWidth
+        console.log(e.target.offsetWidth, '= ',(clickedPos  / e.target.offsetWidth) * audio.duration)
+        audio.currentTime = newTime
+  }
     })
     let volumeDom = document.querySelector('.volume-slider')
     let volumeChd = document.querySelector('.volume')
@@ -66,12 +70,22 @@ class Player extends Component {
       let {audio} = this.props
     let clickedPos = e.clientX - e.target.offsetLeft
     volumeChd.style.width = (clickedPos) + '%'
-    let volume = clickedPos  / e.target.offsetWidth
-    
     audio.volume = clickedPos / 100
     
     
     },false)
+    let volumeIcon = document.querySelector('#sound i')
+    volumeIcon.addEventListener('click',(e)=>{
+      console.log('clicked',audio.muted)
+      if(audio.muted){
+        audio.muted = false
+        volumeIcon.className = 'link fa fa-volume-up'
+        return 
+      }
+      audio.muted = true 
+      volumeIcon.className = 'link fa fa-volume-off'
+        
+    })
   }
   PreviousSong = () => {
     let { songs, songIndex,audio } = this.props
@@ -216,13 +230,10 @@ class Player extends Component {
         </div>
         <div className="column is-2">
           <div id="sound">
-             <i className="link fa fa-volume-up"></i>
-             <i className="link fa fa-volume-down"></i>
-                    <i className="link fa fa-volume-off"></i>
-                    <i className="link fa fa-volume-down"></i> 
-                    <div  className="volume-slider" >
-                      <div className="volume"></div>
-                    </div>
+            <i className="link fa fa-volume-up"></i>
+            <div className="volume-slider" >
+              <div className="volume"></div>
+            </div>
           </div>
         </div>
       </div>

@@ -291,50 +291,17 @@ width: 100%;
 }
 #sound i{
     margin: 0.4em;
-  padding: 0.4em 0.4em 0;
+    width: 16px;
 }
-
-
-
 .volume-slider {
     height: 6px;
     width: 100px;
     border-radius: 1px;   
     background: #d3d3d3;
     width: 100px;
-
 }
 .volume {
   width: 100%;
   background: #1db954;
   height: inherit;
 }
-
-/* .volume-slider:hover {
-    opacity: 1;
-    background: #1db954;
-} */
-
-.volume-slider:hover::-webkit-slider-thumb {
-    display: block;
-}
-.volume-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%; 
-    background: #fff;
-    cursor: pointer;
-    display: none;
-
-}
-
-/* input[type=range]::-moz-range-thumb  {
-     -moz-appearance: none;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%; 
-    background: #fff;
-    cursor: pointer;
-    display: none;
-} */
