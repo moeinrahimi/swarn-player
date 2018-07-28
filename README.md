@@ -12,7 +12,7 @@ swan-player is a music player web application, it is basically spotify clone (on
 
 -------------
 
-![swan-player home page](https://i.imgsafe.org/30/302992bad8.png)
+![swan-player home page](https://i.imgsafe.org/bf/bfaa4ef924.png)
 
   
   
@@ -42,6 +42,7 @@ npm start && npm run server
 - fast on adding songs
 - sort songs based on albums
 - create playlists and add songs to them
+- search in songs and albums
 
   
   
@@ -57,21 +58,22 @@ npm start && npm run server
 
 # TODO List
 
-- [x] shuffle funcitonality
-
-- [ ] volume controller
-
-- [ ] repeat funcitonality
-
-- [ ] search in songs
-
-- [ ] recently played songs
-
-- [x] make playlist
-
 - [ ] clean code to make it more readable
 
 - [ ] use node-ffmetadata to create metadata for songs that doesnt have any meta
+
+- [ ] repeat funcitonality
+
+- [x] shuffle funcitonality
+
+- [x] volume controller
+
+- [x] search in songs
+
+- [x] recently played songs
+
+- [x] make playlist
+
 
 - [x] use mysql for persistent storage
 
