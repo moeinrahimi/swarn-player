@@ -5,6 +5,8 @@ import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter, Route } from "react-router-dom";
 import bulma from './assets/css/bulma.css'
 import styleAll from './assets/css/style.css';
+    
+import './assets/flaticons/flaticon.css'
 import store from "./redux/store";
 import { Provider } from "react-redux";
 

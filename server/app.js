@@ -1,7 +1,8 @@
 
 const express = require('express')
 const app = express()
-const {SongRouter,SettingsRouter,AlbumRouter,RecentlyPlayedRouter,PlaylistRouter} = require('./controllers')
+const {SongRouter,SettingsRouter,AlbumRouter,RecentlyPlayedRouter,PlaylistRouter,FavoritedRouter} = require('./controllers')
+// TODO: make routes dynamic
 const bodyParser = require('body-parser')
 var db = require('./models')
 
@@ -24,6 +25,7 @@ app.use('/albums',AlbumRouter)
 app.use('/settings',SettingsRouter)
 app.use('/histories',RecentlyPlayedRouter)
 app.use('/playlists',PlaylistRouter)
+app.use('/favorites',FavoritedRouter)
 app.use(express.static('public'))
 
 app.listen(8181)

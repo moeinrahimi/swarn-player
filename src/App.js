@@ -7,7 +7,6 @@ import Player from './components/Player/index';
 import PlayList from './components/PlayList/index';
 import config from './constants/config'
 import BackgroundImage from './components/BackgroundImage'
-import { colorizeBG } from './helpers';
 import Settings from './components/Settings';
   
   
@@ -91,7 +90,6 @@ class App extends Component {
 
     song = this.state.folders[0]
     console.log(song)
-    // colorizeBG(song)
     this.setTitle(song)
     let songUrl = song.fullPath
     // console.log(song)
@@ -110,7 +108,6 @@ class App extends Component {
     this.setState({ isOpen: true })
     let dir = song.dir
     let songName = song.album
-    colorizeBG(song)
     let url = config.baseURL + song.artwork
     console.log(config.baseURL + song.artwork, 'adsasdsad')
     this.setState({

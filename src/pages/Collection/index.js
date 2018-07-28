@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import Image from '../../components/Image';
 import { toast } from 'react-toastify';
-import Sound from 'react-sound';
-import { Switch,BrowserRouter as Router, Route, Link,IndexRoute } from "react-router-dom";
-import PlaylistPage from '../PlaylistPage'
+import CollectionPageNavs from '../../components/CollectionPageNavs';
+import {Link} from "react-router-dom";
 import axios from 'axios'
 import config from '../../constants/config'
-import request from '../../helpers/request'
 import './style.css'
 import {playPlaylist,setTitle,togglePlay} from '../../helpers/player';
 import { setAlbums,setCurrentSong ,setSongDetails,setIsPlaying,setSongs,setCurrentPlaylist} from "../../redux/albums/actions/index";
@@ -130,11 +128,8 @@ class Collection extends Component{
       </div>
         <div className="columns">
           <div className="column is-half is-offset-one-quarter">
-        <nav>
-          <a className="link active-link" href="">PLAYLISTS</a> 
-          <a className="link" href="">ALBUMS</a> 
-          
-        </nav>
+            <CollectionPageNavs />
+        
         </div>
         <div className="column">
         <div id="new-playlist-btn">

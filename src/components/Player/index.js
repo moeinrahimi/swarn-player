@@ -5,6 +5,7 @@ import helper from './helper'
 import {togglePlay} from '../../helpers/player'
 import {setSongDetails,setCurrentSong,setIsPlaying} from "../../redux/albums/actions/index";
 import { connect } from "react-redux";
+import favortiedSongs from '../../helpers/favortiedSongs';
 
 const mapStateToProps = state => {
   return { song: state.song,
@@ -19,6 +20,7 @@ return {
   setSongDetails: albums => dispatch(setSongDetails(albums)),
   setCurrentSong: song => dispatch(setCurrentSong(song)),
   setIsPlaying: song => dispatch(setIsPlaying(song)),
+  
 
 };
 };
@@ -79,11 +81,11 @@ class Player extends Component {
       console.log('clicked',audio.muted)
       if(audio.muted){
         audio.muted = false
-        volumeIcon.className = 'link fa fa-volume-up'
+        volumeIcon.className = 'link flaticon-speaker'
         return 
       }
       audio.muted = true 
-      volumeIcon.className = 'link fa fa-volume-off'
+      volumeIcon.className = 'link flaticon-mute-volume'
         
     })
   }
@@ -120,9 +122,12 @@ class Player extends Component {
     let {audio ,  songs, songIndex , shuffle} = this.props
     audio.pause()
     console.log(songIndex,'indexxxxxxxxxxxxxxxxxxx')
+    
     const songsLength = songs.length
+    
     // songIndex = parseInt(songIndex)
     songIndex += 1
+    console.log(songsLength,'songs len',songIndex)
     if (songIndex >= songsLength) {
       if(shuffle){
         songIndex = 0
@@ -197,20 +202,30 @@ class Player extends Component {
               <span><a href="" className="link">{song.title}</a></span>
               <h1>{song.artist}</h1>
             </div>
-            <div id="add-to-favaorite">
-              <i className="fa fa-plus"></i>
+            <div id="add-to-favaorite">          
+            
+              {/* <i className={song.favoritedSong ? 'fa fa-heart' : 'far fa-heart'} onClick={()=>favortiedSongs.addSongToFavorites(song)}></i> */}
+            
+            {song.favoritedSong ? 
+              <i className="fa fa-heart" onClick={()=>favortiedSongs.removeFavoritesSong(song,this.props)}></i>
+              :
+              <i className="flaticon-heart" onClick={()=>favortiedSongs.addSongToFavorites(song,this.props)}></i>
+            }
             </div>
+              
+              
+            
             
           </div>
         </div>
         <div className="column is-8">
           <div id="player-controller">
             <div id="player-controls">
-                <i className="link fa fa-random" onClick={this.props.shuffle}></i>
-                  <i className="link fa fa-step-backward"  onClick={this.PreviousSong}></i>
-                    <i className={(isPlaying == 1 ? 'link fa fa-pause' : 'link fa fa-play')} onClick={()=>togglePlay(this.props)} ></i>
-                      <i className="link fa fa-step-forward" onClick={this.NextSong} ></i>
-                        <i className="link fa fa-redo-alt"></i>
+                <i className="link flaticon-shuffle-button" onClick={this.props.shuffle}></i>
+                  <i className="link flaticon-back"  onClick={this.PreviousSong}></i>
+                    <i className={(isPlaying == 1 ? 'link flaticon-pause' : 'link flaticon-play-button')} onClick={()=>togglePlay(this.props)} ></i>
+                      <i className="link flaticon-next" onClick={this.NextSong} ></i>
+                        <i className="link flaticon-repeat"></i>
             </div>
             <div id="progress-bar-container">
               <span className="link">{elapsed}</span>
@@ -230,7 +245,7 @@ class Player extends Component {
         </div>
         <div className="column is-2">
           <div id="sound">
-            <i className="link fa fa-volume-up"></i>
+            <i className="link flaticon-speaker"></i>
             <div className="volume-slider" >
               <div className="volume"></div>
             </div>

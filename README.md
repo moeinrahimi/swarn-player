@@ -62,6 +62,8 @@ npm start && npm run server
 
 - [ ] use node-ffmetadata to create metadata for songs that doesnt have any meta
 
+- [ ] use flaticons instead of font awesome 
+
 - [ ] repeat funcitonality
 
 - [x] shuffle funcitonality

@@ -11,12 +11,36 @@ SongRouter.post('/songs/index',indexSongs)
 SongRouter.get('/songs/play',streamSong)
 SongRouter.get('/songs/recently',recentlyAddedAlbums)
 SongRouter.get('/album/songs',getAlbumSongs)
+SongRouter.get('/songs/:id',getSong)
 
 async function getAlbumSongs(req,res){
   let albumId = req.query.albumId
     try{
-    let songs =  await db.Song.findAll({where : {albummId:albumId}})
+    let songs =  await db.Song.findAll({
+      where : {albummId:albumId},
+      include : [
+        {model : db.FavoritedSong}
+    ]
+    })
     return res.status(200).json({success: true,message_id: 0,songs:songs})
+    }catch(error){
+      console.log(error)
+      return res.status(504).json({success: false,message_id: 1,message: 'something bad happened'})
+    }
+  
+}
+
+async function getSong(req,res){
+  console.log('injaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+  let id = req.params.id
+    try{
+    let song =  await db.Song.findById(id,{
+      
+      include : [
+        {model : db.FavoritedSong}
+    ]
+    })
+    return res.status(200).json({success: true,message_id: 0,song:song})
     }catch(error){
       console.log(error)
       return res.status(504).json({success: false,message_id: 1,message: 'something bad happened'})

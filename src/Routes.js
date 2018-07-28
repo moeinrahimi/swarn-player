@@ -3,6 +3,7 @@ import { Switch,BrowserRouter as Router, Route, Link,IndexRoute } from "react-ro
 import 'react-toastify/dist/ReactToastify.css';
 import AlbumPage from './pages/AlbumPage'
 import Collection from './pages/Collection'
+import FavoritedSongs from './pages/FavoritedSongs'
 import Search from './pages/Search'
 import PlaylistPage from './pages/PlaylistPage'
 import Settings from './components/Settings';
@@ -126,8 +127,9 @@ settingsModal = (a)=>{
               <Switch>
                 <Route path="/collection/:id" component={PlaylistPage} />
                 <Route path="/collection" excact component={Collection} />
+                
                 <Route path="/search" excact component={Search} />
-
+                <Route path="/favorited" excact component={FavoritedSongs} />
 
 
                 <Route path="/:id" component={AlbumPage} />

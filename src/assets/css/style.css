@@ -223,15 +223,18 @@ align-items: center;
 padding-left:10px;  
 
 }
-#currently-cover img{
+#currently-cover{
   width: 56px;
   height : 56px;
 }
+#currently-cover img{
+  width: inherit;
+  height : inherit;
+}
 #currently-text {
   margin-left: 10px;
-  /* white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis;  */
+  width: 150px;
+  height: 100%;
 }
 #add-to-favaorite{
   padding-left: 20px;

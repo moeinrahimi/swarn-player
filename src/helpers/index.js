@@ -1,3 +1,4 @@
+
 const colorizeBG = (song) => {
   let bg = {
     a: `rgba(${song.color['Vibrant'] ? song.color['Vibrant']._rgb.join(',') + ',0.5' : '125,125,125'})`,
@@ -13,6 +14,7 @@ const colorizeBG = (song) => {
   document.documentElement.style.setProperty(`--four`, bg.d);
 }
 
-export {
+
+export default {
   colorizeBG
 } 

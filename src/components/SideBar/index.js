@@ -46,18 +46,18 @@ const mapStateToProps = state => {
       </div>
       <div id="sidebar-menu">
         <div className="sidebar-menu-data">
-        <i className="fa fa-search">
+        <i className="flaticon-search">
           <Link className="link" to={{ pathname: `/search`}}>Search</Link>
           </i>
         </div>
         <div className="sidebar-menu-data">
-        <i className="fa fa-home"><a className="link" href="/">Home</a></i>
+        <i className="flaticon-home"><a className="link" href="/">Home</a></i>
         </div>
         <div className="sidebar-menu-data" onClick={this.props.settingsModal}>
-        <i className="fa fa-plus"><a className="link" href="#">Add Folder</a></i>
+        <i className="flaticon-add"><a className="link" href="#">Add Folder</a></i>
         </div>
         <div className="sidebar-menu-data" >
-        <i className="fa fa-book">
+        <i className="flaticon-book">
           <Link className="link" to={{ pathname: `/collection`}}>Your Library</Link>
           </i>
         </div>
