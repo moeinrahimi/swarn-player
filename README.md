@@ -66,6 +66,8 @@ npm start && npm run server
 
 - [ ] repeat funcitonality
 
+- [ ] resonsive on mobile
+
 - [x] shuffle funcitonality
 
 - [x] volume controller

@@ -11,6 +11,8 @@ class Settings extends Component{
       settings : [],
     }
   }
+
+
   _dir = (e)=>{
     let newDir = e.target.value
     this.setState({newDir : newDir})

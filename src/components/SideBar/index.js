@@ -30,7 +30,7 @@ const mapStateToProps = state => {
     }
     return (
       <div key={history.id}>
-      <a className="link" href={`/${history.album.id}`}>{history.album.title} {icon}</a>
+      <Link className="link" to={`/${history.album.id}`}>{history.album.title} {icon}</Link>
         <span className="type">Album</span>
         </div>
     )
@@ -51,7 +51,7 @@ const mapStateToProps = state => {
           </i>
         </div>
         <div className="sidebar-menu-data">
-        <i className="flaticon-home"><a className="link" href="/">Home</a></i>
+        <i className="flaticon-home"><Link className="link" to={{ pathname: `/`}}>Home</Link></i>
         </div>
         <div className="sidebar-menu-data" onClick={this.props.settingsModal}>
         <i className="flaticon-add"><a className="link" href="#">Add Folder</a></i>
