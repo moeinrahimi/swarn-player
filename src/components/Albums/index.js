@@ -60,8 +60,8 @@ import request from '../../helpers/request'
            return (
               <div className="column is-2">  
             <div className={ condition ? ' music-thumb-active'  : 'music-thumb'} onClick={() => this.play(album,index,toggleCondition)}>            
-              <img src={ noArtworkImage} alt="" />
-              {/* <img src={album.artwork ? config.baseURL + album.artwork : noArtworkImage} alt="" /> */}
+              {/* <img src={ noArtworkImage} alt="" /> */}
+              <img src={album.artwork ? config.baseURL + album.artwork : noArtworkImage} alt="" />
             <div className={condition ? "thumb-overlay-active" : "thumb-overlay"}>
               <i className={condition ? " fa fa-pause-circle":"fa fa-play-circle"}></i>
             </div>

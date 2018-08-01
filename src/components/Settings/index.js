@@ -41,8 +41,8 @@ class Settings extends Component{
         
     }
   }catch(e){
-      console.log(e.data.message)
-      toast.error(e.data.message) 
+      console.log(e)
+      toast.error('something went wrong ,  try again') 
     }
   
   }
