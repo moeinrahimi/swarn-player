@@ -3,5 +3,5 @@ module.exports = {
   "DBPass": "",
   "DBName": "swan",
   "port": 8787,
-  "logging": console.log
+  "logging": false
 }

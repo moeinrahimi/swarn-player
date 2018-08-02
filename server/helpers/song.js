@@ -3,7 +3,6 @@ const axios = require('axios')
 const path = require('path')
 const fs =require('fs')
 const Vibrant = require('node-vibrant')
-const nanoid = require('nanoid')
 const {cleanFileName} = require('./file')
 const db =require('../models')
 const getMusicMeta = (file) => {
@@ -21,7 +20,7 @@ const getMusicMeta = (file) => {
 }
        
 const getArtwork = (name) => {
-  console.log('geta',name)
+  console.log('getArtwork',name)
   return new Promise((resolve, reject)=>{
     const url = `https://itunes.apple.com/search?term=${name}&limit=1&media=music`
     // console.log(url)
@@ -59,24 +58,22 @@ var findSongs = async function (directory,musics)  {
   //  console.log(baseDir,'aaaaaaaaaaaaaaaaaa')
   try{
     var files = await getDirFiles(baseDir)
+    console.log(files,'getDirFiles')
     for(let i =0;i<files.length;i++){
       try {
         let file = files[i]
         var musicPath = `${baseDir}/${file}`
-        // console.log(musicPath)
-        // continue
         let stat = fs.lstatSync(musicPath)    
         if(stat.isDirectory()){
+          console.log(musicPath,'is directory : true ')
           // console.log(musicPath,'isDir')
-          await findSongs({id:directory.id , path:musicPath},musics)
-        }else{ 
-          // console.log(musicPath,'------')
+           await findSongs({id:directory.id , path:musicPath},musics)
+        }else{
+        console.log(musicPath,'is directory : false ')
         let meta = await getMusicMeta(musicPath)
         if(meta){
         //   meta.music = musicPath
-          delete meta.picture
           meta.fullPath = musicPath
-          meta.id = nanoid()
           let dirName = path.basename(path.dirname(musicPath))    
           let songName = meta.title || meta.album
           // csongName = cleanFileName(songName)
@@ -96,44 +93,12 @@ var findSongs = async function (directory,musics)  {
             meta.genre = meta.genre.toString()
             meta.artist = meta.artist.toString()
             musics.push(meta)
-            saveSong(meta,baseDir)
-            .then(savedSong=>{
-              // if(hasArtwork){
-              //   db.Song.update({
-              //     artwork : image 
-              //   },{
-              //     where : {
-              //       id : savedSong[0].id 
-              //     }
-              //   })
-              // }else {
-              //    getArtwork(songName).then(artwork=>{
-              //   // console.log(artwork`,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
-              //     if(artwork){
-              //        saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
-              //         // console.log(saveImage,'-----------')
-              //         db.Song.update({
-              //           artwork : image 
-              //         },{
-              //           where : {
-              //             id : savedSong[0].id 
-              //           }
-              //         })
-              //        })
-              //     }
-              //    }).catch(e=>{
-              //      console.log(e,'got error getArtwork')
-              //    })
-               
-              // }
-            })
-           
-           
-         
+            let album = await createAlbum(meta)
+            saveSong(meta,album)
         }
 
-
-    }
+      }
+    
 }catch(e){
     console.log(e,'find songs function')  
 }
@@ -146,42 +111,42 @@ var findSongs = async function (directory,musics)  {
   throw e
 }
  }
-async function createAlbum(song){
-  try{
-    let album = await db.Album.findOrCreate({
+function createAlbum(song){
+  return new Promise((resolve,reject)=>{
+    db.Album.findOrCreate({
       where : {
         title : song.album,
         artist : song.artist
       }
+    }).then((album)=>{
+      resolve(album[0])
+      if(album[1] == true){
+        let image =  album[0].title+'.jpg'
+        let artowrkAbsolutePath ='./public/'+image 
+        let artist = song.artist || ''
+        getArtwork(album[0].title + ' ' + artist  ).then(artwork=>{
+          // console.log(artwork`,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
+            if(artwork){
+               saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
+                // console.log(saveImage,'-----------')
+                db.Album.update({
+                  artwork : image 
+                },{
+                  where : {
+                    id : album[0].id 
+                  }
+                })
+               })
+            }
+           }).catch(e=>{
+             console.log(e,'got error getArtwork')
+           })
+         
+      }
     })
-    if(album[1] == true){
-      let image =  album[0].title+'.jpg'
-      let artowrkAbsolutePath ='./public/'+image 
-      let artist = song.artist || ''
-      getArtwork(album[0].title + ' ' + artist  ).then(artwork=>{
-        // console.log(artwork`,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
-          if(artwork){
-             saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
-              // console.log(saveImage,'-----------')
-              db.Album.update({
-                artwork : image 
-              },{
-                where : {
-                  id : album[0].id 
-                }
-              })
-             })
-          }
-         }).catch(e=>{
-           console.log(e,'got error getArtwork')
-         })
-       
-    }
-
-    return album[0]
-  }catch(e){
-    console.log(e)
-  }
+    
+    
+  })
 
 }
  const saveArtwork= async (url,path) => {
@@ -201,9 +166,9 @@ async function createAlbum(song){
   // console.log(artworkBuffer)
  }
 
- const saveSong =  async (meta,baseDir) =>{
+ const saveSong =  async (meta,album) =>{
   //  console.log(meta.duration,'durationnnnnnnnnnnnnnnnnn')
-   let album = await createAlbum(meta)
+   
   return db.Song.findOrCreate({
     where : {
       path : meta.fullPath
