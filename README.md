@@ -54,9 +54,17 @@ npm start && npm run server
 - mysql
 - nodejs express
 
+# Contributing
+
+you can in making swan-player better by contributing in adding new features to it, see TODO list to find out what is needed right now
+
   
 
 # TODO List
+
+- [ ] list all songs
+
+- [ ] list all albums
 
 - [ ] clean code to make it more readable
 
