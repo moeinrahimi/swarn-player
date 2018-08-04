@@ -44,23 +44,21 @@ setSongDetails(reduxProps,songUrl,Sound.status.PLAYING,0,song.id)
 reduxProps.setIsPlaying(1)
 }
 const togglePlay = (props) => {
+  let {audio} = props
+  if(!audio.src)
+    return 
+    if (audio.paused) {
+      console.log('paused play')
+      audio.play()
+      props.setSongDetails({ playingStatus: Sound.status.PLAYING})
+      props.setIsPlaying(1)
+    } else {
+      audio.pause()
+      console.log(' play paused')
   
-    let {audio} = props
-      if (audio.paused) {
-        console.log('paused play')
-        audio.play()
-        props.setSongDetails({ playingStatus: Sound.status.PLAYING})
-        props.setIsPlaying(1)
-        
-      } else {
-        audio.pause()
-        console.log(' play paused')
-    
-        props.setSongDetails({ playingStatus: Sound.status.PAUSED })
-        props.setIsPlaying(0)
-      }
-    
-  
+      props.setSongDetails({ playingStatus: Sound.status.PAUSED })
+      props.setIsPlaying(0)
+    }
 }
 
 
