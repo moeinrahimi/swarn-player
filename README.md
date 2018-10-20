@@ -20,7 +20,7 @@ swan-player is a music player web application, it is basically spotify clone (on
 
 # getting started
 
-make sure you have a working installation of redis and mysql .
+make sure you have a working installation mysql .
 
 ``` bash
 

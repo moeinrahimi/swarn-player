@@ -17,7 +17,6 @@
     "mysql2": "^1.5.2",
     "nanoid": "^1.0.1",
     "node-vibrant": "^3.0.0",
-    "redis": "^2.8.0",
     "sequelize": "^4.33.4"
   }
 }
