@@ -120,7 +120,7 @@ a:hover {
 
 /* // main here */
 .main {
-  padding-left: 61px;
+  /* padding-left: 61px; */
 }
 nav {
   display: flex;
@@ -153,13 +153,7 @@ nav a {
 .music-caption {
   color: #fff;
   text-align: center;
-  display: flex;
-flex: 1;
-flex-direction: row;
-width: 200px;
-padding-top:10px;
-text-align: center;
-justify-content: center;
+  padding-top:10px;
 }
 .music-thumb {
   position: relative;
@@ -206,6 +200,7 @@ justify-content: center;
 .music-container{
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 /* player // */
@@ -308,4 +303,10 @@ width: 100%;
   width: 100%;
   background: #1db954;
   height: inherit;
+}
+
+@media(max-width:700px){
+.hide-mobile{
+  display: none;
+}
 }

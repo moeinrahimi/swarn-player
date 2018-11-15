@@ -16,7 +16,15 @@
     "reactotron-react-js": "^1.13.0",
     "reactotron-redux": "^2.0.0",
     "redux": "^4.0.0",
-    "soundmanager2": "^2.97.20150601-a"
+    "soundmanager2": "^2.97.20150601-a",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "musicmetadata": "^2.0.5",
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.2",
+    "nanoid": "^1.0.1",
+    "node-vibrant": "^3.0.0",
+    "sequelize": "^4.33.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -24,6 +32,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "server": "cd server && npm start"
+    "server": "cd server && nodemon app.js"
   }
 }
