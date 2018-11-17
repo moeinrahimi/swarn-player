@@ -59,7 +59,7 @@ class Albums extends Component {
     let toggleCondition = currentSong.albummId == album.id
 
     return (
-      <div className="column">
+      <div className="column m">
         <div className={condition ? ' music-thumb-active' : 'music-thumb'} onClick={() => this.play(album, index, toggleCondition)}>
           {/* <img src={ noArtworkImage} alt="" /> */}
           <img src={album.artwork ? config.baseURL + album.artwork : noArtworkImage} alt="" />

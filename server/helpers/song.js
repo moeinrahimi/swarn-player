@@ -11,10 +11,10 @@ const getMusicMeta = (file) => {
     metaData(stream,(err,meta)=>{
       if(err) {
         // console.log(file,'get music data err')
-        reject('could not find metadata header')
+        return reject('could not find metadata header for' + file)
       }
       stream.close();
-      resolve(meta)
+     return  resolve(meta)
   })
 })
 }
@@ -52,30 +52,34 @@ const getDirFiles = (dir) =>{
   
 }
 
-var findSongs = async function (directory,musics)  {
-   musics = musics ||  []
+var findSongs = async function (directory)  {
+   let musics =  []
    let baseDir = directory.path
   //  console.log(baseDir,'aaaaaaaaaaaaaaaaaa')
   try{
     var files = await getDirFiles(baseDir)
-    console.log(files,'getDirFiles')
+    // console.log(files,'getDirFiles')
     for(let i =0;i<files.length;i++){
       try {
         let file = files[i]
         var musicPath = `${baseDir}/${file}`
         let stat = fs.lstatSync(musicPath)    
+        
         if(stat.isDirectory()){
-          console.log(musicPath,'is directory : true ')
+          // console.log(musicPath,'is directory : true ')
           // console.log(musicPath,'isDir')
-           await findSongs({id:directory.id , path:musicPath},musics)
+            findSongs({id:directory.id , path:musicPath})
         }else{
-        console.log(musicPath,'is directory : false ')
+          let {ext,name} = path.parse(musicPath)
+          
+          if (!['.mp3','.m4a'].includes(ext)) continue
+        // console.log(musicPath,'is directory : false ')
         let meta = await getMusicMeta(musicPath)
         if(meta){
         //   meta.music = musicPath
           meta.fullPath = musicPath
           let dirName = path.basename(path.dirname(musicPath))    
-          let songName = meta.title || meta.album
+          // let songName = meta.title || meta.album
           // csongName = cleanFileName(songName)
           
           
@@ -86,26 +90,30 @@ var findSongs = async function (directory,musics)  {
           //   let color = await  Vibrant.from(hasArtwork ? artowrkAbsolutePath : './public/default.jpg' ).getPalette()
           //   meta.color = color       
             meta.dirName = dirName
-            meta.title = meta.title || meta.artist.join(',')
             meta.directoryId = directory.id
             meta.baseDir = baseDir
             meta.dir = baseDir
             meta.genre = meta.genre.toString()
             meta.artist = meta.artist.toString()
-            musics.push(meta)
+            // musics.push(meta)
+            if(!meta.title){
+              // console.log(meta.title)
+              meta.title = name
+              // console.log(meta.title)
+            }
             let album = await createAlbum(meta)
             saveSong(meta,album)
         }
-
+        continue
       }
     
 }catch(e){
-    console.log(e,'find songs function')  
+    // console.log(e,'find songs function')  
 }
 
   }
   // createAlbum(musics)  
-  return musics
+  return true 
 }catch(e){
   console.log(e,'hhhh')
   throw e
@@ -119,16 +127,15 @@ function createAlbum(song){
         artist : song.artist
       }
     }).then((album)=>{
-      resolve(album[0])
+      
       if(album[1] == true){
+        // console.log('new album' + album[0].title)
         let image =  album[0].title+'.jpg'
         let artowrkAbsolutePath ='./public/'+image 
         let artist = song.artist || ''
         getArtwork(album[0].title + ' ' + artist  ).then(artwork=>{
-          // console.log(artwork`,'slmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm')   
             if(artwork){
                saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
-                // console.log(saveImage,'-----------')
                 db.Album.update({
                   artwork : image 
                 },{
@@ -143,6 +150,7 @@ function createAlbum(song){
            })
          
       }
+      return resolve(album[0])
     })
     
     

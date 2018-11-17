@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 var db = require('./models')
 
 db.sequelize.sync(
-  // {force: true}
+  {force: true}
 ).catch(err=>{
   console.log(`Sequelize issue:\nerr name :${err.name}\nerr message :  ${err.message}`)
 });
@@ -28,5 +28,5 @@ app.use('/playlists',PlaylistRouter)
 app.use('/favorites',FavoritedRouter)
 app.use(express.static('public'))
 
-app.listen(8181)
+app.listen(8181,0,0,0,0,()=>console.log('listening !'))
 

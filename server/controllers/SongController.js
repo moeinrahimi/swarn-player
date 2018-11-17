@@ -51,7 +51,6 @@ function streamSong(req, res) {
 
   try {
     let stream = fs.createReadStream(song)
-    console.log(stream, song)
     var stat = fs.statSync(song);
     var total = stat.size;
     if (req.headers.range) {
@@ -159,10 +158,12 @@ async function indexSongs(req, res) {
 }
 async function getAlbums(req, res) {
   try {
-    let allSongs = []
     try {
       let albums = await db.Album.findAll({
-        limit: 12
+        limit: 12,
+          order: [
+              db.Sequelize.fn('RAND'),
+          ]
       })
       return res.status(200).json({ success: true, message_id: 0, folders: albums })
     } catch (e) {
