@@ -72,6 +72,10 @@ function streamSong(req, res) {
     } else {
       stream.on('data', (chunk) => {
         res.write(chunk)
+        setTimeout(() => {
+          console.log('a')
+          res.end()
+        }, 3000)
       })
 
       stream.on('error', () => {
@@ -161,9 +165,9 @@ async function getAlbums(req, res) {
     try {
       let albums = await db.Album.findAll({
         limit: 12,
-          order: [
-              db.Sequelize.fn('RAND'),
-          ]
+        order: [
+          db.Sequelize.fn('RAND'),
+        ]
       })
       return res.status(200).json({ success: true, message_id: 0, folders: albums })
     } catch (e) {

@@ -179,13 +179,10 @@ nav a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 150px;
+  max-width: 224px;
 text-align: center
 
 }
-.m{
-}
-
 .music-thumb {
     position: relative;
     opacity: 1;
