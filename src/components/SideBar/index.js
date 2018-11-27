@@ -71,12 +71,7 @@ const mapStateToProps = state => {
 
         
       </div>
-      
-      <div id="sidebar-profile">
-        <div className="install">
-        <i className="fa fa-arrow-alt-circle-down"><a className="link mrl-10" href="">Install App</a></i>
-        </div>
-      </div>
+ 
     </div>
     </div>
     )

@@ -17,7 +17,6 @@ async function getAlbum(req,res){
 }
 async function search(req,res){
   let q = req.query.query
-  console.log(q,'query')
     try{
     let album =  await db.Album.findAll({
       where : {
@@ -25,9 +24,8 @@ async function search(req,res){
           {title:{$like:'%'+q+'%'}},
           {artist:{$like:'%'+q+'%'}}
         ]
-        
-        
-      }
+      },
+        limit: 10
     })
     return res.status(200).json({success: true,message_id: 0,result:album})
     }catch(error){

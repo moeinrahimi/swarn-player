@@ -2,7 +2,6 @@
 const express = require('express')
 const app = express()
 const { SongRouter, SettingsRouter, AlbumRouter, RecentlyPlayedRouter, PlaylistRouter, FavoritedRouter } = require('./controllers')
-// TODO: make routes dynamic
 const bodyParser = require('body-parser')
 var db = require('./models')
 

@@ -113,11 +113,11 @@ class Routes extends Component {
     return (
       <div>
         <ToastContainer autoClose={3000} />
-        <div className="columns is-gapless">
+        <div className="columns ">
           <div className="column is-1 hide-mobile">
             <SideBar settingsModal={this.settingsModal} />
           </div>
-          <div className="column">
+          < div className = "column is-11" >
 
             <div className="main">
 

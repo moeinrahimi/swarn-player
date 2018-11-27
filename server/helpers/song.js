@@ -129,25 +129,45 @@ function createAlbum(song){
     }).then((album)=>{
       
       if(album[1] == true){
+        
         // console.log('new album' + album[0].title)
-        let image =  album[0].title+'.jpg'
+        let fileName = song.title || song.album
+        let cleanFileName = fileName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+        let image = cleanFileName + '.jpg'
         let artowrkAbsolutePath ='./public/'+image 
         let artist = song.artist || ''
-        getArtwork(album[0].title + ' ' + artist  ).then(artwork=>{
-            if(artwork){
-               saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
-                db.Album.update({
-                  artwork : image 
-                },{
-                  where : {
-                    id : album[0].id 
-                  }
-                })
-               })
-            }
-           }).catch(e=>{
-             console.log(e,'got error getArtwork')
-           })
+        if(song.picture && song.picture.length > 0){
+          try {
+            
+          fs.writeFileSync(artowrkAbsolutePath, song.picture[0].data)
+                  db.Album.update({
+                    artwork : image 
+                  },{
+                    where : {
+                      id : album[0].id 
+                    }
+                  })
+          } catch (error) {
+            console.log(error)
+          }
+        }
+          
+        // getArtwork(album[0].title + ' ' + artist  ).then(artwork=>{
+        //     if(artwork){
+        //        saveArtwork(artwork,artowrkAbsolutePath).then(saveImage =>{
+        //         db.Album.update({
+        //           artwork : image 
+        //         },{
+        //           where : {
+        //             id : album[0].id 
+        //           }
+        //         })
+        //        })
+        //     }
+        //    }).catch(e=>{
+        //      console.log(e,'got error getArtwork')
+        //    })
          
       }
       return resolve(album[0])
