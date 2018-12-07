@@ -18,6 +18,8 @@ import config from './constants/config'
 import { setAlbums, setCurrentSong, setSongDetails, setIsPlaying, setSongs, setAlbum, setCurrentAlbum } from "./redux/albums/actions/index";
 import { connect } from "react-redux";
 
+
+
 const mapStateToProps = state => {
   return {
     song: state.song,
@@ -52,7 +54,10 @@ class Routes extends Component {
       settings: '',
       player: '',
       audio: ''
+      
     }
+          
+
   }
   getMusicDirs = async () => {
     try {
@@ -86,7 +91,6 @@ class Routes extends Component {
     this.getMusicDirs()
     this.getRecentlySongs()
     document.addEventListener('keydown', this._keyBoardListener, false)
-
   }
 
   playAlbum = async (album) => {

@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 import axios from 'axios'
 import config from '../../constants/config'
 import './style.css'
+import io from 'socket.io-client';
+let socket = io()
 class Settings extends Component{
   constructor(props){
     super(props)
@@ -60,12 +62,23 @@ _getSettings = () => {
 }
 componentDidMount= ()=>{
   this._getSettings()
+    socket.on('NEW_SONG', (data) => {
+        console.log(data)
+    })
 }
 toggleModal= ()=>{
   console.log('aaaaaaaaaaa')
   this.setState({
     show : !this.state.show
   })
+}
+_reIndex = (id) => {
+  console.log('reindex called')
+  socket.emit('sync_songs', id)
+
+  // this.setState({
+  //   show : !this.state.show
+  // })
 }
 _renderDirectories = ()=>{
   return (
@@ -74,6 +87,7 @@ _renderDirectories = ()=>{
         <div key={setting.id}>
         <p >{setting.path}
          <i className='fa fa-minus-round' onClick={()=>this._removeDir(setting,index)}></i>
+         <i className='fa fa-minus-round' onClick={()=>this._reIndex(setting.id)}>REINDEX</i>
         </p>
         
         </div>

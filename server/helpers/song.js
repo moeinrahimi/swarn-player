@@ -5,6 +5,8 @@ const fs =require('fs')
 const Vibrant = require('node-vibrant')
 const {cleanFileName} = require('./file')
 const db =require('../models')
+const { io } = require('../app')
+
 const getMusicMeta = (file) => {
   return new Promise((resolve,reject)=>{
     let stream = fs.createReadStream(file)
@@ -54,6 +56,7 @@ const getDirFiles = (dir) =>{
 
 var findSongs = async function (directory)  {
    let musics =  []
+   let songCounter = 0 
    let baseDir = directory.path
   //  console.log(baseDir,'aaaaaaaaaaaaaaaaaa')
   try{
@@ -102,7 +105,9 @@ var findSongs = async function (directory)  {
               // console.log(meta.title)
             }
             let album = await createAlbum(meta)
-            saveSong(meta,album)
+            let song = await saveSong(meta,album)
+            songCounter += 1
+            if (song[1] == true) io.emit('NEW_SONG', songCounter)
         }
         continue
       }
