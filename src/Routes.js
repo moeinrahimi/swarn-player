@@ -17,6 +17,8 @@ import request from './helpers/request'
 import config from './constants/config'
 import { setAlbums, setCurrentSong, setSongDetails, setIsPlaying, setSongs, setAlbum, setCurrentAlbum } from "./redux/albums/actions/index";
 import { connect } from "react-redux";
+import io from 'socket.io-client';
+
 
 
 
@@ -87,6 +89,18 @@ class Routes extends Component {
 
   }
   componentDidMount = () => {
+    let socket = io.connect('http://localhost:8181')
+    socket.on("connect", function() {
+    console.log('connected')
+    socket.emit('sync_songs',1)
+        })
+    console.log(socket)
+    socket.on('NEW_SONG',function(a){
+    console.log(a,'NEW_SONG')
+    })
+    socket.on('a',function(a){
+    console.log(a,'aaaaaaaaaaaaaaa')
+    })
     console.log(this.player)
     this.getMusicDirs()
     this.getRecentlySongs()

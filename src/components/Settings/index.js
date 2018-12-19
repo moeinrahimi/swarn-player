@@ -3,8 +3,14 @@ import { toast } from 'react-toastify';
 import axios from 'axios'
 import config from '../../constants/config'
 import './style.css'
-import io from 'socket.io-client';
-let socket = io()
+// import io from 'socket.io-client';
+// let socket = io('http://localhost')
+// socket.on('*',function(a){
+// console.log(a,'a')
+// })
+// socket.on('a',function(a){
+// console.log(a,'aaaaaaaaaaaaaaa')
+// })
 class Settings extends Component{
   constructor(props){
     super(props)
@@ -62,19 +68,18 @@ _getSettings = () => {
 }
 componentDidMount= ()=>{
   this._getSettings()
-    socket.on('NEW_SONG', (data) => {
-        console.log(data)
-    })
+    // socket.on('NEW_SONG', (data) => {
+    //     console.log(data)
+    // })
 }
 toggleModal= ()=>{
-  console.log('aaaaaaaaaaa')
   this.setState({
     show : !this.state.show
   })
 }
 _reIndex = (id) => {
   console.log('reindex called')
-  socket.emit('sync_songs', id)
+  // socket.emit('sync_songs', id)
 
   // this.setState({
   //   show : !this.state.show

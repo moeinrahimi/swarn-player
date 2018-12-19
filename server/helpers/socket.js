@@ -1,6 +1,5 @@
 const {io}=require('../app.js')
 
-
 const emit = (key,val)=>{
   return io.emit(key,val)
 }

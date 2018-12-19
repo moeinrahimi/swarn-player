@@ -6,8 +6,8 @@ block script
   script(src="/socket.io/socket.io.js")
   //- script(src="node_modules/moment-jalaali/build/moment-jalaali.js")
   script.
-      var socket = io();
-      socket.emit('sync_songs',function(visit){
-        console.log(visit)
+      var socket = io('http://localhost');
+      socket.on('*',function(visit){
+        console.log(visit,'hi')
      
       })
