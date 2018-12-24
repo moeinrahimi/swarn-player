@@ -14,18 +14,18 @@ import { connect } from "react-redux";
 const mapStateToProps = state => {
   return { song: state.song,
   
-  songURL:state.songURL,
-  album:state.album,
-  playingStatus:state.playingStatus,
-  songIndex:state.songIndex,
-  isPlaying:state.isPlaying,
-  songId:state.songId,
-  audio:state.audio,
-  shuffle:state.shuffle,
-  songs:state.songs,
-  song:state.song,
-  currentSongs : state.currentSongs,
-  currentPlaylist : state.currentPlaylist,
+  songURL:state.albumReducer.songURL,
+  album:state.albumReducer.album,
+  playingStatus:state.albumReducer.playingStatus,
+  songIndex:state.albumReducer.songIndex,
+  isPlaying:state.albumReducer.isPlaying,
+  songId:state.albumReducer.songId,
+  audio:state.albumReducer.audio,
+  shuffle:state.albumReducer.shuffle,
+  songs:state.albumReducer.songs,
+  song:state.albumReducer.song,
+  currentSongs : state.albumReducer.currentSongs,
+  currentPlaylist : state.albumReducer.currentPlaylist,
 };
 };
 const mapDispatchToProps = dispatch => {

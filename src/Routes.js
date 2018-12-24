@@ -15,37 +15,40 @@ import Home from './components/Home';
 import { play } from './helpers/player';
 import request from './helpers/request'
 import config from './constants/config'
-import { setAlbums, setCurrentSong, setSongDetails, setIsPlaying, setSongs, setAlbum, setCurrentAlbum } from "./redux/albums/actions/index";
+import * as albumActions from "./redux/albums/actions/index";
+import * as socketActions from "./redux/socket/actions/index";
 import { connect } from "react-redux";
-import io from 'socket.io-client';
+import { bindActionCreators } from 'redux';
 
 
 
 
 const mapStateToProps = state => {
   return {
-    song: state.song,
-    songs: state.songs,
-    songURL: state.songURL,
-    playingStatus: state.playingStatus,
-    songIndex: state.songIndex,
-    isPlaying: state.isPlaying,
-    songId: state.songId,
-    audio: state.audio,
-    shuffle: state.shuffle,
-    currentAlbum: state.currentAlbum,
-    albums: state.albums,
+    song: state.albumReducer.song,
+    songs: state.albumReducer.songs,
+    songURL: state.albumReducer.songURL,
+    playingStatus: state.albumReducer.playingStatus,
+    songIndex: state.albumReducer.songIndex,
+    isPlaying: state.albumReducer.isPlaying,
+    songId: state.albumReducer.songId,
+    audio: state.albumReducer.audio,
+    shuffle: state.albumReducer.shuffle,
+    currentAlbum: state.albumReducer.currentAlbum,
+    albums: state.albumReducer.albums,
+    counter: state.socketReducer.counter
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    setAlbums: albums => dispatch(setAlbums(albums)),
-    setSongDetails: albums => dispatch(setSongDetails(albums)),
-    setCurrentSong: song => dispatch(setCurrentSong(song)),
-    setIsPlaying: song => dispatch(setIsPlaying(song)),
-    setSongs: songs => dispatch(setSongs(songs)),
-    setAlbum: album => dispatch(setAlbum(album)),
-    setCurrentAlbum: album => dispatch(setCurrentAlbum(album)),
+    actions: bindActionCreators({ ...albumActions, ...socketActions }, dispatch),
+    // setAlbums: albums => dispatch(setAlbums(albums)),
+    // setSongDetails: albums => dispatch(setSongDetails(albums)),
+    // setCurrentSong: song => dispatch(setCurrentSong(song)),
+    // setIsPlaying: song => dispatch(setIsPlaying(song)),
+    // setSongs: songs => dispatch(setSongs(songs)),
+    // setAlbum: album => dispatch(setAlbum(album)),
+    // setCurrentAlbum: album => dispatch(setCurrentAlbum(album)),
   };
 };
 class Routes extends Component {
@@ -64,7 +67,7 @@ class Routes extends Component {
   getMusicDirs = async () => {
     try {
       let { data } = await axios(config.baseURL)
-      this.props.setAlbums(data.folders);
+      this.props.actions.setAlbums(data.folders);
 
     } catch (e) {
       console.log(e)
@@ -89,19 +92,7 @@ class Routes extends Component {
 
   }
   componentDidMount = () => {
-    let socket = io.connect('http://localhost:8181')
-    socket.on("connect", function() {
-    console.log('connected')
-    socket.emit('sync_songs',1)
-        })
-    console.log(socket)
-    socket.on('NEW_SONG',function(a){
-    console.log(a,'NEW_SONG')
-    })
-    socket.on('a',function(a){
-    console.log(a,'aaaaaaaaaaaaaaa')
-    })
-    console.log(this.player)
+    this.props.actions.initializeIO()
     this.getMusicDirs()
     this.getRecentlySongs()
     document.addEventListener('keydown', this._keyBoardListener, false)
@@ -116,15 +107,14 @@ class Routes extends Component {
   shuffle = () => {
     console.log('shuffle func ')
 
-    this.props.setSongDetails({
+    this.props.actions.setSongDetails({
       shuffle: !this.props.shuffle
     })
   }
 
 
   settingsModal = (a) => {
-    console.log(a)
-    this.settings.toggleModal()
+    this.settings.getWrappedInstance().toggleModal()
   }
   render() {
     const { audio, isPlaying, song, currentAlbum } = this.props
@@ -138,11 +128,8 @@ class Routes extends Component {
           < div className = "column is-11" >
 
             <div className="main">
-
-
-
               <Settings getMusicDirs={this.getMusicDirs} ref={instance => { this.settings = instance }} />
-
+              
               <Switch>
                 <Route path="/collection/:id" component={PlaylistPage} />
                 <Route path="/collection" excact component={Collection} />

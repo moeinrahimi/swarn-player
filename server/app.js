@@ -2,7 +2,9 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app)
-const io = require('socket.io')(http)
+const io = require('socket.io')(http, {
+    transports: ['websocket', 'xhr-polling']
+})
 module.exports.io = io
 const { findSongs } = require('./helpers/song.js')
 
@@ -34,7 +36,6 @@ app.use('/favorites', FavoritedRouter)
 app.use(express.static('public'))
         
      
-
 io.on('connection', function(socket) {
     console.log('connected')
     socket.on('sync_songs', async (dirId) => {

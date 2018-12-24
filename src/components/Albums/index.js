@@ -10,17 +10,16 @@ import React, { Component } from 'react';
 import config from '../../constants/config'
 const mapStateToProps = state => {
   return {
-    song: state.song,
-    songs: state.songs,
-    songURL: state.songURL,
-    playingStatus: state.playingStatus,
-    songIndex: state.songIndex,
-    isPlaying: state.isPlaying,
-    songId: state.songId,
-    audio: state.audio,
-    shuffle: state.shuffle,
-    currentAlbum: state.currentAlbum,
-    song: state.song,
+    song: state.albumReducer.song,
+    songs: state.albumReducer.songs,
+    songURL: state.albumReducer.songURL,
+    playingStatus: state.albumReducer.playingStatus,
+    songIndex: state.albumReducer.songIndex,
+    isPlaying: state.albumReducer.isPlaying,
+    songId: state.albumReducer.songId,
+    audio: state.albumReducer.audio,
+    shuffle: state.albumReducer.shuffle,
+    currentAlbum: state.albumReducer.currentAlbum,
 
   };
 };
@@ -47,7 +46,6 @@ class Albums extends Component {
   }
 
   play(album, i, isPlaying) {
-    console.log(isPlaying, Object.keys(this.props.song).length > 0)
     if (isPlaying && Object.keys(this.props.song).length > 0)
       return togglePlay(this.props)
     this.playAlbum(album, i)

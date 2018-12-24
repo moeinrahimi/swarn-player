@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { toast } from 'react-toastify';
 import './style.css'
 import request from './request'
 import Albums from '../../components/Albums'

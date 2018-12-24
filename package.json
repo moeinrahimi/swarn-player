@@ -15,8 +15,8 @@
     "mysql2": "1.5.2",
     "nanoid": "1.0.1",
     "node-vibrant": "3.0.0",
-    "react": "0.14.8",
-    "react-dom": "0.14.7",
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1",
     "react-redux": "5.0.7",
     "react-responsive-modal": "2.0.0",
     "react-router-dom": "4.3.1",
@@ -26,6 +26,7 @@
     "reactotron-react-js": "1.13.0",
     "reactotron-redux": "2.0.0",
     "redux": "4.0.0",
+    "redux-thunk": "^2.3.0",
     "sequelize": "4.33.4",
     "socket.io": "2.2.0",
     "soundmanager2": "2.97.20150601-a"
@@ -36,5 +37,12 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "server": "cd server && nodemon app.js"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.4",
+    "eslint": "^5.11.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-react": "^7.11.1"
   }
 }

@@ -2,7 +2,6 @@ import axios from 'axios'
 import Sound from 'react-sound'
 import config from '../constants/config'
 const play = async (album, reduxProps) => {
-  console.log(reduxProps,'as')
   let { data } = await axios(config.baseURL+`album/songs?albumId=${album.id}`)
   reduxProps.setCurrentAlbum(album)
   let song = data.songs[0]

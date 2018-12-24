@@ -11,12 +11,12 @@ import { connect } from "react-redux";
 import Sound from "react-sound";
 const mapStateToProps = state => {
   return {
-    song: state.song,
-    songURL:state.songURL,
-    playingStatus:state.playingStatus,
-    songIndex:state.songIndex,
-    isPlaying:state.isPlaying,
-    audio:state.audio,
+    song: state.albumReducer.song,
+    songURL:state.albumReducer.songURL,
+    playingStatus:state.albumReducer.playingStatus,
+    songIndex:state.albumReducer.songIndex,
+    isPlaying:state.albumReducer.isPlaying,
+    audio:state.albumReducer.audio,
 };
 };
 const mapDispatchToProps = dispatch => {

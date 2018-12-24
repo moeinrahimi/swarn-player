@@ -106,8 +106,19 @@ var findSongs = async function (directory)  {
             }
             let album = await createAlbum(meta)
             let song = await saveSong(meta,album)
-            songCounter += 1
-            if (song[1] == true) emit('NEW_SONG', songCounter)
+            
+            
+            if (song[1] == true){
+              songCounter += 1
+              let emitData = {
+                  counter: songCounter,
+                  song: meta.title
+              }
+              console.log(emitData, 'new song ')
+              emit('NEW_SONG', emitData)
+              
+            } 
+              
             
             
         }

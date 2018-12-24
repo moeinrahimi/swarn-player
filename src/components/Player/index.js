@@ -8,11 +8,11 @@ import { connect } from "react-redux";
 import favortiedSongs from '../../helpers/favortiedSongs';
 
 const mapStateToProps = state => {
-  return { song: state.song,
-    audio : state.audio,
-    songs:state.songs,
-    shuffle:state.shuffle,
-    songIndex:state.songIndex,
+  return { song: state.albumReducer.song,
+    audio : state.albumReducer.audio,
+    songs:state.albumReducer.songs,
+    shuffle:state.albumReducer.shuffle,
+    songIndex:state.albumReducer.songIndex,
 };
 };
 const mapDispatchToProps = dispatch => {
@@ -68,7 +68,6 @@ class Player extends Component {
     let volumeDom = document.querySelector('.volume-slider')
     let volumeChd = document.querySelector('.volume')
     volumeDom.addEventListener('mousedown',(e)=>{
-      console.log(e)
       let {audio} = this.props
     let clickedPos = e.clientX - e.target.offsetLeft
     volumeChd.style.width = (clickedPos) + '%'

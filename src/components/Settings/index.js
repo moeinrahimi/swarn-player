@@ -3,14 +3,26 @@ import { toast } from 'react-toastify';
 import axios from 'axios'
 import config from '../../constants/config'
 import './style.css'
-// import io from 'socket.io-client';
-// let socket = io('http://localhost')
-// socket.on('*',function(a){
-// console.log(a,'a')
-// })
-// socket.on('a',function(a){
-// console.log(a,'aaaaaaaaaaaaaaa')
-// })
+import * as socketActions from "../../redux/socket/actions/index";
+import store from '../../redux/store'
+import { bindActionCreators } from 'redux';
+import { connect } from "react-redux";
+
+
+
+
+
+const mapStateToProps = state => {
+    return {
+        newSongInfo: state.socketReducer.newSongInfo
+    };
+};
+const mapDispatchToProps = dispatch => {
+    return {
+        actions: bindActionCreators({ ...socketActions }, dispatch),
+   
+    };
+};
 class Settings extends Component{
   constructor(props){
     super(props)
@@ -39,7 +51,7 @@ class Settings extends Component{
         settings:[...this.state.settings,data.newDir],
       });
       if(data.message_id == 0){
-        let indexSongs = await axios({
+        await axios({
           method : 'post',
           url : config.baseURL + 'songs/index',
           data : {directoryId:data.newDir.id}
@@ -60,7 +72,6 @@ _getSettings = () => {
     method : 'get',
     url : config.baseURL + 'settings',
   }).then(res=>{
-    // console.log(res.data)
     this.setState({
       settings : res.data.settings
     })
@@ -68,9 +79,6 @@ _getSettings = () => {
 }
 componentDidMount= ()=>{
   this._getSettings()
-    // socket.on('NEW_SONG', (data) => {
-    //     console.log(data)
-    // })
 }
 toggleModal= ()=>{
   this.setState({
@@ -79,11 +87,26 @@ toggleModal= ()=>{
 }
 _reIndex = (id) => {
   console.log('reindex called')
-  // socket.emit('sync_songs', id)
+  this.props.actions.syncSongs(id)
+  let toastId
+  store.subscribe(() => {
+      let song = store.getState().socketReducer
+      let message = `new song added :  ${song.newSongInfo.song} - ${song.newSongInfo.counter} `
+      if(toast.isActive(toastId)){
+        
+        toast.update(toastId,{
+          render: message
+        })
+      }else{
+        
+        toastId = toast(message, { toastId: toastId })
+        
+      }
 
-  // this.setState({
-  //   show : !this.state.show
-  // })
+  })
+  this.setState({
+    show : !this.state.show
+  })
 }
 _renderDirectories = ()=>{
   return (
@@ -122,7 +145,7 @@ _removeDir =  async (dir) =>{
 }
 }
   render(){
-    let {show,onClick} = this.state
+    let {show} = this.state
     return (
       <div className={show ? 'modal is-active' : 'modal'}>
   <div className="modal-background"></div>
@@ -150,4 +173,6 @@ _removeDir =  async (dir) =>{
   }
   
 }
-export default Settings
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Settings);
+// export default Settings

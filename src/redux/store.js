@@ -1,6 +1,19 @@
-import { createStore } from "redux";
-import rootReducer from "./albums/reducers";
-// import Reactotron from 'reactotron-react-js'
-// const store = Reactotron.createStore(rootReducer)
-const store = createStore(rootReducer);
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import albumReducer from "./albums/reducers";
+import socketReducer from "./socket/reducers";
+import thunk from 'redux-thunk'
+
+
+let reducers = combineReducers({
+  socketReducer,
+  albumReducer
+})
+
+let middleware = [thunk];
+
+const store = createStore(
+        reducers,
+        applyMiddleware(...middleware)
+    );
+
 export default store;
