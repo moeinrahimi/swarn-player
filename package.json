@@ -1,6 +1,13 @@
 {
   "name": "swarn-player",
   "version": "0.1.0",
+    "scripts": {
+      "start": "concurrently \"react-scripts start\" \"npm run server\"   ",
+      "build": "react-scripts build",
+      "test": "react-scripts test --env=jsdom",
+      "eject": "react-scripts eject",
+      "server": "cd server && nodemon app.js"
+    },
   "dependencies": {
     "axios": "0.9.1",
     "babel-preset-react": "6.5.0",
@@ -31,18 +38,13 @@
     "socket.io": "2.2.0",
     "soundmanager2": "2.97.20150601-a"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "server": "cd server && nodemon app.js"
-  },
+
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "eslint": "^5.11.0",
     "eslint-loader": "^2.1.1",
-    "eslint-plugin-react": "^7.11.1"
+    "eslint-plugin-react": "^7.11.1",
+    "concurrently": "4.1.0"
   }
 }

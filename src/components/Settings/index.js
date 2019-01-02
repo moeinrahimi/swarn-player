@@ -88,22 +88,7 @@ toggleModal= ()=>{
 _reIndex = (id) => {
   console.log('reindex called')
   this.props.actions.syncSongs(id)
-  let toastId
-  store.subscribe(() => {
-      let song = store.getState().socketReducer
-      let message = `new song added :  ${song.newSongInfo.song} - ${song.newSongInfo.counter} `
-      if(toast.isActive(toastId)){
-        
-        toast.update(toastId,{
-          render: message
-        })
-      }else{
-        
-        toastId = toast(message, { toastId: toastId })
-        
-      }
 
-  })
   this.setState({
     show : !this.state.show
   })

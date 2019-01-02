@@ -82,6 +82,11 @@ class SongList extends Component{
   }
   
    _renderView = (song, index) => {
+     let duration = 0
+     if(song.duration){
+       duration = (song.duration / 60).toFixed(2)
+      duration = duration.replace('.',':')
+      }
     return (
   
       <div className="song">
@@ -119,7 +124,7 @@ class SongList extends Component{
               </div>
             </div>
           </div>
-          <span>{song.duration * 60}</span>
+          <span>{duration}</span>
   
         </div>
   

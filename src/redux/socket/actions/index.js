@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import store from '../../store'
+import { toast } from 'react-toastify';
 export const setSongCounter = (newSongInfo) => ({
     type: 'SET_NEW_SONG_COUNTER',
     newSongInfo
@@ -29,7 +30,24 @@ export const syncSongs = (dirId) => {
          socket.emit('sync_songs', dirId)
             //  })
          socket.on('NEW_SONG', function(newSongInfo) {
-         dispatch(setSongCounter(newSongInfo))
+             let toastId
+             console.log(newSongInfo, 'NEW_SONG')
+             if (newSongInfo && newSongInfo.song) {
+                 let message = `new song added :  ${newSongInfo.song} - ${newSongInfo.counter} `
+                 if (toast.isActive(toastId)) {
+
+                     toast.update(toastId, {
+                         render: message
+                     })
+                 } else {
+
+                     toastId = toast(message, { toastId: toastId })
+
+                 }
+             }
+        //  dispatch(setSongCounter(newSongInfo))
          })
     }
 }
+
+

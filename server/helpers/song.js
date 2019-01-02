@@ -10,7 +10,8 @@ const {emit} = require('./socket')
 const getMusicMeta = (file) => {
   return new Promise((resolve,reject)=>{
     let stream = fs.createReadStream(file)
-    metaData(stream,(err,meta)=>{
+    let size =fs.statSync(file)
+    metaData(stream, { duration: true, fileSize: size.size }, (err, meta) => {
       if(err) {
         // console.log(file,'get music data err')
         return reject('could not find metadata header for' + file)

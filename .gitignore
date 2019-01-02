@@ -25,3 +25,4 @@ yarn.lock
 package.json
 package-lock.json
 /server/node_modules
+.vscode

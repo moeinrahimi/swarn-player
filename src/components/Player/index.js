@@ -6,7 +6,7 @@ import {togglePlay} from '../../helpers/player'
 import {setSongDetails,setCurrentSong,setIsPlaying} from "../../redux/albums/actions/index";
 import { connect } from "react-redux";
 import favortiedSongs from '../../helpers/favortiedSongs';
-
+import { Link } from "react-router-dom";
 const mapStateToProps = state => {
   return { song: state.albumReducer.song,
     audio : state.albumReducer.audio,
@@ -57,11 +57,10 @@ class Player extends Component {
     let progressBarWidth = 642
     document.querySelector('#middle-bar').addEventListener('mousedown',(e)=>{
       let {audio,isPlaying} = this.props
-      console.log(progressBarWidth)
       if(isPlaying){
         let clickedPos = e.pageX - e.target.offsetLeft
         let newTime = (clickedPos  * audio.duration) / progressBarWidth
-        console.log(e.target.offsetWidth, '= ',(clickedPos  / e.target.offsetWidth) * audio.duration)
+        // console.log(e.target.offsetWidth, '= ',(clickedPos  / e.target.offsetWidth) * audio.duration)
         audio.currentTime = newTime
   }
     })
@@ -77,7 +76,6 @@ class Player extends Component {
     },false)
     let volumeIcon = document.querySelector('#sound i')
     volumeIcon.addEventListener('click',(e)=>{
-      console.log('clicked',audio.muted)
       if(audio.muted){
         audio.muted = false
         volumeIcon.className = 'link flaticon-speaker'
@@ -120,13 +118,11 @@ class Player extends Component {
     
     let {audio ,  songs, songIndex , shuffle} = this.props
     audio.pause()
-    console.log(songIndex,'indexxxxxxxxxxxxxxxxxxx')
     
     const songsLength = songs.length
     
     // songIndex = parseInt(songIndex)
     songIndex += 1
-    console.log(songsLength,'songs len',songIndex)
     if (songIndex >= songsLength) {
       if(shuffle){
         songIndex = 0
@@ -155,6 +151,12 @@ class Player extends Component {
     audio.play()
   }
   setEplapsed = (elapsed,total,position)=>{
+    
+    // console.log(total)
+    if (total == 'NaN:NaN') {
+        total = '00:00'
+      }
+          
         this.setState({
         elapsed: elapsed,
         total: total,
@@ -172,6 +174,7 @@ class Player extends Component {
     let totalSeconds = this.formatTime(Math.floor(audio.duration / 60))
     let elapsed = currentMinutes + ':' + currentSeconds
     let total = totaltMinutes + ':' + totalSeconds
+  
     this.setEplapsed(elapsed,total,audio.position)
     
   }
@@ -179,7 +182,6 @@ class Player extends Component {
     let {audio} = this.props
     let clickedPos = e.clientX - e.target.offsetLeft
     let newTime = (clickedPos  / e.target.offsetWidth) * audio.duration
-    console.log(newTime ,'timer')
       audio.currentTime = 1
     
    
@@ -198,7 +200,10 @@ class Player extends Component {
             <img src={album.artwork ? config.baseURL + album.artwork : noArtworkImage} alt="" />
             </div>
             <div id="currently-text">
-              <span><a href="" className="link">{song.title}</a></span>
+            <span><Link className = "link"
+            to={`/${album.id}`}> { song.title}</Link>
+              </span>
+              
               <h1>{song.artist}</h1>
             </div>
             <div id="add-to-favaorite">          

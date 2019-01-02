@@ -3,7 +3,7 @@
 
   
 
-swan-player is a music player web application, it is basically spotify clone (only by looks) for your home streaming music .
+swan-player is a self hosted web based music player with all features that a music player needs . 
 
   
   
@@ -23,25 +23,19 @@ swan-player is a music player web application, it is basically spotify clone (on
 make sure you have a working installation mysql .
 
 ``` bash
-
-git clone https://github.com/moeinrahimi/swan-player.git
-
-cd swan-player
-
-node install.js // installs dependencies
-change server ip located at src/config.js if you need to defaults to localhost:8181
-at last simply run :
-npm start && npm run server
+npm install or yarn 
+npm start or yarn start
 ```
 
   
 
 # Features
 
-- you can add as many folders you want
+- multiple song directory 
 - fast on adding songs
-- sort songs based on albums
-- create playlists and add songs to them
+- create album for songs automatically
+- create playlists
+- favorite songs 
 - search in songs and albums
 
   
@@ -53,10 +47,11 @@ npm start && npm run server
 - redux
 - mysql
 - nodejs express
+- socketio
 
 # Contributing
 
-you can in making swan-player better by contributing in adding new features to it, see TODO list to find out what is needed right now
+you can help with making swan-player better by contributing in adding new features to it, see TODO list to find out what is needed right now or suggest new features by creating new issue 
 
   
 

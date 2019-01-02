@@ -1,25 +1,25 @@
 {
-  "short_name": "Music Player",
-  "name": "Music Player",
+  "short_name": "Swan Player",
+  "name": "Swan Player",
   "icons": [
     {
-      "src": "mute.png",
+      "src": "swan-48.png",
       "type": "image/png",
       "sizes": "48x48"
     },
     {
-      "src": "mute.png",
+      "src": "swan-96.png",
       "type": "image/png",
       "sizes": "96x96"
     },
     {
-      "src": "mute.png",
+      "src": "swan-192.png",
       "type": "image/png",
       "sizes": "192x192"
     }
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#7B1FA2",
-  "background_color": "#7B1FA2"
+  "theme_color": "#e89d41",
+  "background_color": "#e89d41"
 }
